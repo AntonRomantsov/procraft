@@ -1,0 +1,91 @@
+<table class="table">
+  <tr>
+      <td class="col-xs-3">
+          <h5><span class="required">* </span><strong>{{ entry_code }}</strong></h5>
+          <span class="help"><i class="fa fa-info-circle"></i>&nbsp;{{ entry_code_help }}</span>
+      </td>
+      <td class="col-xs-9">
+        <div class="col-xs-4">
+              <select name="googlelogin[{{ store.store_id }}][Enabled]" class="form-control">
+                    <option value="No" {{ ((data.googlelogin[store.store_id].Enabled is not empty and data.googlelogin[store.store_id].Enabled == 'No') ) ? 'selected="selected"'  : ''  }}>{{ text_disabled }}</option>
+                    <option value="Yes"  {{ ((data.googlelogin[store.store_id].Enabled is not empty and data.googlelogin[store.store_id].Enabled == 'Yes') ) ? 'selected="selected"'  : ''  }}>{{ text_enabled }}</option>
+              </select>
+          </div>
+      </td>
+  </tr> 
+</table>
+
+<table id="module" class="table table-bordered">
+
+  <thead>
+    <tr>
+      <td class="left">#</td>
+      <td>CSS Selector</td>
+      <td></td>
+    </tr>
+  </thead>
+  <tbody>
+    {% for setting in settings %}
+      <tr id="module-row{{ loop.index }}">
+        <td class="text-right">{{ loop.index }}</td>
+        <td class="text-left">
+          <div class="leftBoxInput">
+          <input type="checkbox" name="googlelogin_module[{{ loop.index }}][position_use_selector]" {{ ((setting.position_use_selector is defined) ) ? 'checked="checked"'  : '' }} id="buttonPosCheckbox_{{ loop.index }}"  data-textinput="#cssSelectorBox_{{ loop.index }}" />
+          </div>
+          <div class="leftBoxTitle"><label for="buttonPosCheckbox_{{ loop.index }}">{{ text_load_in_selector }}</label></div><input type="text" class="cssSelectorBox form-control" id="cssSelectorBox_{{ loop.index }}" name="googlelogin_module[{{ loop.index }}][position_selector]" value="<?php echo (setting.position_selector is not empty) ? setting.position_selector : '#content .login-content, #checkout .checkout-content' ; ?>" />
+        </td>
+        <td class="text-left"><button type="button" onclick="$('#module-row{{ loop.index }}').remove();" data-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>
+      </tr>
+    {% endfor %}
+  </tbody>
+  <tfoot>
+    <tr>
+      <td colspan="2"></td>
+      <td class="text-left"><button type="button" onclick="addModule({{ loop.index }});" data-toggle="tooltip" title="Add module" class="btn btn-primary"><i class="fa fa-plus-circle"></i></button></td>
+    </tr>
+  </tfoot>
+
+</table>
+
+<script>
+
+
+var module_row=0;
+function addModule(index) {
+  if(module_row==0)
+    module_row = index;
+  
+  html = '<tr id="module-row' + module_row + '">';
+  html+= '<td class="text-right">'+ module_row +'</td>';
+  html+= '<td class="text-left">';     
+  html+= '<div class="leftBoxInput">';
+  html+= '<input type="checkbox" name="googlelogin_module['+module_row+'][position_use_selector]" {{ ((setting.position_use_selector is defined) ) ? 'checked="checked"'  : '' }} id="buttonPosCheckbox_'+module_row+'"  data-textinput="#cssSelectorBox_'+module_row+'" />';
+  html+= '</div>';       
+  html+= '<div class="leftBoxTitle"><label for="buttonPosCheckbox_'+module_row+'">{{ text_load_in_selector }}</label></div><input type="text" class="cssSelectorBox form-control" id="cssSelectorBox_'+module_row+'" name="googlelogin_module['+module_row+'][position_selector]" value="<?php echo (setting.position_selector is not empty) ? setting.position_selector : '#content .login-content, #checkout .checkout-content' ; ?>" />';
+  html+= '</td>';       
+  html+= '<td class="text-left"><button type="button" onclick="$(\'#module-row'+module_row+'\').remove();" data-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>';     
+  html+= '</tr>';
+
+  $('#module tbody').append(html);
+
+  module_row++;
+}
+
+  if($('select').val() == 'Yes') {
+    $('#module').show(200);
+  }
+  else {
+    $('#module').hide(200);
+  }
+
+  $('select').on('change', function() {
+    if($('select').val() == 'Yes') {
+      $('#module').show(200);
+    }
+    else {
+      $('#module').hide(200);
+    }
+  });
+
+
+</script>

@@ -1,0 +1,33 @@
+<input type="text" name="cp_coupon" value="{{ coupon }}" placeholder="{{ entry_coupon }}" id="cp-input-coupon" />
+<input type="button" value="{{ button_coupon }}" id="cp-button-coupon" data-loading-text="{{ text_loading }}" class="next-step-button" />
+<script type="text/javascript"><!--
+	$('#cp-button-coupon').on('click', function() {
+		maskElement('#check-data', true);
+		$.ajax({
+			url: 'index.php?route=extension/module/cart_popup/coupon',
+			type: 'post',
+			data: 'cp_coupon=' + encodeURIComponent($('input[name=\'cp_coupon\']').val()),
+			dataType: 'json',
+			cache: false,
+			beforeSend: function() {
+				$('#cp-button-coupon').button('loading');
+			},
+			complete: function() {
+				$('#cp-button-coupon').button('reset');
+			},
+			success: function(json) {
+				$('.field-error').remove();
+				if (json['error']) {
+					maskElement('#check-data', false);
+					$('input[name=\'cp_coupon\']').addClass('error-style').after('<span class="error-text field-error">' + json['error'] + '</span>');
+				} else {
+					maskElement('#check-data', false);
+					$('input[name=\'cp_coupon\']').removeClass('error-style').after('<span id="cp-coupon-success">' + json['success'] + '</span>').fadeIn();
+					$('#cp-coupon-success').delay(1000).fadeOut();
+					setTimeout(update_cart, 1000, 1, 'remove');
+				}
+			}
+		});
+	});
+//-->
+</script>

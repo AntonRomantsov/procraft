@@ -1,0 +1,341 @@
+{{ header }}{{ column_left }}
+<div id="content">
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="pull-right form-inline">
+				<a href="#" id="update-videos" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> {{ text_loading }}" style="margin-right: 50px" class="btn btn-warning"><i class="fa fa-refresh" aria-hidden="true"></i> {{ button_update }}</a>
+				<button type="submit" form="form-module" name="apply" data-toggle="tooltip" title="{{ button_apply }}" class="btn btn-success"><i class="fa fa-check"></i></button>
+				<button type="submit" form="form-module" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+				<a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a>
+			</div>
+			<h1>{{ heading_title }}</h1>
+			<ul class="breadcrumb">
+				{% for breadcrumb in breadcrumbs %}
+					<li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+	<div class="container-fluid">
+		{% if error_warning %}
+			<div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+			</div>
+		{% endif %}
+		{% if success %}
+			<div class="alert alert-success alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ success }}
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+			</div>
+		{% endif %}
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
+			</div>
+			<div class="panel-body">
+				<ul class="nav nav-tabs">
+					<li class="active"><a href="#tab-main" data-toggle="tab">{{ tab_main }}</a></li>
+					<li><a href="#tab-license" data-toggle="tab">{{ tab_license }}</a></li>
+				</ul>
+				<form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-module" class="form-horizontal">
+					<div id="update-response"></div>
+					<div class="tab-content">
+						<div class="tab-pane active form-horizontal" id="tab-main">
+							<div class="form-group required">
+								<label class="col-sm-2 control-label" for="input-name"><span class="help" title="{{ help_name }}" data-toggle="tooltip">{{ entry_name }}</span></label>
+								<div class="col-sm-10">
+									<input type="text" name="name" value="{{ name }}" placeholder="{{ entry_name }}" id="input-name" class="form-control"/>
+									{% if error_name %}
+										<div class="text-danger">{{ error_name }}</div>
+									{% endif %}
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label"><span class="help" title="{{ help_title }}" data-toggle="tooltip">{{ entry_title }}</span></label>
+								<div class="col-sm-10">
+									{% for language in languages %}
+									<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+										<input type="text" name="title[{{ language.language_id }}]" value="{{ title ? title[language.language_id] : "" }}" placeholder="{{ entry_title }}" id="input-title{{ language.language_id }}" class="form-control"/>
+									</div>
+									{% endfor %}
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="input-apikey">{{ entry_apikey }}</label>
+								<div class="col-sm-10">
+									<input type="text" name="apikey" value="{{ apikey }}" placeholder="{{ entry_apikey }}" id="input-apikey" class="form-control"/>
+								</div>
+							</div>
+							<div class="form-group" style="background: rgb(233, 241, 254);">
+								<label class="col-sm-2 control-label">{{ entry_source }}</label>
+								<div class="col-sm-10">
+									<div class="buttons-radio btn-group">
+										<label class="btn btn-source {{ source == 'channel' ? 'btn-primary' : '' }}" data-type="channel">
+											<input name="source" class="form-control" type="radio" value="channel" {{ source == 'channel' ? 'checked="checked"' : '' }}>
+											<i class="fa fa-check"></i> {{ entry_channel }}
+										</label>
+										<label class="btn btn-source {{ source == 'playlist' ? 'btn-primary' : '' }}" data-type="playlist">
+											<input name="source" class="form-control" type="radio" value="playlist" {{ source == 'playlist' ? 'checked="checked"' : '' }}>
+											<i class="fa fa-check"></i> {{ entry_playlist }}
+										</label>
+										<label class="btn btn-source {{ source == 'video' ? 'btn-primary' : '' }}" data-type="video">
+											<input name="source" class="form-control" type="radio" value="video" {{ source == 'video' ? 'checked="checked"' : '' }}>
+											<i class="fa fa-check"></i> {{ entry_video }}
+										</label>
+									</div>
+								</div>
+							</div>
+							<div class="form-group field-source" id="field-channel" {{ source != 'channel' ? 'style="display:none;"' : '' }}>
+								<label class="col-sm-2 control-label" for="source-channel">{{ entry_channel_id }}</label>
+								<div class="col-sm-10">
+									<input type="text" name="channel" value="{{ channel }}" placeholder="{{ entry_channel_id }}" id="source-channel" class="form-control"/>
+								</div>
+							</div>
+							<div class="form-group field-source" id="field-playlist" {{ source != 'playlist' ? 'style="display:none;"' : '' }}>
+								<label class="col-sm-2 control-label" for="source-playlist">{{ entry_playlist_id }}</label>
+								<div class="col-sm-10">
+									<input type="text" name="playlist" value="{{ playlist }}" placeholder="{{ entry_playlist_id }}" id="source-playlist" class="form-control"/>
+								</div>
+							</div>
+							<div class="form-group field-source" id="field-video" {{ source != 'video' ? 'style="display:none;"' : '' }}>
+								<label class="col-sm-2 control-label" for="source-video">{{ entry_video_id }}</label>
+								<div class="col-sm-10">
+									<input type="text" name="video" value="{{ video }}" placeholder="{{ entry_video_id }}" id="source-video" class="form-control"/>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="input-layout">{{ entry_layout }}</label>
+								<div class="col-sm-10">
+									<select name="layout" id="input-layout" class="form-control">
+										<option value="grid" {{ "grid" == layout ? "selected" : "" }}>{{ text_grid }}</option>
+										<option value="list" {{ "list" == layout ? "selected" : "" }}>{{ text_list }}</option>
+										<option value="carousel" {{ "carousel" == layout ? "selected" : "" }}>{{ text_carousel }}</option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="input-sort">{{ entry_sort }}</label>
+								<div class="col-sm-10">
+									<select name="sort" id="input-sort" class="form-control">
+										<option value="date_added" {{ "date_added" == sort ? "selected" : "" }}>{{ text_sort_date }}</option>
+										<option value="views" {{ "views" == sort ? "selected" : "" }}>{{ text_sort_views }}</option>
+										<option value="likes" {{ "likes" == sort ? "selected" : "" }}>{{ text_sort_likes }}</option>
+										<option value="comments" {{ "comments" == sort ? "selected" : "" }}>{{ text_sort_comments }}</option>
+										<option value="title" {{ "title" == sort ? "selected" : "" }}>{{ text_sort_title }}</option>
+										<option value="random" {{ "random" == sort ? "selected" : "" }}>{{ text_sort_random }}</option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="input-image">{{ entry_image }}</label>
+								<div class="col-sm-10">
+									<select name="image" id="input-image" class="form-control">
+										<option value="default" {{ "default" == image ? "selected" : "" }}>{{ text_image_default }}</option>
+										<option value="medium" {{ "medium" == image ? "selected" : "" }}>{{ text_image_medium }}</option>
+										<option value="high" {{ "high" == image ? "selected" : "" }}>{{ text_image_high }}</option>
+										<option value="standard" {{ "standard" == image ? "selected" : "" }}>{{ text_image_standard }}</option>
+										<option value="maxres" {{ "maxres" == image ? "selected" : "" }}>{{ text_image_maxres }}</option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="input-limit">{{ entry_limit }}</label>
+								<div class="col-sm-10">
+									<input type="number" name="limit" value="{{ limit }}" placeholder="{{ entry_limit }}" id="input-limit" class="form-control"/>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="input-columns">{{ entry_columns }}</label>
+								<div class="col-sm-10">
+									<select name="columns" id="input-columns" class="form-control">
+										<option value="1" {{ "1" == columns ? "selected" : "" }}>1</option>
+										<option value="2" {{ "2" == columns ? "selected" : "" }}>2</option>
+										<option value="3" {{ "3" == columns ? "selected" : "" }}>3</option>
+										<option value="4" {{ "4" == columns ? "selected" : "" }}>4</option>
+										<option value="6" {{ "6" == columns ? "selected" : "" }}>6</option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="input-header">{{ entry_header_setting }}</label>
+								<div class="col-sm-10">
+									<div class="checkbox">
+										<label><input type="checkbox" name="header_setting[]" value="logo" {{ "logo" in header_setting ? "checked" : "" }}/> {{ text_channel_logo }}</label>
+									</div>
+									<div class="checkbox">
+										<label><input type="checkbox" name="header_setting[]" value="name" {{ "name" in header_setting ? "checked" : "" }}/> {{ text_channel_name }}</label>
+									</div>
+									<div class="checkbox">
+										<label><input type="checkbox" name="header_setting[]" value="description" {{ "description" in header_setting ? "checked" : "" }}/> {{ text_channel_description }}</label>
+									</div>
+									<div class="checkbox">
+										<label><input type="checkbox" name="header_setting[]" value="videos" {{ "videos" in header_setting ? "checked" : "" }}/> {{ text_video_counter }}</label>
+									</div>
+									<div class="checkbox">
+										<label><input type="checkbox" name="header_setting[]" value="views" {{ "views" in header_setting ? "checked" : "" }}/> {{ text_views_counter }}</label>
+									</div>
+									<div class="checkbox">
+										<label><input type="checkbox" name="header_setting[]" value="subscribers" {{ "subscribers" in header_setting ? "checked" : "" }}/> {{ text_subs_counter }}</label>
+									</div>
+									<div class="checkbox">
+										<label><input type="checkbox" name="header_setting[]" value="subscribe" {{ "subscribe" in header_setting ? "checked" : "" }}/> {{ text_subs_button }}</label>
+									</div>
+									<div class="checkbox">
+										<label><input type="checkbox" name="header_setting[]" value="search" {{ "search" in header_setting ? "checked" : "" }}/> {{ text_video_search }}</label>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="input-video">{{ entry_video_setting }}</label>
+								<div class="col-sm-10">
+									<div class="checkbox">
+										<label><input type="checkbox" name="video_setting[]" value="playicon" {{ "playicon" in video_setting ? "checked" : "" }}/> {{ text_video_playicon }}</label>
+									</div>
+									<div class="checkbox">
+										<label><input type="checkbox" name="video_setting[]" value="title" {{ "title" in video_setting ? "checked" : "" }}/> {{ text_video_title }}</label>
+									</div>
+									<div class="checkbox">
+										<label><input type="checkbox" name="video_setting[]" value="description" {{ "description" in video_setting ? "checked" : "" }}/> {{ text_video_description }}</label>
+									</div>
+									<div class="checkbox">
+										<label><input type="checkbox" name="video_setting[]" value="duration" {{ "duration" in video_setting ? "checked" : "" }}/> {{ text_video_duration }}</label>
+									</div>
+									<div class="checkbox">
+										<label><input type="checkbox" name="video_setting[]" value="views" {{ "views" in video_setting ? "checked" : "" }}/> {{ text_views_counter }}</label>
+									</div>
+									<div class="checkbox">
+										<label><input type="checkbox" name="video_setting[]" value="likes" {{ "likes" in video_setting ? "checked" : "" }}/> {{ text_likes_counter }}</label>
+									</div>
+									<div class="checkbox">
+										<label><input type="checkbox" name="video_setting[]" value="comments" {{ "comments" in video_setting ? "checked" : "" }}/> {{ text_comments_counter }}</label>
+									</div>
+									<div class="checkbox">
+										<label><input type="checkbox" name="video_setting[]" value="date" {{ "date" in video_setting ? "checked" : "" }}/> {{ text_video_date }}</label>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="input-loadmore">{{ entry_loadmore }}</label>
+								<div class="col-sm-10">
+									<select name="loadmore" id="input-loadmore" class="form-control">
+										<option value="0" {{ "0" == loadmore ? "selected" : "" }}>{{ text_disabled }}</option>
+										<option value="1" {{ "1" == loadmore ? "selected" : "" }}>{{ text_enabled }}</option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="input-fullscreen">{{ entry_fullscreen }}</label>
+								<div class="col-sm-10">
+									<select name="fullscreen" id="input-fullscreen" class="form-control">
+										<option value="0" {{ "0" == fullscreen ? "selected" : "" }}>{{ text_disabled }}</option>
+										<option value="1" {{ "1" == fullscreen ? "selected" : "" }}>{{ text_enabled }}</option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="input-branding">{{ entry_branding }}</label>
+								<div class="col-sm-10">
+									<select name="branding" id="input-branding" class="form-control">
+										<option value="1" {{ "1" == branding ? "selected" : "" }}>{{ text_disabled }}</option>
+										<option value="0" {{ "0" == branding ? "selected" : "" }}>{{ text_enabled }}</option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="input-status">{{ entry_status }}</label>
+								<div class="col-sm-10">
+									<select name="status" id="input-status" class="form-control">
+										<option value="0" {{ "0" == status ? "selected" : "" }}>{{ text_disabled }}</option>
+										<option value="1" {{ "1" == status ? "selected" : "" }}>{{ text_enabled }}</option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="input-cron">{{ entry_cron }}</label>
+								<div class="col-sm-10">
+									<input type="text" name="cron" value="{{ cron }}" id="input-cron" readonly class="form-control"/>
+								</div>
+							</div>
+						</div>
+						<div class="tab-pane form-horizontal" id="tab-license">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="input-license">{{ entry_license }}</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="license" value="{{ license }}" placeholder="{{ entry_license }}" id="input-license" class="form-control"/>
+                                    {{ text_copyright }}
+                                </div>
+                            </div>
+                        </div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<style>
+.buttons-radio {
+	border: 1px solid #cccccc;
+}
+.buttons-radio input[type="radio"],
+.buttons-radio input[type="checkbox"] 
+{
+	margin-left:-99999px;
+	display:none;
+}
+.buttons-radio input[type="radio"] + .fa ,
+.buttons-radio input[type="checkbox"] + .fa {
+	 opacity:0.15
+}
+.buttons-radio input[type="radio"]:checked + .fa,
+.buttons-radio input[type="checkbox"]:checked + .fa{
+	opacity:1
+}
+.field-source {
+	background: rgb(233, 241, 254);
+}
+.btn-source {
+	background: #ffffff;
+}
+.btn-source.btn-primary {
+	background: #1872a2;
+}
+</style>
+<script type="text/javascript"><!--
+	$('.nav[id*=language]').find('a:first').tab('show');
+//--></script>
+<script type="text/javascript">
+$('.btn-source').on('click', function() {
+	$('.btn-source').removeClass('btn-primary');
+	$(this).addClass('btn-primary');
+	$('[id^="field-"]').hide();
+	$('#field-'+$(this).data('type')).show();
+});
+$('#update-videos').on('click', function(e) {
+ e.preventDefault();
+ $.ajax({
+  url: '{{ cron }}',
+  type: 'get',
+  dataType: 'json',
+  beforeSend: function() {
+   $('#update-videos').button('loading');
+  },
+  complete: function() {
+   $('#update-videos').button('reset');
+  },
+  success: function(json) {
+   $('.alert').remove();
+
+   if (json['error']) {
+    $('#update-response').before('<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+   }
+
+   if (json['success']) {
+    $('#update-response').before('<div class="alert alert-success"><i class="fa fa-check-circle"></i> ' + json['success'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+   }
+  },
+  error: function(xhr, ajaxOptions, thrownError) {
+   alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+  }
+ });
+});
+</script>
+{{ footer }}

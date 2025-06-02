@@ -1,0 +1,283 @@
+{{ header }}
+ {% if hide_menu is defined and hide_menu %}
+     <script>$('#menu').remove();</script>
+ {% endif %}
+ {% if hide_footer is defined and hide_footer %}
+     <script>
+         $(document).ready(function () {
+             $('.footer-top').hide();
+             $('.footer-middle > .container > div').hide();
+         });</script>
+ {% endif %}
+<div class="container">
+    {% if file_breadcrumbs is defined %}
+        {{ include(config_theme ~ '/template/common/breadcrumbs.twig') }}
+    {% else %}
+        <ul class="breadcrumb box-shadow box-corner">
+            {% for breadcrumb in breadcrumbs %}
+                <li><a href="{{ breadcrumb['href'] }}">{{ breadcrumb['text'] }}</a></li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <div class="row">
+        <div id="content" class="col-sm-12">
+            <div class="chekout-container">                    <!-- NeoSeo Loyalty System - begin -->
+                {% if text_discount_loyalty_system %}
+                    <div class="alert alert-info loyality_info"><i
+                            class="fa fa-info-circle"></i> {{ text_discount_loyalty_system }}</div>
+                {% endif %}
+                <!-- NeoSeo Loyalty System - End -->
+                <h1>{{ heading_title }}</h1>
+                
+                {# NeoSeo Ticket System - begin #}
+                {% if (neoseo_ticket_system is defined and neoseo_ticket_system) %}
+                    <div class="form-group">
+                        <button class="btn-primary btn" onclick="showPopupTicketSystem('checkout');"> {{ button_ticket_system }} </button>
+                    </div>
+                {% endif %}
+                {# NeoSeo Ticket System - end #}
+
+                <div id="warning-messages"></div>
+                <div id="success-messages"></div>
+
+                <div id="quickcheckoutconfirm" class="row">
+
+                    <div class="col-sm-8 ">
+
+                        <legend id='legend1' class='current'><span>1</span> {{ text_contact_details }} <a id="toggle1"
+                                                                                                          style="display: none">{{ text_edit }}</a>
+                        </legend>
+                        <div id="section1" class="collapse in">
+
+                            <div id="customer" class="clearfix">
+                                {% if not logged %}
+                                    <ul class="list-inline text-center col-sm-offset-4">
+                                        <li class="active"><a class="btn btn-primary"
+                                                              href="javascript:void(0);">{{ text_not_have_account }}</a>
+                                        </li>
+                                        <li><a class="btn btn-default" href="#" id="login">{{ text_login }}</a></li>
+                                    </ul>
+                                {% endif %}
+
+                                <div id="payment-address">
+                                    <div class="quickcheckout-content form"></div>
+                                </div>
+                                <div class="pull-right">
+                                    <a class="btn btn-primary" id="toggle2">{{ text_next }}</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <legend id='legend2'><span>2</span> {{ text_delivery_payment_details }}</legend>
+                        <div id="section2" class="collapse">
+
+                            {% if neoseo_checkout_dependency_type == "payment_for_shipping" %}
+
+                                {% if shipping_required %}
+                                    <div id="shipping" class="row">
+                                        <h3 class="col-sm-3">{{ text_shipping }}</h3>
+                                        <div class="col-sm-9 quickcheckout-content form">
+                                            {% if config_theme != 'neoseo_unistor' %}
+                                                {% include('/default/template/checkout/neoseo_city.twig') %}
+                                            {% else %}
+                                                {% include (config_theme ~ '/template/checkout/neoseo_city.twig') %}
+                                            {% endif %}
+                                            <div id="shipping-method"></div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                <hr>
+                                <div id="payment" class="row">
+                                    <h3 class="col-sm-3">{{ text_payment }}</h3>
+                                    <div class="col-sm-9 quickcheckout-content form">
+                                        <div id="payment-method" class="field"></div>
+                                    </div>
+                                </div>
+
+                            {% else %} {# if( $neoseo_checkout_dependency_type == "payment_for_shipping" ) #}
+
+                                <div id="payment">
+                                    <h3>{{ text_payment }}</h3>
+                                    <div class="quickcheckout-content form">
+                                        <div id="payment-method" class="field"></div>
+                                    </div>
+                                </div>
+
+                                {% if shipping_required %}
+
+                                    <div id="shipping">
+                                        <h3>{{ text_shipping }}</h3>
+                                        <div class="quickcheckout-content form">
+                                            {% if config_theme != 'neoseo_unistor' %}
+                                                {% include('/default/template/checkout/neoseo_city.twig') %}
+                                            {% else %}
+                                                {% include (config_theme ~ '/template/checkout/neoseo_city.twig') %}
+                                            {% endif %}
+                                            <div id="shipping-method"></div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div id="checkout-cart" class="col-sm-4">
+                        <h3>{{ text_cart }}</h3>
+                        <div class="quickcheckout-content"></div>
+                        <div id="confirm" style="display:none" >
+                            <hr>
+                            <div id="payment-form" style="display:none"></div>
+                            <div id="shipping-form" style="display:none"></div>
+
+                            {% if text_agree %}
+                                <div class='checkbox checkbox-primary checkbox-inline'>
+                                    {% if agree %}
+                                        <input id="input-agree" type="checkbox" name="agree" value="1" checked="checked"/>
+                                        <label for="input-agree">{{ text_agree }}</label>
+                                    {% else %}
+                                        <input id="input-agree" type="checkbox" name="agree" value="1"/>
+                                        <label for="input-agree">{{ text_agree }}</label>
+                                    {% endif %}
+                                </div>
+                                <hr>
+                            {% endif %}
+                            {% if agreement_text %}
+                                <div class="well box-shadow box-corner" style="height: 160px; overflow: auto;">{{ description_agree }}</div>
+                            {% endif %}
+
+                            <div class="text-center">
+                                <button id="button-payment-method" class="btn btn-primary">{{ button_checkout }}</button>
+                            </div>
+                            <div style="clear:both;height: 17px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function debounce (timeout, fn ) {
+        var timer;
+        return function() {
+            var args = arguments;
+            var ctx = this;
+            clearTimeout(timer);
+            timer = setTimeout(function() {
+                fn.apply(ctx,args);
+                timer = null;
+            }, timeout);
+        };
+    }
+
+    $('#toggle1').click(function(e){
+        e.preventDefault();
+        $('#section1').addClass("in");
+        $('#section2').removeClass("in");
+        $('#legend2').removeClass("current");
+        $('#legend1').addClass("current").removeClass('complete');
+        $('#toggle1').hide();
+        $('#confirm').hide();
+    });
+
+    $('#toggle2').click(function(e){
+        e.preventDefault();
+        validateCustomer(function(){
+            $('#section2').addClass("in");
+            $('#section1').removeClass("in");
+            $('#legend1').removeClass("current").addClass('complete');
+            $('#legend2').addClass("current");
+            $('#toggle1').show();
+            $('#confirm').show();
+        });
+    });
+
+    $(document).ready(function(){
+        $("#login").click(function(e) {
+            e.preventDefault();
+            doLogin();
+        });
+
+        $('#quickcheckoutconfirm').on('keydown', 'input,textarea', debounce(500, function(e) {
+            saveField($(this).prop('name'),$(this).val());
+        }));
+
+        $('#quickcheckoutconfirm').on('change', 'input,select,textarea', function(e) {
+            if( $(this).prop('type') == 'checkbox' ) {
+                saveField($(this).prop('name'), $(this).prop('checked') ? 1 : 0 );
+            } else {
+                saveField($(this).prop('name'), $(this).val());
+            }
+        });
+
+        {% if neoseo_checkout_shipping_city_select == "default" %}
+            $('#quickcheckoutconfirm').on('keydown', '#city', debounce(500, function(e) {
+                changeCity($("#city").val(),$("#zone_id").val(),$("#country_id").val(), function(){
+                    reloadCheckout();
+                });
+            }));
+            $('#quickcheckoutconfirm').on('change', '#city', function(e) {
+                changeCity($("#city").val(),$("#zone_id").val(),$("#country_id").val(), function(){
+                    reloadCheckout();
+                });
+            });
+            $("select#zone_id").change( function(){
+                changeCity($("#city").val(),$("#zone_id").val(),$("#country_id").val(), function(){
+                    reloadCheckout();
+                });
+            });
+        {% endif %}
+
+        {% if neoseo_checkout_shipping_city_select == "cities" %}
+            $('#quickcheckoutconfirm').on('keydown', '#cityselect', debounce(500, function(e) {
+                changeCity($("#cityselect").val(),$("#zone_id").val(),$("#country_id").val(), function(){
+                    reloadCheckout();
+                });
+            }));
+            $('#quickcheckoutconfirm').on('change', '#cityselect', function(e) {
+                changeCity($("#cityselect").val(),$("#zone_id").val(),$("#country_id").val(), function(){
+                    reloadCheckout();
+                });
+            });
+            $("select#zone_id").change( function(){
+                changeCity($("#cityselect").val(),$("#zone_id").val(),$("#country_id").val(), function(){
+                    reloadCheckout();
+                });
+            });
+        {% endif %}
+
+        $('#button-payment-method').click('click', function() {
+            var data = { };
+            $('#shipping select, #shipping input[type="hidden"], #shipping input[type="text"], #shipping input[type="radio"]:checked, #shipping input[type="checkbox"]:checked, #shipping textarea').each( function() {
+                data[$(this).attr('name')] = $(this).val();
+            });
+            $.ajax({
+                url: 'index.php?route=checkout/neoseo_checkout/save',
+                type:'post',
+                data: { "data": data },
+                success: function() {
+                    validateOrder();
+                }
+            });
+        });
+
+        reloadCheckout();
+    });
+
+    {% if hide_city_block is defined and hide_city_block %}
+        $(document).delegate('input[name=\'shipping_method\']', 'change', function() {
+            var sel_sh = $(this).val();
+            console.log(sel_sh);
+            var sh_methods = [ {{ shipping_require_city|join(',') }} ];
+            if($.inArray(sel_sh,sh_methods) !== -1 ){
+                $('.shipping_hider').show();
+            } else {
+                $('.shipping_hider').hide();
+            }
+        });
+    {% endif %}
+
+</script>
+{{ footer }}

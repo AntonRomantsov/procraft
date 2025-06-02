@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<!--[if IE 8 ]><html dir="{{ direction }}" lang="{{ lang }}" class="ie8"><![endif]-->
+<!--[if IE 9 ]><html dir="{{ direction }}" lang="{{ lang }}" class="ie9"><![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!-->
+<html dir="{{ direction }}" lang="{{ lang }}">
+<!--<![endif]-->
+<head>
+	<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-M7JJKH9');</script>
+<!-- End Google Tag Manager -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-663321007"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-159129339-1');
+  </script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>{{ title }}</title>
+<base href="{{ base }}" />
+{% if description %}
+<meta name="description" content="{{ description }}" />
+{% endif %}
+{% if keywords %}
+<meta name="keywords" content="{{ keywords }}" />
+{% endif %}
+<link rel="alternate" href="{{ uri }}" hreflang="{{ hreflang }}">
+<link rel="icon" type="image/x-icon" href="{{ favicon }}">
+<script src="/catalog/view/javascript/jquery/jquery-2.1.1.min.js" type="text/javascript"></script>
+<link href="/catalog/view/javascript/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen" />
+<script src="/catalog/view/javascript/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+<link href="/catalog/view/javascript/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+<link href="//fonts.googleapis.com/css?family=Open+Sans:400,400i,300,700" rel="stylesheet" type="text/css" />
+<link href="/catalog/view/theme/default/fonts/Myriad Pro/stylesheet.css" rel="stylesheet" type="text/css" />
+<link href="/catalog/view/javascript/jquery/fancybox/jquery.fancybox.min.css" rel="stylesheet">
+<link href="https://procraft.ua/catalog/view/javascript/cart_popup/magnific-popup.css" rel="stylesheet">
+<link href="/catalog/view/theme/default/stylesheet/cart_popup/stylesheet.css" rel="stylesheet">
+<link href="/catalog/view/theme/default/stylesheet/stylesheet.css" rel="stylesheet">
+{% for style in styles %}
+<link href="/{{ style.href }}" type="text/css" rel="{{ style.rel }}" media="{{ style.media }}" />
+{% endfor %}
+<link href="/catalog/view/theme/default/stylesheet/main.css" rel="stylesheet">
+<link href="/catalog/view/theme/default/stylesheet/media.css" rel="stylesheet">
+{% for script in scripts %}
+<script src="{{ script }}" type="text/javascript"></script>
+{% endfor %}
+<script src="/catalog/view/javascript/common.js" type="text/javascript"></script>
+{% for link in links %}
+<link href="{{ link.href }}" rel="{{ link.rel }}" />
+{% endfor %}
+<!-- XD stickers start -->
+					{% if xdstickers is not empty %}
+					<style type='text/css'>
+					{{xdstickers_inline_styles}}
+					{% for xdsticker in xdstickers %}
+						{% if xdsticker.status == '1' %}
+							.{{xdsticker.id}} {
+								background-color:{{ xdsticker.bg }};
+								color:{{ xdsticker.color }};
+							}
+						{% endif %}
+					{% endfor %}
+					</style>
+					{% endif %}
+					<!-- XD stickers end -->
+{% for analytic in analytics %}
+{{ analytic }}
+{% endfor %}
+</head>
+<body>
+	<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M7JJKH9"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+<header class="header">
+	<div class="header-top">
+		<div class="container">
+			<div class="header-top__flex">
+				<button type="button" class="btn btn-primary open_mob_menu visible-sm visible-xs" data-toggle="modal" data-target="#modal-mob-menu">
+					<i class="fa fa-bars"></i>
+				</button>
+				<div class="header-top__logo logo">
+					{% if logo %}<a href="{{ home }}"><img src="{{ logo }}" title="{{ name }}" alt="{{ name }}" class="img-responsive" /></a>{% else %}
+          <a href="{{ home }}">{{ name }}</a>
+          {% endif %}
+				</div>
+				<nav class="header-top__nav nav-top">
+					<ul class="nav-top__list list-unstyled">
+						<li class="nav-top__item">
+							<a href="{{ link_special }}" class="nav-top__link">{{ text_special }}</a>
+						</li>
+						<li class="nav-top__item">
+							<a href="{{ link_news }}" class="nav-top__link">{{ text_news }}</a>
+						</li>
+						<li class="nav-top__item">
+							<a href="{{ link_bestseller }}" class="nav-top__link">{{ text_bestseller }}</a>
+						</li>
+						<li class="nav-top__item dropdown">
+							<a href="#" class="nav-top__link" data-toggle="dropdown">{{ text_buyer }} <i class="fa fa-angle-down"></i></a>
+							<ul class="nav-top__dropdown dropdown-menu list-unstyled">
+								<!-- <li><a href="{{ link_register }}">{{ text_register_instr }}</a></li> -->
+								<li><a href="{{ link_store }}">{{ text_store }}</a></li>
+								<li><a href="{{ link_services }}">{{ text_services }}</a></li>
+								<li><a href="{{ link_delivery }}">{{ text_delivery }}</a></li>
+								<li><a href="{{ link_black_list }}">{{ text_black_list }}</a></li>
+								<!-- <li><a href="{{ link_partner }}">{{ text_partner }}</a></li>-->
+							</ul>
+						</li>
+						<li class="nav-top__item">
+							<a href="{{ link_about }}" class="nav-top__link">О Procraft</a>
+						</li>
+						<li class="nav-top__item">
+							<a href="{{ link_blog }}" class="nav-top__link">Блог</a>
+						</li>
+					</ul>
+				</nav>
+				<div class="header-top__phone"><a class="binct-phone-number-1" href="tel:{{ telephone }}">{{ telephone }}</a>
+				<i class="fa fa-angle-down" style="color: white;" id="modal-header-open"></i>
+        <div id="contact-info-header" class="tb_wt tb_wt_block_group hover-block-show tbMobileShow display-block tb_equal_columns hoveredshow" style="display:none;"><div class="row tb_gut_xs_0 tb_gut_sm_0 tb_gut_md_0 tb_gut_lg_0">
+<div class="col col-xs-12 col-sm-2 col-md-12 col-lg-12 col-align-center col-valign-top">
+<div id="Html_MBFt06W6" class="tb_wt tb_wt_html tbMobileShow hover-block-show display-block hoveredshow"><div class="panel-body tb_text_wrap">
+<div id="number-phone">
+<ul class="more-info-text"><li class="item-phone"><a class="binct-phone-number-1" href="javascript:void(0);" data-binct-original="2"><span>0</span><span style="opacity: 0.6; margin-left: 3px;">8</span><span style="opacity: 0.5;">0</span><span style="opacity: 0.4;">0</span><span style="margin-left: 5px;"><u>{{ text_show }} </u></span></a></li>
+<li class="cool">{{ text_call_receiving }}:</li>
+<li>{{ text_schedule1 }}</li>
+<li>{{ text_schedule2 }}</li>
+</ul></div> </div>
+</div> </div>
+<div class="col col-xs-12 col-sm-2 col-md-12 col-lg-12 col-align-center col-valign-top">
+<div id="OpenCart_VQeh6bJ0" class="tb_wt tb_wt_open_cart tbMobileShow header-form hover-block-show display-block tb_module_jform hoveredshow"><div class="jform-wrap row tb_gut_xs_0">
+<div class="col  col-xs-12 tbMobileShow">
+<div class="form-title">
+<span></span>
+</div>
+<!-- <div data-success="Чекайте зв язку з менеджером." id="jfrom-1"> -->
+<form method="post" enctype="multipart/form-data" class="form-horizontal">
+<input type="hidden" name="jform_id" value="7">
+<input type="hidden" name="current_url" value="{{ uri }}">
+<div class="row tb_gut_xs_0">
+<div class="col col-xs-12 input-effect tbMobileShow">
+<div class="form-group">
+<input type="text" class="effect-17 form-control" name="field855" id="field-855" placeholder="Ваш телефон*" required>
+<label class="control-label" for="field-855"> </label>
+</div>
+</div>
+</div>
+<div class="row tb_gut_xs_0">
+<div class="col col-xs-12 tbMobileShow">
+<div class="button-wrap">
+<a class="btn btn-primary" id="jfrom-submit-1" onclick="sendCallback();">{{ text_callback }}</a>
+</div>
+</div>
+</div>
+</form>
+</div>
+</div>
+</div>
+<script type="text/javascript">function formsubmit(id){$.ajax({url:'index.php?route=module/jform/formsubmit',type:'post',data:new FormData($('#jfrom-'+id+' form')[0]),dataType:'json',cache:false,contentType:false,processData:false,complete:function(){$('#jfrom-submit-'+id).button('reset');},success:function(json){$('#jfrom-'+id).find('.alert, .text-danger').remove();$('#jfrom-'+id).find("input[type=text], textarea").val("");$('#jfrom-'+id).find("input[type=checkbox]").attr("checked",false);go($('#jfrom-'+id).attr('data-success'),50);if($('#jfrom-'+id).parents('.popap-form').length||$('#jfrom-'+id).parents('.mfp-content').length){$('.close, .mfp-close').trigger('click');}},error:function(xhr,ajaxOptions,thrownError){alert(thrownError+"\r\n"+xhr.statusText+"\r\n"+xhr.responseText);}});}function validate(id){$.ajax({url:'index.php?route=module/jform/validate',type:'post',data:new FormData($('#jfrom-'+id+' form')[0]),dataType:'json',cache:false,contentType:false,processData:false,success:function(json){$('.alert, .text-danger').remove();if(json['error']||json['field_id']){$('#field-'+json['field_id']).before('<div class="text-danger">'+json['error']+'</div>');}else if(json['error_captcha']){$('#input-captcha-'+id).after('<div class="text-danger">Error: '+json['error_captcha']+'</div>');}else{formsubmit(id);}},error:function(xhr,ajaxOptions,thrownError){alert(thrownError+"\r\n"+xhr.statusText+"\r\n"+xhr.responseText);}});}</script>
+<script type="text/javascript">$('button[id^=\'button-upload\']').on('click',function(){var node=this;id=$('input[name=\'jform_id\']').val();$('#form-upload-1').remove();$('body').prepend('<form enctype="multipart/form-data" id="form-upload-1" style="display: none;"><input type="file" name="file" /></form>');$('#form-upload-1 input[name=\'file\']').trigger('click');if(typeof timer!='undefined'){clearInterval(timer);}timer=setInterval(function(){if($('#form-upload-1 input[name=\'file\']').val()!=''){clearInterval(timer);$.ajax({url:'index.php?route=module/jform/upload&jform_id='+id,type:'post',dataType:'json',data:new FormData($('#form-upload-1')[0]),cache:false,contentType:false,processData:false,beforeSend:function(){$(node).button('loading');},complete:function(){$(node).button('reset');},success:function(json){$('.text-danger').remove();if(json['error']){$(node).parent().find('input').after('<div class="text-danger">'+json['error']+'</div>');}if(json['success']){alert(json['success']);$(node).parent().find('input').attr('value',json['code']);}},error:function(xhr,ajaxOptions,thrownError){alert(thrownError+"\r\n"+xhr.statusText+"\r\n"+xhr.responseText);}});}},500);});</script></div> </div>
+
+			</div></div>
+			<div>
+				<div class="header-top__lang">{{ language }}</div>
+			</div>
+		</div>
+	</div>
+	<div class="header-main">
+		<div class="container">
+			<div class="header-main__flex">
+				<div class="header-main__menu">
+					{{ menu }}	
+				</div>
+				<div class="header-main__search">{{ search }}</div>
+				<div class="header-main__actions header-actions">
+					<div class="header-actions__item header-actions__cart">
+						{{ cart }}
+					</div>
+					<div class="header-actions__item header-actions__wishlist header-wishlist">
+						<a href="{{ wishlist }}" id="wishlist-total" class="header-wishlist__link header-actions__link">
+							<svg class="svg-icon"><use xlink:href="/image/sprite.svg#heart"></use></svg>
+							<span>{{ text_wishlist }}</span>
+						</a>
+					</div>
+					<div class="header-actions__item header-actions__user header-user">
+						{% if logged %}
+							<a href="{{ account }}"  class="header-user__link"><svg class="svg-icon"><use xlink:href="/image/sprite.svg#user"></use></svg> {{ login_name }} <span>({{ customer_percent }}%)</span></a>
+						{% else %}
+							<a data-fancybox data-touch="false" href="#user-login" class="header-user__link"><svg class="svg-icon"><use xlink:href="/image/sprite.svg#user"></use></svg></a>
+						{% endif %}
+						<div class="fancybox-hidden" style="display: none;">
+							<div id="user-login" class="popup">
+								<div class="popup-box">
+									<div class="popup-title text-center h3">{{ text_login }}</div>
+									<div class="popup-content">
+										<form action="index.php?route=account/login" method="post" enctype="multipart/form-data">
+											<div class="form-group">
+												<label for="input-email" class="control-label">E-Mail</label>
+												<input type="text" name="email" value="" placeholder="E-Mail" id="input-email" class="form-control">
+											</div>
+											<div class="form-group">
+												<label for="input-password" class="control-label">Пароль</label>
+												<input type="password" name="password" value="" placeholder="Пароль" id="input-password" class="form-control">
+											</div>
+											<a style="display:block;margin-bottom:30px;" href="{{ forgotten_link }}">{{ text_forgotten }}</a>
+											<div class="form-group">
+												<input type="submit" value="{{ text_sing_in }}" class="btn btn-primary">
+											</div>
+											<div class="google-login"></div>
+											<div class="facebook-login"></div>
+										</form>
+										<p class="register-text-tag text-center">Нет учетной записи? <a href="{{ register }}">{{ text_register }}</a></p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	{% if holiday_popup %}
+<!-- 	<div class="holiday_popup_overlay">
+    <div class="holiday-popup-window">
+    	<button type="button">X</button>
+    	<p>Шановні користувачі, дякуємо за цікавість до нашої продукції, ми Вітаємо Вас з новим роком, та бажаємо всього найкращого!! Наша команда пішла відпочивати і повернемося до вас 02.01.2025 з 09.00. Ви можете зробити замовлення і ми обов'язково вам перетелефонуємо!</p>
+    </div>
+    <script>
+    	$('.holiday-popup-window button').click(function(){
+    		$('.holiday_popup_overlay').remove();
+    	});
+    	$('.holiday_popup_overlay').click(function(){
+    		$('.holiday_popup_overlay').remove();
+    	});
+    </script>
+  </div>  -->
+  {% endif %}
+</header>
+<!-- </div></div> -->
+<script type="text/javascript">
+	$('#modal-header-open').click(function(){
+    $('#contact-info-header').toggle();
+	});
+  
+  // window.addEventListener('scroll', function() {
+  //   if($('.header-top').css('overflow') == 'hidden'){
+  // 	  $('#contact-info-header').css('display', 'none');
+  // 	  $('.header-top').css('max-height', 0);
+  //   }
+  // });
+
+	function sendCallback(){
+		var fields = [];
+    fields[20] = $('#field-855').val();
+		$.ajax({
+      url: 'index.php?route=page/form/add&page_form_id=7',
+      type: 'post',
+      data: {
+        field: fields
+      },
+      dataType: 'json',
+      
+      success: function(json) {
+    	  if(json['success']){
+    	  	$('#buildersuccess-modal{{ module_row }}').remove();
+
+          $('body').append('<div id="buildersuccess-modal{{ module_row }}" class="modal fade" role="dialog"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal">&times;</button><h4 class="modal-title">'+ '{{ text_message_sent }}' +'</h4></div><div class="modal-body">'+ '{{ text_wait }}' +'</div></div></div></div>');
+
+          $('#buildersuccess-modal{{ module_row }}').modal('show');
+    	  }
+    	  if(json['error']){
+    	  	$('input[name=\'field855\']').after('<div class="text-danger">' + json['error']['field'][20] + '</div>');
+    	  }
+      }
+	  });
+  }
+</script>
+{{ mob_menu }}
+

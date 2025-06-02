@@ -1,0 +1,759 @@
+{{ header }}{{ column_left }}
+<div id="content">
+
+    <div class="page-header">
+        <div class="container-fluid">
+            <div class="pull-right">
+                {% if ( license_error is not defined ) %}
+                    <button type="submit" name="action" value="save" form="form" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i> {{ button_save }}</button>
+                    <button type="submit" name="action" value="save_and_close" form="form" data-toggle="tooltip" title="{{ button_save_and_close }}" class="btn btn-default"><i class="fa fa-save"></i> {{ button_save_and_close }}</button>
+                {% else %}
+                    <a href="{{ recheck }}" data-toggle="tooltip" title="{{ button_recheck }}" class="btn btn-primary" /><i class="fa fa-check"></i> {{ button_recheck }}</a>
+                {% endif %}
+                <a href="{{ close }}" data-toggle="tooltip" title="{{ button_close }}" class="btn btn-default"><i class="fa fa-close"></i> {{ button_close }}</a>
+            </div>
+            <img width="36" height="36" style="float:left;margin-right: 10px;" src="view/image/neoseo.png" alt="">
+            <h1>{{ heading_title_raw ~ " " ~ text_module_version }}</h1>
+            <ul class="breadcrumb">
+                {% for breadcrumb in breadcrumbs %}
+                    <li><a href="{{ breadcrumb['href'] }}">{{ breadcrumb['text'] }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        {% if (error_warning) %}
+            <div class="alert alert-danger">
+                <i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+            </div>
+        {% endif %}
+        {% if (success is defined and success) %}
+            <div class="alert alert-success">
+                <i class="fa fa-check-circle"></i>
+                {{ success }}
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+            </div>
+        {% endif %}
+
+        <div class="panel panel-default">
+            <div class="panel-body">
+
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#tab-general" data-toggle="tab">{{ tab_general }}</a></li>
+                    {% if ( license_error is not defined ) %}<li><a href="#tab-customer" data-toggle="tab">{{ tab_customer }}</a></li>{% endif %}
+                    {% if ( license_error is not defined ) %}<li><a href="#tab-payment" data-toggle="tab">{{ tab_payment }}</a></li>{% endif %}
+                    {% if ( license_error is not defined ) %}<li><a href="#tab-shipping" data-toggle="tab">{{ tab_shipping }}</a></li>{% endif %}
+                    {% if ( license_error is not defined ) %}<li><a href="#tab-shipping_type" data-toggle="tab">{{ tab_shipping_type }}</a></li>{% endif %}
+                    {% if ( license_error is not defined ) %}<li><a href="#tab-links" data-toggle="tab">{{ tab_links }}</a></li>{% endif %}
+                    {% if ( license_error is not defined ) %}<li><a href="#tab-logs" data-toggle="tab">{{ tab_logs }}</a></li>{% endif %}
+                </ul>
+
+                <form action="{{ save }}" method="post" enctype="multipart/form-data" id="form">
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tab-general">
+                            {% if ( license_error is not defined ) %}
+                            {{ widgets.dropdown('status',{0: text_disabled, 1: text_enabled}) }}
+                            {{ widgets.dropdown('agreement_id',information) }}
+                            {{ widgets.dropdown('agreement_default',{0: text_disabled, 1: text_enabled}) }}
+                            {{ widgets.dropdown('agreement_text',{0: text_disabled, 1: text_enabled}) }}
+                            {{ widgets.dropdown('stock_control',{0: text_disabled, 1: text_enabled}) }}
+                            {{ widgets.input('min_amount') }}
+                            {{ widgets.input('free_delivery_min_amount') }}
+                            {{ widgets.dropdown('compact',{0: text_disabled, 1: text_enabled}) }}
+                            {{ widgets.dropdown('dropped_cart_template', dropped_cart_template) }}
+                            {{ widgets.input('dropped_cart_email_subject') }}
+                            {{ widgets.dropdown('onestep', {0: text_disabled, 1: text_enabled}) }}
+                            {{ widgets.dropdown('cart_redirect',{0: text_disabled, 1: text_enabled}) }}
+                            {{ widgets.dropdown('hide_menu',{0: text_disabled, 1: text_enabled}) }}
+                            {{ widgets.dropdown('hide_footer',{0: text_disabled, 1: text_enabled}) }}
+                            {{ widgets.dropdown('use_international_phone_mask',{0: text_disabled, 1: text_enabled}) }}
+                            {% else %}
+                                {{ license_error }}
+                            {% endif %}
+                        </div>
+
+                        {% if ( license_error is not defined ) %}
+                        <div class="tab-pane" id="tab-customer">
+                            <div style="margin:10px 0">
+                                {{ text_types_of_customers }}
+                                <table>
+                                    {% set i = 0 %} {% for value,name in customer_groups %} {% set i = i + 1 %}
+                                        <tr>
+                                            <td>
+                                                <input id="type-{{ value }}" type="radio" {% if ( i == 1) %} checked="checked" {% endif %} name="customer_group" value="{{ value }}">
+                                                <label for="type-{{ value }}">{{ name }}</label>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </table>
+                            </div>
+
+                            <div class="buttons_head">
+                                <span>{{ text_block_customers }} </span>
+                                <a class="add-field btn btn-default btn-sm"><i class="fa fa-plus"></i></a>
+                            </div>
+
+                            {% set j = 0 %} {% for type,name in customer_groups %} {% set j = j + 1 %}
+                                <ul class="ui-sortable customer-type type-{{ type }}" data-count="{{ neoseo_checkout_customer_fields[type] is defined ? neoseo_checkout_customer_fields[type]|length : 0 }}" style="{% if ( j > 1 ) %}display:none{% endif %}">
+                                    {% if neoseo_checkout_customer_fields[type] is defined  %}
+                                        {% set i = 0 %}
+                                        {% for field in neoseo_checkout_customer_fields[type] %}
+                                            {% set i = i + 1 %}
+                                            <li id="customer_field_{{ type }}_{{ i }}"></li>
+                                        {% endfor %}
+                                    {% endif %}
+                                </ul>
+                            {% endfor %}
+
+
+                            <div class="buttons_head">
+                                <a class="add-field btn btn-default btn-sm"><i class="fa fa-plus"></i></a>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane" id="tab-payment">
+                            {{ widgets.dropdown('payment_logo', {0: text_disabled, 1: text_enabled}) }}
+                            {{ widgets.dropdown('payment_control', {0: text_select_type, 1: text_radio_type}) }}
+                            {{ widgets.dropdown('payment_reloads_cart', {0: text_disabled, 1: text_enabled}) }}
+
+                            <div class="form-group" style="display: inline-block; width: 100%;">
+                                <div class="col-sm-5">
+                                    <label class="control-label">{{ text_block_payment }}</label>
+                                </div>
+                                <div class="col-sm-7">
+                                <select id="payment_methods" class="form-control">
+                                    {% for method in payment_methods %}
+                                        <option value="{{ method.code }}">{{ method.name }}</option>
+                                    {% endfor %}
+                                </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="display: inline-block; width: 100%; text-align: right;">
+                                <div class="col-sm-12">
+                                <a class="add-field btn btn-default btn-sm"><i class="fa fa-plus"></i></a>
+                                </div>
+                            </div>
+
+                            {% for method in payment_methods %}
+                                <ul id="payment_fields_{{ method.code|replace({'.': "_"}) }}" class="ui-sortable payment_fields fields" data-count="{{ neoseo_checkout_payment_fields[method['code']] is defined ? neoseo_checkout_payment_fields[method['code']]|length : 0 }}" style="display:none">
+                                    {% set i = 0 %}
+                                    {% if neoseo_checkout_payment_fields[method['code']] is defined %}
+                                        {% for field in neoseo_checkout_payment_fields[method['code']] %}
+                                            {% set i = i + 1 %}
+                                            <li id="payment_field_{{ method.code|replace({'.': "_"}) }}_{{ i }}"></li>
+                                        {% endfor %}
+                                    {% endif %}
+                                </ul>
+                            {% endfor %}
+
+                            <div class="form-group" style="display: inline-block; width: 100%; text-align: right;">
+                                <div class="col-sm-12">
+                                <a class="add-field btn btn-default btn-sm"><i class="fa fa-plus"></i></a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane" id="tab-shipping">
+
+                            {{ widgets.dropdown('shipping_control', {0: text_select_type, 1: text_radio_type}) }}
+                            {{ widgets.dropdown('aways_show_delivery_block', {0: text_disabled, 1: text_enabled}) }}
+                            {{ widgets.checklist('shipping_require_city', shipping_methods_list) }}
+                            {{ widgets.dropdown('shipping_city_select', {"default": text_city_select_default, "cities": text_city_select_cities, "disabled":text_disabled}) }}
+                            {{ widgets.dropdown('shipping_country_select', {0: text_disabled, 1: text_enabled}) }}
+                            {{ widgets.dropdown('shipping_country_default', countries) }}
+                            {{ widgets.dropdown('shipping_zone_default', {0: text_select}) }}
+                            {{ widgets.input('shipping_city_default') }}
+                            {% if(novaposhtan_need_city is defined and novaposhtan_need_city) %}
+                                {{ widgets.input('novaposhta_city_name') }}
+                                <input type="hidden" name="{{ module_sysname }}_shipping_novaposhta_city_default" id="{{ module_sysname }}_shipping_novaposhta_city_default" value="{{ module_sysname}}_shipping_novaposhta_city_default }}">
+                            {% endif %}
+                            {{ widgets.dropdown('shipping_reloads_cart', {0: text_disabled, 1: text_enabled}) }}
+                            {{ widgets.dropdown('shipping_title', {0: text_disabled, 1: text_enabled}) }}
+                            {{ widgets.input('api_key') }}
+                            {{ widgets.checklist('shipping_novaposhta', shipping_methods_list) }}
+                            {% if(warehouse_types) %}
+                            {{ widgets.checklist('warehouse_types', warehouse_types) }}
+                            {% else %}
+                                <div class="form-group" style="display: inline-block; width: 100%;">
+                                    <div class="col-sm-5">
+                                        <label class="control-label">{{ entry_warehouse_types }}</label>
+                                    </div>
+                                    <div class="col-sm-7">
+                                        <label class="control-label">{{ error_warehouse }}</label>
+                                    </div>
+                                </div>
+                            {% endif %}
+
+                            <div class="form-group" style="display: inline-block; width: 100%;">
+                                <div class="col-sm-5">
+                                    <label class="control-label">{{ text_block_shipping }}</label>
+                                </div>
+                                <div class="col-sm-7">
+                                <select id="shipping_methods" class="form-control">
+                                    {% for method in shipping_methods %}
+                                        <option value="{{ method['code'] }}">{{ method['name'] }}</option>
+                                    {% endfor %}
+                                </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="display: inline-block; width: 100%; text-align: right;">
+                                <div class="col-sm-12">
+                                <a class="add-field btn btn-default btn-sm"><i class="fa fa-plus"></i></a>
+                                </div>
+                            </div>
+
+                            {% for method in shipping_methods %}
+                                <ul id="shipping_fields_{{  method.code|replace({'.': "_"}) }}" class="ui-sortable shipping_fields fields" data-count="{{ neoseo_checkout_shipping_fields[method['code']] is defined ? neoseo_checkout_shipping_fields[method['code']]|length : 0 }}" style="display:none">
+                                {% set i = 0 %}
+                                    {% if ( neoseo_checkout_shipping_fields[method['code']] is defined ) %}
+                                        {% for field in neoseo_checkout_shipping_fields[method['code']] %}
+                                            {% set i = i + 1 %}
+                                            <li id="shipping_field_{{  method.code|replace({'.': "_"}) }}_{{ i }}"></li>
+                                        {% endfor %}
+                                    {% endif %}
+                                </ul>
+                            {% endfor %}
+
+                            <div class="form-group" style="display: inline-block; width: 100%; text-align: right;">
+                                <div class="col-sm-12">
+                                <a class="add-field btn btn-default btn-sm"><i class="fa fa-plus"></i></a>
+                                </div>
+                            </div>
+
+                        </div>
+
+                            <div class="tab-pane" id="tab-shipping_type">
+                                {{ widgets.dropdown('use_shipping_type', {0: text_disabled, 1: text_enabled}) }}
+                                    <table class="list">
+                                        <thead>
+                                            <tr>
+                                                <td>{{ text_shipping }}</td>
+                                                <td>{{ text_type_shipping }}</td>
+                                            </tr>
+                                        </thead>
+                                    {% for method in shipping_methods %}
+                                        <tr>
+                                            <td>{{ method['name'] }}</td>
+                                            <td>
+                                                {% set name = 'neoseo_checkout_shipping_type[' ~ method['code'] ~ ']' %}
+                                                {% set value = "address" %}
+                                                {% if ( neoseo_checkout_shipping_type[method['code']] is defined ) %}
+                                                    {% set value = neoseo_checkout_shipping_type[method['code']] %}
+                                                {% endif %}
+                                                <label for="{{ name }}_pickpoint">{{ text_pick_your_own }}</label> <input id="{{ name }}_pickpoint" type="radio" name="{{ name }}" {% if ( value == "pickpoint" ) %} {{ 'checked="checked"' }}{% endif %} value="pickpoint" />
+                                                <label for="{{ name }}_address">{{ text_order_delivery }}</label> <input id="{{ name }}_address" type="radio" name="{{ name }}" {% if ( value == "address" ) %} {{ 'checked="checked"' }}{% endif %} value="address" />
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </table>
+                            </div>
+
+                            <div class="tab-pane" id="tab-links">
+                                {{ widgets.dropdown('dependency_type', {"none" : text_dependency_disabled, "payment_for_shipping" : text_dependency_payment_for_shipping, "shipping_for_payment" : text_dependency_shipping_for_payment}) }}
+                                    <div id="payment_for_shipping" style="display:none">
+                                        <table class="list">
+                                        <thead>
+                                            <tr>
+                                                <td>
+                                                    <label for="select_shipping_method">{{ text_shipping }} %}</label>
+                                                    <select id="select_shipping_method">
+                                                        <option value="all">---</option>
+                                                        {% for method in shipping_methods %}
+                                                            <option value="payment_for_shipping_{{ method['code'] }}">{{ method['name'] }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </td>
+                                                <td>{{ text_payment }} ( <input id="select_all_payment" class="select_all" type="checkbox" data-target="payment_for_shipping"> <label for="select_all_payment"><b>{{ text_select_all }} </b></label> ) </td>
+                                            </tr>
+                                        </thead>
+                                        {% for method in shipping_methods %}
+                                            <tr id="payment_for_shipping_{{ method.code|replace({'.': "_"}) }}">
+                                                <td>{{ method['name'] }}</td>
+                                                <td>
+                                                    <input id="select_all_payment_{{ method.code|replace({'.': "_"}) }}" class="select_all" type="checkbox" data-target="payment_for_shipping_{{ method.code|replace({'.': "_"}) }}"> <label for="select_all_payment_{{ method.code|replace({'.': "_"}) }}" ><b>{{ text_select_all }}</b></label><br>
+                                                    {% for pmethod in payment_methods %}
+                                                        <input type="checkbox" id="payment_{{ pmethod['code'] }}_for_shipping_{{ method['code'] }}" name="neoseo_checkout_payment_for_shipping[{{ method['code'] }}][{{ pmethod['code'] }}]" {% if ( neoseo_checkout_payment_for_shipping[method['code']][pmethod['code']] ) %} {{ 'checked="checked"' }}{% endif %} />
+                                                        <label for="payment_{{ pmethod['code'] }}_for_shipping_{{ method['code'] }}">{{ pmethod['name']|striptags }}</label>
+                                                        <br>
+                                                    {% endfor %}
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        </table>
+                                    </div>
+
+                                <div id="shipping_for_payment" style="display:none">
+                                    <table class="list">
+                                        <thead>
+                                        <tr>
+                                            <td>
+                                                <label for="select_payment_method">{{ text_payment }}</label>
+                                                <select id="select_payment_method">
+                                                    <option value="all">---</option>
+                                                    {% for method in payment_methods %}
+                                                        <option value="shipping_for_payment_{{ method['code'] }}">{{ method['name'] }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </td>
+                                            <td>{{ text_shipping }} ( <input id="select_all_shipping" class="select_all" type="checkbox" data-target="shipping_for_payment"> <label for="select_all_shipping"><b>Выделить все</b></label> ) </td>
+                                        </tr>
+                                        </thead>
+                                        {% for method in payment_methods %}
+                                            <tr id="shipping_for_payment_{{ method.code|replace({'.': "_"}) }}">
+                                                <td>{{ method['name'] }}</td>
+                                                <td>
+                                                    <input id="select_all_shipping_{{ method.code|replace({'.': "_"}) }}" class="select_all" type="checkbox" data-target="shipping_for_payment_{{ method.code|replace({'.': "_"}) }}"> <label for="select_all_shipping_{{ method.code|replace({'.': "_"}) }}" ><b>{{ text_select_all }}</b></label><br>
+                                                    {% for smethod in shipping_methods %}
+                                                        <input type="checkbox" id="shipping_{{ smethod.code|replace({'.': "_"}) }}_for_payment_{{ method['code'] }}" name="neoseo_checkout_shipping_for_payment[{{ method['code'] }}][{{ smethod['code'] }}]" {% if ( neoseo_checkout_shipping_for_payment[method['code']][smethod['code']] ) %} {{ 'checked="checked"' }}{% endif %} />
+                                                        <label for="shipping_{{ smethod['code'] }}_for_payment_{{ method.code|replace({'.': "_"}) }}">{{ smethod['name']|striptags }}</label>
+                                                        <br>
+                                                    {% endfor %}
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="tab-logs">
+                                {{ widgets.debug_and_logs('debug',{0: text_disabled, 1: text_enabled}, clear, button_clear_log ) }}
+                                <textarea style="width: 100%; height: 300px; padding: 5px; border: 1px solid #CCCCCC; background: #FFFFFF; overflow: scroll;">{{ logs }}</textarea>
+                            </div>
+                        {% endif %}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript"><!--
+    if (window.location.hash.indexOf('#tab') == 0 && $("[href=" + window.location.hash + "]").length) {
+        $(".panel-body > .nav-tabs li").removeClass("active");
+        $("[href=" + window.location.hash + "]").parents('li').addClass("active");
+        $(".panel-body:first .tab-content:first .tab-pane:first").removeClass("active");
+        $(window.location.hash).addClass("active");
+    }
+    $(".nav-tabs li a").click(function () {
+        var url = $(this).prop('href');
+        window.location.hash = url.substring(url.indexOf('#'));
+    });
+
+    // Специальный фикс системной функции, поскольку даниель понятия не имеет о том что в url может быть еще и hash
+    // и по итогу этот hash становится частью token
+    function getURLVar(key) {
+        var value = [];
+
+        var url = String(document.location);
+        if( url.indexOf('#') != -1 ) {
+            url = url.substring(0, url.indexOf('#'));
+        }
+        var query = url.split('?');
+
+        if (query[1]) {
+            var part = query[1].split('&');
+
+            for (i = 0; i < part.length; i++) {
+                var data = part[i].split('=');
+
+                if (data[0] && data[1]) {
+                    value[data[0]] = data[1];
+                }
+            }
+
+            if (value[key]) {
+                return value[key];
+            } else {
+                return '';
+            }
+        }
+    }
+    //--></script>
+<script src="//www.jsviews.com/download/jsrender.js"></script>
+<script id="fieldTmpl" type="text/x-jsrender">
+    <div class="handler"><i class="fa fa-bars"></i></div>
+    <div class="title">
+        [%if display && required%]
+        <span class="required">*</span>
+        [%/if%]
+    [%if display%]
+        <span>
+        [%else%]
+        <span class="disabled">
+        [%/if%]
+    [%>label[{{config_language_id}}]%]
+        </span>
+        <a class="edit btn btn-primary btn-sm" toggle='[%>table_prefix%]_table_[%:i%]'><i class="fa fa-pencil"></i></a>
+        <a class="delete btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></a>
+    </div>
+    <div class="fields">
+        <div id="[%>table_prefix%]_table_[%>i%]" style="display:none">
+
+            <div style="display: inline-block; width: 100%;">
+                <div class="col-sm-5">
+                    <label class="control-label" for="[%>table_prefix%]_field_[%>i%]_label">{{ text_name }}</label>
+                </div>
+                <div class="col-sm-7">
+                    {% for language in languages %}
+                    <div class="input-group">
+                        <input id="[%>table_prefix%]_field_[%>i%]_label" type="text" class="value-name form-control" name="[%>html_field%][label][{{ language['language_id'] }}]" value="[%>label[{{ language['language_id'] }}]%]">
+                        <span class="input-group-addon">
+                            <img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language['name'] }}" >
+                        </span>
+                    </div>
+                    {% endfor %}
+                </div>
+             </div>
+             <div style="display: inline-block; width: 100%;">
+                <div class="col-sm-5">
+                    <label class="control-label" for="[%>table_prefix%]_field_[%>i%]_field">{{ text_field }}</label>
+                </div>
+                <div class="col-sm-7">
+                    <select id="[%>table_prefix%]_field_[%>i%]_field" name="[%>html_field%][field]" class="select_field_name form-control">
+                    {% for field,name in field_fields %}
+                    <option value="{{ field }}">{{ name }}</option>
+                    {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div style="display: inline-block; width: 100%;">
+                <div class="col-sm-5">
+                    <label class="control-label" for="[%>table_prefix%]_field_[%>i%]_type">{{ text_type }}</label>
+                </div>
+                <div class="col-sm-7">
+                    <select id="[%>table_prefix%]_field_[%>i%]_type" name="[%>html_field%][type]" class="select_field_type form-control">
+                    {% for type,name in field_types %}
+                    <option value="{{ type }}">{{ name }}</option>
+                    {% endfor %}
+                </select>
+                </div>
+            </div>
+
+            <div style="display: inline-block; width: 100%;">
+                <div class="col-sm-5">
+                    <label class="control-label" for="[%>table_prefix%]_field_[%>i%]_name">{{ text_identifier }}</label>
+                </div>
+                <div class="col-sm-7">
+                    <input id="[%>table_prefix%]_field_[%>i%]_name" type="text" class="value-name form-control" name="[%>html_field%][name]" value="[%>name%]">
+                </select>
+                </div>
+            </div>
+
+            <div style="display: inline-block; width: 100%;">
+                <div class="col-sm-5">
+                    <label class="control-label" for="[%>table_prefix%]_field_[%>i%]_mask">{{ text_mask }}</label>
+                </div>
+                <div class="col-sm-7">
+                    <input id="[%>table_prefix%]_field_[%>i%]_mask" type="text" class="value-name form-control" name="[%>html_field%][mask]" value="[%>mask%]">
+                </select>
+                </div>
+            </div>
+
+            <div style="display: inline-block; width: 100%;">
+                <div class="col-sm-5">
+                    <label class="control-label" for="[%>table_prefix%]_field_[%>i%]_default">{{ text_initial_value }}</label>
+                </div>
+                <div class="col-sm-7">
+                    <input id="[%>table_prefix%]_field_[%>i%]_default" type="text" class="value-name form-control" name="[%>html_field%][default]" value="[%>default%]">
+                </select>
+                </div>
+            </div>
+
+            <div style="display: inline-block; width: 100%;">
+                <div class="col-sm-5">
+                    <label class="control-label" for="[%>table_prefix%]_field_[%>i%]_display">{{ text_show }}</label>
+                </div>
+                <div class="col-sm-7">
+                    <select id="[%>table_prefix%]_field_[%>i%]_display" name="[%>html_field%][display]" class="select_field_display form-control">
+                        <option value="0">{{ text_disabled }}</option>
+                        <option value="1">{{ text_enabled }}</option>
+                    </select>
+                </div>
+            </div>
+
+            <div style="display: inline-block; width: 100%;">
+                <div class="col-sm-5">
+                    <label class="control-label" for="[%>table_prefix%]_field_[%>i%]_only_register">{{ text_only_register }}</label>
+                </div>
+                <div class="col-sm-7">
+                    <select id="[%>table_prefix%]_field_[%>i%]_only_register" name="[%>html_field%][only_register]" class="select_field_display form-control">
+                        <option value="0">{{ text_disabled }}</option>
+                        <option value="1">{{ text_enabled }}</option>
+                    </select>
+                </div>
+            </div>
+
+            <div style="display: inline-block; width: 100%;">
+                <div class="col-sm-5">
+                    <label class="control-label" for="[%>table_prefix%]_field_[%>i%]_required">{{ text_required }}</label>
+                </div>
+                <div class="col-sm-7">
+                    <select id="[%>table_prefix%]_field_[%>i%]_required" name="[%>html_field%][required]" class="select_field_display form-control">
+                        <option value="0">{{ text_disabled }}</option>
+                        <option value="1">{{ text_enabled }}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+<script>
+
+    $('[name=customer_group]').change(function(e){
+        $('ul.customer-type').hide();
+        $('ul.' + $(this).attr('id')).show();
+    });
+
+    $('a.type-add').click(function(e) {
+        e.preventDefault();
+        var name = prompt('Введите название типа покупателя');
+        if( name ) {
+            $.ajax({
+                url: 'index.php?route=extension/module/neoseo_checkout/typeadd&user_token={{ user_token }}&name=' + name,
+                dataType: 'json',
+                success: function(json) {
+                    if( json['status'] == 0 ) {
+                        location.reload();
+                    }
+                }
+            });
+        }
+    });
+
+    $('a.type-edit').click(function(e) {
+        e.preventDefault();
+        var id = $(this).attr('href').replace("#","");
+        var name = prompt('Введите название типа покупателя');
+        if( name ) {
+            $.ajax({
+                url: 'index.php?route=extension/module/neoseo_checkout/typeedit&user_token={{ user_token }}&name=' + name + '&id=' + id,
+                dataType: 'json',
+                success: function(json) {
+                    if( json['status'] == 0 ) {
+                        location.reload();
+                    }
+                }
+            });
+        }
+    });
+
+    $('a.type-del').click(function(e) {
+        e.preventDefault();
+        var id = $(this).attr('href').replace("#","");
+        if( id ) {
+            $.ajax({
+                url: 'index.php?route=extension/module/neoseo_checkout/typedel&user_token={{ token }}&id=' + id,
+                dataType: 'json',
+                success: function(json) {
+                    if( json['status'] == 0 ) {
+                        location.reload();
+                    }
+                }
+            });
+        }
+    });
+
+    {% set i = 0 %}
+
+    {% for type,fields in neoseo_checkout_customer_fields %}
+        {% set i = 0 %}
+        {% for field in fields %}
+            {% if field["field"] is defined %}
+                {% set i = i + 1 %}
+                setFieldData("#customer_field_" + {{ type }} + "_" + {{ i }},{
+                    i: {{ type }} + "_" + {{ i }},
+                    html_field: 'neoseo_checkout_customer_fields[{{ type }}][{{ i }}]',
+                    table_prefix: 'neoseo_checkout_customer_fields',
+                    label: {{ field['label']|json_encode }},
+                    field: '{{ field['field'] }}',
+                    type: '{{ field['type'] }}',
+                    name: '{{ field['name'] }}',
+                    mask: '{{ field['mask'] }}',
+                    default: '{{ field['default'] }}',
+                    display: {{ field['display'] }},
+                    only_register: {{ field['only_register'] }},
+                    required: {{ field['required'] }}
+                });
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+
+    {% for method in payment_methods %}
+        {% set i = 0 %}
+        {% if neoseo_checkout_payment_fields[method['code']] is defined %}
+            {% for field in neoseo_checkout_payment_fields[method['code']] %}
+                {% if field["field"] is defined %}
+                    {% set i = i + 1 %}
+                        setFieldData("#payment_field_{{ method.code|replace({'.': "_"}) }}_" + {{ i }}, {
+                        i: {{ i }},
+                        table_prefix: 'neoseo_checkout_payment_fields_{{ method.code|replace({'.': "_"}) }}',
+                        html_field: 'neoseo_checkout_payment_fields[{{ method["code"] }}][{{ i }}]',
+                        label: {{ field['label']|json_encode }},
+                        field: '{{ field['field'] }}',
+                        type: '{{ field['type'] }}',
+                        name: '{{ field['name'] }}',
+                        mask: '{{ field['mask'] }}',
+                        default: '{{ field['default'] }}',
+                        only_register: {{ field['only_register'] is defined ? field['only_register'] : 0 }},
+                        display: {{ field['display'] }},
+                        required: {{ field['required'] }},
+                    });
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    {% endfor %}
+
+    {% for method in shipping_methods %}
+        {% set i = 0 %}
+        {% if neoseo_checkout_shipping_fields[method['code']] is defined %}
+            {% for field in neoseo_checkout_shipping_fields[method['code']] %}
+                {% if field["field"] is defined %}
+                    {% set i = i + 1 %}
+                    setFieldData("#shipping_field_{{ method.code|replace({'.': "_"}) }}_" + {{ i }}, {
+                        i: {{ i }},
+                        table_prefix: 'neoseo_checkout_shipping_fields_{{ method.code|replace({'.': "_"}) }}',
+                        html_field: 'neoseo_checkout_shipping_fields[{{ method["code"] }}][{{ i }}]',
+                        label: {{ field['label']|json_encode }},
+                        field: '{{ field['field'] }}',
+                        type: '{{ field['type'] }}',
+                        name: '{{ field['name'] }}',
+                        mask: '{{ field['mask'] }}',
+                        default: '{{ field['default'] }}',
+                        only_register: {{ field['only_register'] is defined ? field['only_register'] : 0 }},
+                        display: {{ field['display'] }},
+                        required: {{ field['required'] }},
+                    });
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    {% endfor %}
+
+    $(document).ready(function() {
+        $("#payment_methods").trigger("change");
+        $("#shipping_methods").trigger("change");
+        $(".select_all").click(function(){
+            target = $("#" + this.id).attr("data-target");
+            if( $("#" + this.id).prop("checked") ){
+                $("#" + target + " input[type=checkbox]").prop("checked","checked");
+            } else {
+                $("#" + target + " input[type=checkbox]").prop("checked",false);
+            }
+        });
+        $("#select_shipping_method").change(function(){
+            if( this.value == "all") {
+                $("#payment_for_shipping tbody tr").show();
+            } else {
+                $("#payment_for_shipping tbody tr").hide();
+                $("#payment_for_shipping tbody tr#" + this.value.replace(/\./g,"_")).show();
+            }
+        });
+        $("select[name=neoseo_checkout_dependency_type]").change(function(){
+            $("#payment_for_shipping").hide();
+            $("#shipping_for_payment").hide();
+            if( this.value != "none") {
+                $("#" + this.value).show();
+            }
+        });
+
+        $("select[name=neoseo_checkout_dependency_type]").trigger("change");
+
+        $(".select_field_type").change(function(){
+            var baseId = this.id.substr(0,this.id.length-4);
+            if( this.value == "html") {
+                $("#" + baseId + "name").parents("tr").hide();
+                $("#" + baseId + "mask").parents("tr").hide();
+                $("#" + baseId + "required").parents("tr").hide();
+            } else {
+                $("#" + baseId + "name").parents("tr").show();
+                $("#" + baseId + "mask").parents("tr").show();
+                $("#" + baseId + "required").parents("tr").show();
+            }
+        });
+
+        $(".select_field_name").change(function(){
+            var baseId = this.id.substr(0,this.id.length-5);
+            if ( this.value == "custom") {
+                $("#" + baseId + "type").parents("tr").show();
+                $("#" + baseId + "name").parents("tr").show();
+                $("#" + baseId + "mask").parents("tr").show();
+                $("#" + baseId + "type").trigger("change");
+            } else if ( this.value == "password" || this.value == "password2" ) {
+                $("#" + baseId + "type").parents("tr").hide();
+                $("#" + baseId + "name").parents("tr").hide();
+                $("#" + baseId + "mask").parents("tr").hide();
+            } else {
+                $("#" + baseId + "type").parents("tr").hide();
+                $("#" + baseId + "name").parents("tr").hide();
+                $("#" + baseId + "mask").parents("tr").show();
+            }
+        });
+        $(".select_field_name").trigger("change");
+    });
+    $('#{{ module_sysname }}_shipping_zone_default').load('index.php?route=localisation/geo_zone/zone&user_token={{ user_token }}&country_id={{ neoseo_checkout_shipping_country_default }}&zone_id={{ neoseo_checkout_shipping_zone_default }}');
+
+    $('#{{ module_sysname }}_shipping_country_default').on('change', function () {
+        $('#{{ module_sysname }}_shipping_zone_default').load('index.php?route=localisation/geo_zone/zone&user_token={{ user_token }}&country_id=' + this.value + '&zone_id=0');
+    });
+
+    $('#{{ module_sysname }}_shipping_city_default').autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "index.php?route=localisation/neoseo_city/autocomplete_city",
+                dataType: "json",
+                data: {
+                    country_id: $('#{{ module_sysname }}_shipping_country_default').val(),
+                    zone_id: $('#{{ module_sysname }}_shipping_zone_default option:selected').val(),
+                    name: request['term'],
+                    user_token: '{{ user_token }}',
+                },
+                success: function(json) {
+                    response($.map(json, function(item) {
+                        return {
+                            label: item['value'],
+                            value: item['value'],
+                            country_id: item['country_id'],
+                            zone_id: item['zone_id'],
+                            city: item['city'],
+                        }
+                    }));
+                }
+            });
+        },
+        minLength: 2,
+        select: function (item) {
+            if( item ) {
+                $("#{{ module_sysname }}_shipping_city_default").val(item.city);
+            }
+        },
+    });
+
+    $('#{{ module_sysname }}_novaposhta_city_name').autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "index.php?route=extension/shipping/neoseo_novaposhta/cityautocomplete",
+                dataType: "json",
+                data: {
+                    filter_name: request['term'],
+                    user_token: '{{ user_token }}',
+                },
+                success: function(json) {
+                    response($.map(json, function(item) {
+                        return {
+                            label: item['name'],
+                            value: item['name'],
+                            city: item['id'],
+                        }
+                    }));
+                }
+            });
+        },
+        minLength: 2,
+        select: function (item,ui) {
+            console.log(ui.item.city);
+            $('#{{ module_sysname }}_shipping_novaposhta_city_default').val(ui.item.city);
+        },
+    });
+</script>
+{{ footer }}

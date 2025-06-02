@@ -1,0 +1,93 @@
+{{ header }}
+<div id="common-success" class="container">
+  <ul class="breadcrumb">
+    {% for breadcrumb in breadcrumbs %}
+    <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+    {% endfor %}
+  </ul>
+  <div class="row">{{ column_left }}
+    {% if column_left and column_right %}
+    {% set class = 'col-sm-6' %}
+    {% elseif column_left or column_right %}
+    {% set class = 'col-sm-9' %}
+    {% else %}
+    {% set class = 'col-sm-12' %}
+    {% endif %}
+    <div id="content" class="{{ class }}">{{ content_top }}
+      <h1>{{ heading_title }}</h1>
+      {{ text_message }}
+      <div class="buttons">
+        <div class="pull-right"><a href="{{ continue }}" class="btn btn-primary">{{ button_continue }}</a></div>
+      </div>
+      {{ content_bottom }}</div>
+    {{ column_right }}</div>
+</div>
+<script type="text/javascript">
+  $(document).ready(function() {
+  window.dataLayer = window.dataLayer || [];
+  dataLayer.push({
+        'event': 'purchase',
+        'ecommerce': {
+        'transaction_id': '{{ order_tracker.order_id }}',
+        'value': '{{ order_tracker.total }}',
+        'currency': "UAH",
+         'items': [
+        // If someone purchases more than one item, 
+        // you can add those items to the items array
+          {% for product in order_tracker.products %}
+         {
+          'item_id': '{{ product.product_id }}',
+          'item_name': '{{ product.name }}',
+          'affiliation': "Google Merchandise Store",
+          // coupon: "SUMMER_FUN",
+          // discount: 2.22,
+          // index: 0,
+          'item_brand': "Procraft",
+          'item_category': '{{ product.category }}',
+          // item_category2: "Adult",
+          // item_category3: "Shirts",
+          // item_category4: "Crew",
+          // item_category5: "Short sleeve",
+          // item_list_id: "related_products",
+          // item_list_name: "Related Products",
+          //location_id: "ChIJIQBpAG2ahYAR_6128GcTUEo",
+          'price': '{{ product.price }}',
+          'quantity': '{{ product.quantity }}'
+        }
+        {% endfor %}
+        ]
+      },
+    });
+  dataLayer.push({
+   'ecommerce': {
+     'currencyCode': 'UAH',
+     'purchase': {
+       'actionField': {
+         'id': '{{ order_tracker.order_id }}',
+         'affiliation': '{{ order_tracker.store_name }}',
+         'revenue': '{{ order_tracker.total}}',
+         //'tax': '{{ order_tracker.shipping }}',
+         //'shipping': '{{ order_tracker.shipping }}'
+       },
+       'products': [
+       {% for product in order_tracker.products %}
+         {  
+           'name': '{{ product.name }}',
+             'id': '{{ product.product_id }}',
+             'price': '{{ product.price }}',
+             'brand': 'ProCraft',
+             'category': '{{ product.category }}',
+             'quantity': '{{ product.quantity }}'
+          }
+        {% endfor %}
+        ]
+     }
+   },
+   'event': 'gtm-ee-event',
+   'gtm-ee-event-category': 'Enhanced Ecommerce',
+   'gtm-ee-event-action': 'Purchase',
+   'gtm-ee-event-non-interaction': 'False',
+  });
+});
+</script>
+{{ footer }}

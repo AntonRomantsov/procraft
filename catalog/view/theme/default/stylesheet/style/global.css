@@ -1,0 +1,198 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  width: 100%;
+
+  font-family: "MyriadPro", sans-Serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #231f20;
+
+  background-color: #fcfeff;
+
+  &.overflow_hidden {
+    position: relative;
+    overflow: hidden;
+
+    &::after {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 500;
+
+      width: 100%;
+      height: 100%;
+
+      background: #171e2259;
+
+      content: "";
+    }
+  }
+
+  &.menu-open {
+    position: relative;
+    overflow: hidden;
+
+    &::after {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 1;
+
+      width: 100%;
+      height: 100%;
+
+      background: #171e2259;
+
+      content: "";
+    }
+  }
+}
+
+.main {
+  &.overflow_hidden {
+    position: relative;
+    overflow: hidden;
+
+    &::after {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 500;
+
+      width: 100%;
+      height: 100%;
+
+      background: #171e2259;
+
+      content: "";
+    }
+  }
+}
+
+.desctop-none{
+  display: none;
+}
+
+@media (max-width: 1024px) {
+  .main {
+    margin-bottom: 177px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .main {
+    margin-bottom: 129px;
+  }
+  .desctop-none{
+    display: block;
+  }
+}
+
+button,
+a,
+input {
+  outline: none;
+  text-decoration: none;
+  color: inherit;
+
+  &:hover,
+  &:active,
+  &:focus {
+    outline: none;
+  }
+}
+
+[class*="__container"] {
+  margin: 0 auto;
+  padding: 0 45px;
+  max-width: 1350px;
+}
+
+@media (max-width: 1024px) {
+  [class*="__container"] {
+    padding: 0 15px;
+    max-width: unset;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f4f6f8;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c4cbd180;
+  border-radius: 4px;
+}
+
+/* __________ typography __________ */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+  font-weight: 600;
+  color: #231f20;
+}
+
+h1,
+.h1 {
+  font-size: 33px;
+}
+
+h2,
+.h2 {
+  font-size: 28px;
+}
+
+.h2 span {
+  color: #acb3b6;
+}
+
+h3,
+.h3 {
+  font-size: 21px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 12px;
+}
+
+h6 {
+  font-size: 10.2px;
+}
+
+a {
+  color: #231f20;
+  line-height: 1.5;
+
+  transition: 0.3s;
+
+  &:hover,
+  &:focus {
+    text-decoration: none;
+    color: #ed6e00;
+  }
+}

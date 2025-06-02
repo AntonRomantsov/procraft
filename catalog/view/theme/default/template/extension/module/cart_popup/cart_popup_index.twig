@@ -1,0 +1,498 @@
+<div id="cp-modal-body">
+  <script type="text/javascript" src="catalog/view/javascript/cart_popup/cart_popup.js"></script>
+  <div class="modal-heading">
+    {{ heading_title }}
+    <span class="modal-close" onclick="$.magnificPopup.close();"></span>
+  </div>
+  <div class="modal-body" id="check-data">
+    <div id="cp-modal-data">
+      {% if products %}
+        {% if error_stock %}
+        <div class="alert alert-danger">{{ error_stock }}
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+        </div>
+        {% endif %}
+
+        <div class="product-table-cart">
+<!--           <div class="product-table-heading">
+            <div class="remove">{{ column_remove }}</div>
+            <div class="name">{{ column_name }}</div>
+            <div class="price">{{ column_price }}</div>
+            <div class="quantity">{{ column_quantity }}</div>
+            <div class="total">{{ column_total }}</div>
+          </div> -->
+          <div class="product-table-body" id="product-table-body">
+            {% for product in products %}
+              <div class="product-table-body-row">
+                <div class="remove">
+                  <input type="button" onclick="update_cart(this, 'remove');" title="{{ button_remove }}" />
+                  <input name="product_key" value="{{ product.key }}" style="display: none;" hidden />
+                  <input name="product_id_q" value="{{ product.product_id }}" style="display: none;" hidden />
+                </div>
+                <div class="name">
+                  {% if hide_main_img %}
+                  <div class="name-left">
+                    {% if product.thumb %}
+                      <a href="{{ product.href }}"><img src="{{ product.thumb }}" alt="{{ product.name }}" title="{{ product.name }}" /></a>
+                    {% endif %}
+                  </div>
+                  {% endif %}
+                  <div class="name-right{% if not hide_main_img %}{{ ' fix' }}{% endif %}">
+                    <a href="{{ product.href }}" title="{{ product.name }}" {% if not product.stock %}{{ 'class="error-stock"' }}{% endif %} >{{ product.name }}</a>
+                    {% if product.model  and  hide_product_model %}<div class="model"><span>{{ text_model }}</span>{{ product.model }}</div>{% endif %}
+                    {% if product.ean  and  hide_product_ean %}<div class="ean"><span>{{ text_ean }}</span>{{ product.ean }}</div>{% endif %}
+                    {% if product.jan  and  hide_product_jan %}<div class="jan"><span>{{ text_jan }}</span>{{ product.jan }}</div>{% endif %}
+                    {% if product.isbn  and  hide_product_isbn %}<div class="isbn"><span>{{ text_isbn }}</span>{{ product.isbn }}</div>{% endif %}
+                    {% if product.mpn  and  hide_product_mpn %}<div class="mpn"><span>{{ text_mpn }}</span>{{ product.mpn }}</div>{% endif %}
+                    {% if product.location  and  hide_product_location %}<div class="location"><span>{{ text_location }}</span>{{ product.location }}</div>{% endif %}
+                    {% if product.stock_text  and  hide_product_stock %}<div class="stock-text"><span>{{ text_availability }}</span>{{ product.stock_text }}</div>{% endif %}
+                    {% if product.reward  and  hide_product_reward %}<div class="reward"><span>{{ text_points }}</span>{{ product.reward }}</div>{% endif %}
+                    {% if product.option  and  hide_product_option %}
+                      <div class="options">
+                        {% for option in product.option %}
+                        <span>{{ option.name }}: {{ option.value }}</span><br />
+                        {% endfor %}
+                      </div>
+                    {% endif %}
+                  </div>
+                </div>
+                <div class="price">
+                  {% if product['old_price'] is not empty %}
+                <div class="product-checkout__new-price">{{ product['price'] }}</div>
+                <div class="product-checkout__old-price" style="text-decoration: line-through;">{{ product['old_price'] }}</div>
+              {% else %}
+                <div>{{ product['price'] }}</div>
+              {% endif %}
+                  {% if product.tax  and  hide_product_tax %}<span>{{ text_tax }}<br/>{{ product.tax }}</span>{% endif %}
+                </div>
+<!--                 <div class="quantity">
+                  <div class="inner">
+                    <div>
+                      <input name="product_id_q" value="{{ product.product_id }}" style="display: none;" hidden />
+                      <input name="product_id" value="{{ product.key }}" style="display: none;" hidden />
+                      <button onclick="$(this).next().val(~~$(this).next().val()+1); update_cart(this, 'update');" id="increase-quantity">+</button>
+                      <input
+                        type="text"
+                        name="quantity"
+                        value="{{ product.quantity }}"
+                        onchange="update_cart(this, 'update'); return validate_input(this);"
+                        onkeyup="update_cart(this, 'update'); return validate_input(this);"
+                        class="input-quantity"
+                      />
+                      <button onclick="$(this).prev().val(~~$(this).prev().val()-1); update_cart(this, 'update');" id="decrease-quantity">&mdash;</button>
+                    </div>
+                  </div>
+                </div> -->
+                <div class="quantity">
+                  <div>
+                    <input name="product_id_q" value="{{ product.product_id }}" style="display: none;" hidden />
+                      <input name="product_id" value="{{ product.key }}" style="display: none;" hidden />
+                    <button onclick="$(this).next().val(~~$(this).next().val()-1); update_cart(this, 'update');" id="decrease-quantity">&mdash;</button>
+                    <input type="text" name="quantity" size="2" value="{{ product.quantity }}" onchange="update_cart(this, 'update'); return validate_input(this);" class="input-quantity" onkeyup="update_cart(this, 'update'); return validate_input(this);">
+                    <button onclick="$(this).prev().val(~~$(this).prev().val()+1); update_cart(this, 'update');" id="increase-quantity">+</button>
+                  </div>
+                </div>
+                <div class="total">
+                  <div>{{ product.total }}</div>
+                  {% if product.tax_total  and  hide_product_tax %}<span>{{ text_tax }}<br/>{{ product.tax_total }}</span>{% endif %}
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+
+        {% if hide_coupon  or  hide_voucher  or  hide_reward  or  hide_shipping %}
+ 
+        <div class="cart-gifts">
+          <div class="cp-gift-heading">{{ text_help_heading }}</div>
+          <div class="panel-group" id="cp-gift-accordion">
+            {% if hide_coupon  and  coupon %}
+            <div>
+              <div class="heading"><a href="#cp-collapse-coupon" class="accordion-toggle" data-toggle="collapse" data-parent="#cp-gift-accordion">{{ text_coupon_title }} <i class="fa fa-caret-down"></i></a></div>
+              <div class="collapse" id="cp-collapse-coupon">
+                <div class="section">{{ coupon }}</div>
+              </div>
+            </div>
+            {% endif %}
+            {% if hide_voucher  and  voucher %}
+            <div>
+              <div class="heading"><a href="#cp-collapse-voucher" class="accordion-toggle" data-toggle="collapse" data-parent="#cp-gift-accordion" >{{ text_voucher_title }} <i class="fa fa-caret-down"></i></a></div>
+              <div class="collapse" id="cp-collapse-voucher">
+                <div class="section">{{ voucher }}</div>
+              </div>
+            </div>
+            {% endif %}
+            {% if hide_reward  and  reward %}
+            <div>
+              <div class="heading"><a href="#cp-collapse-reward" class="accordion-toggle" data-toggle="collapse" data-parent="#cp-gift-accordion">{{ text_reward_title }} <i class="fa fa-caret-down"></i></a></div>
+              <div class="collapse" id="cp-collapse-reward">
+                <div class="section">{{ reward }}</div>
+              </div>
+            </div>
+            {% endif %}
+            {% if hide_shipping  and  shipping %}
+            <div>
+              <div class="heading"><a href="#cp-collapse-shipping" class="accordion-toggle" data-toggle="collapse" data-parent="#cp-gift-accordion">{{ text_shipping_title }} <i class="fa fa-caret-down"></i></a></div>
+              <div class="collapse" id="cp-collapse-shipping">
+                <div class="section">{{ shipping }}</div>
+              </div>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+        {% endif %}
+
+        <div class="totals">
+          <input type="button" onclick="$.magnificPopup.close();" value="{{ button_go_back }}" class="close-button-bottom" />
+          <div>{{ text_total_bottom }}</div>
+          <div>
+            <div id="total-order">{{ total }}{% if hide_cart_weight %}{{ ';' }}{% endif %}</div>
+            {% if hide_cart_weight %}
+            <span>{{ text_cart_weight }}</span>
+            <div id="weight-order">{{ cart_weight }}</div>
+            {% endif %}
+          </div>
+        </div>
+        <div id="save-cart-data">
+          <div>
+            <input type="button" onclick="$('#save-cart-data-for-email').slideToggle();"  value="{{ buttom_save_cart_to_email }}" class="save-cart-data-button{% if not customer_status %}{{ ' fix' }}{% endif %}" />
+            {% if customer_status %}
+              <input type="button" onclick="saveCart('wishlist');"  value="{{ buttom_save_cart_to_wishlist }}" class="save-cart-data-button" />
+            {% endif %}
+            <div id="save-cart-data-for-email">
+              <input type="text" name="save_cart_email" value="{{ save_cart_email }}" />
+              <input type="button" onclick="saveCart('email');" value="{{ button_send_cart }}" class="save-cart-data-for-email-button" />
+            </div>
+          </div>
+          <div id="save-cart-data-result-error"></div>
+          <div id="save-cart-data-result-success"></div>
+        </div>
+       {% else %}
+        <div id="cp-modal-data-empty">{{ text_empty }}</div>
+        {% endif %}
+    </div>
+
+    {% if check  and  check != 0  and  cross_sell_products %}
+    <div id="cp-ajax-products">
+      <div class="cp-ajax-products-arrow">
+        <button id="ajax-products-arrow-prev">{{ button_carousel_prev }}</button>
+        <input type="hidden" name="ajax_pagination" value="0" style="display:none;" />
+        <input type="hidden" name="ajax_all_products" value="{{ ajax_all_products }}" style="display:none;" />
+        <button id="ajax-products-arrow-next">{{ button_carousel_next }}</button>
+      </div>
+      <div id="cp-ajax-products-list">
+        {% for product in cross_sell_products %}
+          <div class="ajax-product">
+            {% if m_hide_sub_img %}
+            <div class="image"><a href="{{ product.href }}"><img src="{{ product.thumb }}" alt="{{ product.name }}" title="{{ product.name }}" /></a></div>
+            {% endif %}
+            <div class="name"><a href="{{ product.href }}">{{ product.name }}</a></div>
+            {% if product.price  and  m_hide_product_price %}
+            <div class="price">
+              {% if not product.special %}
+              <span class="price-new">{{ product.price }}</span>
+              {% else %}
+              <span class="price-new">{{ product.special }}</span> <span class="price-old">{{ product.price }}</span>
+              {% endif %}
+            </div>
+            {% endif %}
+            {% if m_hide_product_addto_cart_button %}
+            <div class="cart"><a onclick="update_cart({{ product.product_id }}, 'add');">{{ button_cart }}</a></div>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %} 
+  </div>
+  <!-- BUTTONS -->
+  <div class="modal-footer">
+    <div class="precehceckoutinfo_popupcart">
+        <a href="ua/register/">
+        Для зареєстрованих користувачів діє <span>накопичувальна система знижок</span>  </a>
+    </div>
+    {% if products %}
+      {% if hide_save_cart_button %}
+      <input type="button" onclick="$('#save-cart-data').slideToggle();" value="{{ button_save_cart }}" class="save-button-bottom" />
+      {% endif %}
+      <input type="button" onclick="location.href='{{ checkout_link }}';" value="{{ button_go_to_checkout }}" class="go-button-bottom" />
+    {% endif %}
+  </div>
+<div class="row block_buttom_by_one">
+      <div class="col col-xs-12 col-sm-7 col-md-7 col-lg-7">
+        <div class="title_bl">{{ text_title_bl }}</div>
+        <div class="text_bl">{{ text_text_bl }}</div>
+      </div>
+      <div class="col col-xs-12 col-sm-5 col-md-5 col-lg-5">
+        <div data-success="Успешно отправлено" id="jfrom-2">
+          <form method="post" enctype="multipart/form-data" class="form-horizontal">
+            <input type="hidden" name="jform_id" value="11">
+            <input type="hidden" name="current_url" value="{{ current_url }}">
+            {% for key, product in products %}
+            <input type="hidden" name="products[{{ key }}]" value="{{ product.href }}">
+            {% endfor %}
+            <div class="row tb_gut_xs_0">
+              <div class="col col-xs-12 input-effect">
+                <div class="form-group required">
+                  <input type="text" class="effect-17 form-control" name="field832" id="field-832" placeholder="Ваш телефон" required>
+
+                  <label class="control-label" for="field-832"> </label>
+                </div>
+              </div>
+            </div>
+            <div class="row tb_gut_xs_0">
+              <div class="col col-xs-12">
+                <div class="button-wrap">
+                  <a class="btn btn-primary one-click-bottom" id="jfrom-submit-2" onclick="oneClickForm();">{{ by_one_click }}</a>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+  <script type="text/javascript">
+  function update_cart(target, status) {
+    maskElement('#check-data', true);
+    var input_val    = $(target).parent().children('input[name=quantity]').val(),
+        quantity     = parseInt(input_val),
+        product_id   = $(target).parent().children('input[name=product_id]').val(),
+        product_id_q = $(target).parent().children('input[name=product_id_q]').val(),
+        product_key  = $(target).next().val(),
+        urls         = null;
+
+    if (quantity == 0 || (isNaN(quantity)&&status=='update')) {
+      quantity = $(target).parent().children('input[name=quantity]').val(1);
+      maskElement('#check-data', false);
+      return;
+    }
+
+    if (status == 'update') {
+      urls = 'index.php?route=extension/module/cart_popup&update=' + product_id + '&quantity=' + quantity;
+    } else if (status == 'add') {
+      urls = 'index.php?route=extension/module/cart_popup&add=' + target + '&quantity=1';
+    } else {
+      urls = 'index.php?route=extension/module/cart_popup&remove=' + product_key;
+    }
+
+    $.ajax({
+      url: urls,
+      type: 'get',
+      dataType: 'html',
+      cache: false,
+      success: function(data) {
+        $('#cp-modal-data').html($(data).find('#cp-modal-data').children());
+        $('#cp-ajax-products').html($(data).find('#cp-ajax-products > *'));
+        maskElement('#check-data', false);
+        cpInit();
+        $('[onclick="call_cp(\'' +  parseInt(product_id_q) + '\',\'' + 'load' + '\');"]')
+        .html('<i class="fa fa-shopping-cart"></i> <span class="hidden-xs hidden-sm hidden-md">{{ button_cart }}</span>')
+        .attr('onclick', 'call_cp(\'' + parseInt(product_id_q) + '\',\'' + 'add' + '\');');
+
+        $('[onclick="call_cp(\'' + parseInt(product_id_q) + '\',\'' + 'load_option' + '\');"]')
+        .html('{{ button_cart }}')
+        .attr('onclick', 'call_cp(\'' + parseInt(product_id_q) + '\',\'' + 'add_option' + '\');');
+
+        $('[onclick="call_cp(\'' + parseInt(product_id_q) + '\',\'' + 'add_option' + '\');"]')
+        .html('{{ button_cart }}')
+        .attr('onclick', 'call_cp(\'' + parseInt(product_id_q) + '\',\'' + 'add_option' + '\');');
+      }
+    });
+  }
+
+  $(document).on('click', '#ajax-products-arrow-prev', function() {
+    maskElement('#cp-ajax-products-list > .ajax-product', true);
+    $(this).next().val(~~$(this).next().val() - 3);
+    ajaxProducts(this);
+  });
+
+  $(document).on('click', '#ajax-products-arrow-next', function() {
+    maskElement('#cp-ajax-products-list > .ajax-product', true);
+    var count_div = $('#cp-ajax-products-list > .ajax-product').length,
+        current_part = parseInt($('#cp-ajax-products input[name=ajax_pagination]').val()),
+        all_products = parseInt($('#cp-ajax-products input[name=ajax_all_products]').val());
+
+    if (count_div < 3) {
+      $(this).css({ 'opacity': 0.5, 'cursor' : 'default' }).unbind('onclick');
+      maskElement('#cp-ajax-products-list > .ajax-product', false);
+      return;
+    } else if (current_part+3 >= all_products) {
+      $(this).css({ 'opacity': 0.5, 'cursor' : 'default' }).unbind('onclick');
+      maskElement('#cp-ajax-products-list > .ajax-product', false);
+      return;
+    } else {
+      $(this).prev().prev().val(~~$(this).prev().prev().val() + 3);
+    }
+
+    ajaxProducts(this);
+  });
+
+  function ajaxProducts(target) {
+    var input_val  = $(target).parent().children('input[name=ajax_pagination]').val(),
+        quantity   = parseInt(input_val),
+        count_ajax_products = $(target).parent().children('input[name=ajax_all_products]').val();
+
+    $('.cp-ajax-products-arrow button').css({ 'opacity': 1, 'cursor' : 'pointer' });
+
+    if (quantity <= -3) {
+      $('#ajax-products-arrow-prev').css({ 'opacity': 0.5, 'cursor' : 'default' });
+      quantity = $(target).parent().children('input[name=ajax_pagination]').val(0);
+      maskElement('#cp-ajax-products-list > .ajax-product', false);
+      return;
+    }
+
+    if (quantity >= $('#cp-ajax-products input[name=ajax_all_products]').val()) {
+      $('#ajax-products-arrow-next').css({ 'opacity': 0.5, 'cursor' : 'default' });
+      quantity = $(target).parent().children('input[name=ajax_pagination]').val($('#cp-ajax-products input[name=ajax_all_products]').val());
+      maskElement('#cp-ajax-products-list > .ajax-product', false);
+      return;
+    }
+
+    if (quantity > count_ajax_products) {
+      $.ajax({
+        url:  'index.php?route=extension/module/cart_popup&start=0' + '&end=3',
+        type: 'get',
+        dataType: 'html',
+        cache: false,
+        success: function(data) {
+          $(target).parent().children('input[name=ajax_pagination]').val(0);
+          $('#cp-ajax-products-list').html($(data).find('#cp-ajax-products-list > *'));
+        }
+      });
+    } else {
+      $.ajax({
+        url:  'index.php?route=extension/module/cart_popup&start=' + quantity + '&end=3',
+        type: 'get',
+        dataType: 'html',
+        cache: false,
+        success: function(data) {
+          $('#cp-ajax-products-list').html($(data).find('#cp-ajax-products-list > *'));
+        }
+      });
+    }
+  }
+  // loadmask function
+  function maskElement(element, status) {
+    if (status == true) {
+      $('<div/>')
+      .attr('class', 'cp-modal-loadmask')
+      .prependTo(element);
+      $('<div class="cp-modal-loadmask-loading" />').insertAfter($('.cp-modal-loadmask'));
+    } else {
+      $('.cp-modal-loadmask').remove();
+      $('.cp-modal-loadmask-loading').remove();
+    }
+  }
+
+  function validate_input(input) {
+    input.value = input.value.replace(/[^\d,]/g, '');
+  }
+
+  function saveCart(type) {
+    maskElement('#check-data', true);
+    $.ajax({
+      type: 'post',
+      url:  'index.php?route=extension/module/cart_popup/saveCart&type=' + type,
+      data: $('#save-cart-data input[type=\'text\']'),
+      dataType: 'json',
+      cache: false,
+      success: function(json) {
+        if (json['error']) {
+          maskElement('#check-data', false);
+          $('#save-cart-data-result-error').fadeIn().html(json['error']).delay(2000).fadeOut();
+        }
+        if (json['success']) {
+          maskElement('#check-data', false);
+          $('#save-cart-data-result-success').fadeIn().html(json['success']).delay(2000).fadeOut();
+          $('#wishlist-total').html(json['total']);
+        }
+      }
+    });
+  }
+
+function oneClickForm(){
+  var products = '';
+  var prices = '';
+  var models = '';
+  var pictures = '';
+            {% for product in products %}
+            products += '{{ product.name }}' + ' ^ ';
+            prices += '{{ product.price_int }}' + ' - ';
+            models += '{{ product.sku }}' + ' - ';
+            pictures += '{{ product.crm_image }}' + ' - ';
+            {% endfor %}
+  var fields = [];
+  fields[1] = $('#field-832').val();
+  fields[16] = products;  
+  fields[17] = prices;
+  fields[18] = models;
+  fields[19] = pictures;        
+  $.ajax({
+    url: 'index.php?route=page/form/add&page_form_id=1',
+    type: 'post',
+    data: {
+        field: fields
+    },
+    dataType: 'json',
+    beforeSend: function() {
+      $('#button-buildersubmit{{ module_row }}').button('loading');
+    },
+    complete: function() {
+      $('#button-buildersubmit{{ module_row }}').button('reset');
+    },
+    success: function(json) {
+      // $('#layoutform{{ module_row }} .alert, #layoutform{{ module_row }} .text-danger').remove();
+      // $('#layoutform{{ module_row }} .form-group').removeClass('has-error');
+
+      if (json['error']) {
+        if (json['error']['field']) {
+          for (i in json['error']['field']) {
+            var element = $('#layoutform{{ module_row }} #input-field' + i.replace('_', '-'));
+            if (element.parent().hasClass('input-group')) {
+              element.parent().after('<div class="text-danger">' + json['error']['field'][i] + '</div>');
+            } else {
+              element.after('<div class="text-danger">' + json['error']['field'][i] + '</div>');
+            }
+            alert(json['error']['field'][i]);
+          }
+        }
+
+        if(json['captcha']) {
+          $('#layoutform{{ module_row }} .layout-cicaptcha').html(json['captcha']);
+        }
+
+        if (json['error']['warning']) {
+          $('#layoutform{{ module_row }} .form-horizontal').prepend('<div class="alert alert-danger warning"><i class="fa fa-exclamation-circle"></i> ' + json['error']['warning'] + '<button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+
+          $('html, body').animate({ scrollTop: $('#layoutform{{ module_row }} .form-horizontal').offset().top - 8 }, 'slow');
+        }
+
+        // Highlight any found errors
+        $('.text-danger').parent().addClass('has-error');
+      }
+
+      if (json['success']) {
+        $('#buildersuccess-modal{{ module_row }}').remove();
+
+        $('body').append('<div id="buildersuccess-modal{{ module_row }}" class="modal fade" role="dialog"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal">&times;</button><h4 class="modal-title">'+ json['success_title'] +'</h4></div><div class="modal-body">'+ json['success_description'] +'</div></div></div></div>');
+
+        $('#buildersuccess-modal{{ module_row }}').modal('show');
+
+        $('#layoutform{{ module_row }} input[type=\'text\'], #layoutform{{ module_row }} input[type=\'hidden\'], #layoutform{{ module_row }} input[type=\'password\'],  #layoutform{{ module_row }} textarea').val('');
+
+        $('#layoutform{{ module_row }} input[type=\'checkbox\']:checked, #layoutform{{ module_row }} input[type=\'radio\']:checked').prop('checked', false);
+
+        $('#layoutform{{ module_row }} select').val('');
+        $('#cp-modal-body').hide();
+      }
+    },
+    error: function(xhr, ajaxOptions, thrownError) {
+        alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+    }
+  });
+}
+  </script>
+</div>
+
+

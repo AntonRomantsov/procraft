@@ -1,0 +1,11 @@
+{% for fieldName,fieldData in customData %}
+    {% set label = fieldData['label'] %}
+    {% if fieldData['label'] is iterable %}
+        {% set label = fieldData['label'][language_id] %}
+    {% endif %}
+
+    <tr>
+        <td>{{ label }}:</td>
+        <td>{{ fieldData['value'] }}</td>
+    </tr>
+{% endfor %}

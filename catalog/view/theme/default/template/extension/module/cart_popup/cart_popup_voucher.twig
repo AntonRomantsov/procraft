@@ -1,0 +1,33 @@
+<input type="text" name="cp_voucher" value="{{ voucher }}" placeholder="{{ entry_voucher }}" id="cp-input-voucher" />
+<input type="submit" value="{{ button_voucher }}" id="cp-button-voucher" data-loading-text="{{ text_loading }}" class="next-step-button" />
+<script type="text/javascript"><!--
+$('#cp-button-voucher').on('click', function() {
+  maskElement('#check-data', true);
+  $.ajax({
+    url: 'index.php?route=extension/module/cart_popup/voucher',
+    type: 'post',
+    data: 'cp_voucher=' + encodeURIComponent($('input[name=\'cp_voucher\']').val()),
+    dataType: 'json',
+    cache: false,
+    beforeSend: function() {
+      $('#cp-button-voucher').button('loading');
+    },
+    complete: function() {
+      $('#cp-button-voucher').button('reset');
+    },
+    success: function(json) {
+      $('.field-error').remove();
+      if (json['error']) {
+        maskElement('#check-data', false);
+        $('input[name=\'cp_voucher\']').addClass('error-style').after('<span class="error-text field-error">' + json['error'] + '</span>');
+      } else {
+        maskElement('#check-data', false);
+        $('input[name=\'cp_voucher\']').removeClass('error-style').after('<span id="cp-voucher-success">' + json['success'] + '</span>').fadeIn();
+        $('#cp-voucher-success').delay(1000).fadeOut();
+        setTimeout(update_cart, 1000, 1, 'remove');
+      }
+    }
+  });
+});
+//-->
+</script>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html dir="{{ direction }}" lang="{{ lang }}">
+<head>
+<meta charset="UTF-8" />
+<title>{{ title }}</title>
+<base href="{{ base }}" />
+{% if description %}
+<meta name="description" content="{{ description }}" />
+{% endif %}
+{% if keywords %}
+<meta name="keywords" content="{{ keywords }}" />
+{% endif %}
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+<script type="text/javascript" src="view/javascript/jquery/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="view/javascript/bootstrap/js/bootstrap.min.js"></script>
+<link href="view/stylesheet/bootstrap.css" type="text/css" rel="stylesheet" />
+<link href="view/javascript/font-awesome/css/font-awesome.min.css" type="text/css" rel="stylesheet" />
+<script src="view/javascript/jquery/datetimepicker/moment/moment.min.js" type="text/javascript"></script>
+<script src="view/javascript/jquery/datetimepicker/moment/moment-with-locales.min.js" type="text/javascript"></script>
+<script src="view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+<link href="view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.css" type="text/css" rel="stylesheet" media="screen" />
+<link type="text/css" href="view/stylesheet/stylesheet.css" rel="stylesheet" media="screen" />
+{% for style in styles %}
+<link type="text/css" href="{{ style.href }}" rel="{{ style.rel }}" media="{{ style.media }}" />
+{% endfor %}
+{% for link in links %}
+<link href="{{ link.href }}" rel="{{ link.rel }}" />
+{% endfor %}
+<script src="view/javascript/common.js" type="text/javascript"></script>
+{% for script in scripts %}
+<script type="text/javascript" src="{{ script }}"></script>
+{% endfor %}
+</head>
+<body>
+<div id="container">
+<header id="header" class="navbar navbar-static-top">
+  <div class="container-fluid">
+    <div id="header-logo" class="navbar-header"><a href="{{ home }}" class="navbar-brand"><img src="view/image/logo.png" alt="{{ heading_title }}" title="{{ heading_title }}" /></a></div>
+    {% if logged %}<a href="#" id="button-menu" class="hidden-md hidden-lg"><span class="fa fa-bars"></span></a>
+    <ul class="nav navbar-nav navbar-right">
+
+    {% if is_demo_data_removed != 1 %}
+      <li class="dropdown" id="rdd_li">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><button role="button">{{ text_remove_demo_data }}</button></a>
+        <ul class="dropdown-menu dropdown-menu-right" style="width: 300px;padding: 10px;">
+          <li class="dropdown-header">{{ text_remove_header }}</li>
+          {{ text_data_to_remove }}
+          <li><a href="#" title="" onclick="clearDemoData();return false;"><i class="fa fa-trash"></i> {{ text_delete }}</a></li>
+          <li><a href="#" title="" onclick="return false;"><i class="fa fa-times"></i> {{ text_not_now }}</a></li>
+          <li><a href="#" title="" onclick="leaveDemoData();return false;"><i class="fa fa-check-square"></i> {{ text_never }}</a></li>
+        </ul>
+      </li>
+      {% endif %} {# demo data if #}
+
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-trash"></i></a>
+        <ul class="dropdown-menu dropdown-menu-right">
+          <li class="dropdown-header">{{ text_clear_cache }}</li>
+          <li role="separator" class="divider"></li>
+          <li><a href="#" title="" onclick="clearSysCache('theme');return false;"><i class="fa fa-trash"></i> {{ text_clear_cache_theme }}</a></li>
+          <li><a href="#" title="" onclick="clearSysCache('sass');return false;"><i class="fa fa-trash"></i> {{ text_clear_cache_sass }}</a></li>
+          <li><a href="#" title="" onclick="clearSysCache('sysCache');return false;"><i class="fa fa-trash"></i> {{ text_clear_cache_system }}</a></li>
+          <li><a href="#" title="" onclick="clearSysCache('imgCache');return false;"><i class="fa fa-trash"></i> {{ text_clear_cache_image }}</a></li>
+          <li><a href="#" title="" onclick="clearSysCache('clearAllCaches');return false;"><i class="fa fa-trash"></i> {{ text_clear_cache_all }}</a></li>
+        </ul>
+      </li>
+
+      <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="{{ image }}" alt="{{ firstname }} {{ lastname }}" title="{{ username }}" id="user-profile" class="img-circle" />{{ firstname }} {{ lastname }} <i class="fa fa-caret-down fa-fw"></i></a>
+        <ul class="dropdown-menu dropdown-menu-right">
+          <li><a href="{{ profile }}"><i class="fa fa-user-circle-o fa-fw"></i> {{ text_profile }}</a></li>
+          <li role="separator" class="divider"></li>
+          <li class="dropdown-header">{{ text_store }}</li>
+          {% for store in stores %}
+          <li><a href="{{ store.href }}" target="_blank">{{ store.name }}</a></li>
+          {% endfor %}
+          <li role="separator" class="divider"></li>
+          <li class="dropdown-header">{{ text_help }}</li>
+          <li><a href="https://neoseo.com.ua" target="_blank"><img src="view/image/neoseo.png" width="20" height="20"> {{ text_neoseo }}</a></li>
+          <li><a href="https://opencartmasters.com" target="_blank"><i class="fa fa-comments-o fa-fw"></i> {{ text_support }}</a></li>
+          <li><a href="https://www.opencart.com" target="_blank"><i class="fa fa-opencart fa-fw"></i> {{ text_homepage }}</a></li>
+          <li><a href="https://docs.opencart.com" target="_blank"><i class="fa fa-file-text-o fa-fw"></i> {{ text_documentation }}</a></li>
+        </ul>
+      </li>
+      <li><a href="{{ logout }}"><i class="fa fa-sign-out"></i> <span class="hidden-xs hidden-sm hidden-md">{{ text_logout }}</span></a></li>
+    </ul>
+    {% endif %} </div>
+</header>
+  <script>
+    function clearSysCache(type)
+    {
+      $.ajax({
+        url: 'index.php?route=common/developer/' + type + '&user_token={{ user_token }}',
+        dataType: 'json',
+        beforeSend: function() {
+           $('.navbar-static-top').append('<span class="alert alert-info cache-notify" style="position: absolute;right: 30px;">{{ text_loading }}</span>');
+        },
+        success: function(json) {
+          if (json['error']) {
+            $('.navbar-static-top').append('<div class="alert alert-danger alert-dismissible cache-notify" style="position: absolute;right: 30px;"><i class="fa fa-exclamation-circle"></i> ' + json['error']['warning'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+          }
+          if (json['success']) {
+            $('.navbar-static-top').append('<div class="alert alert-success alert-dismissible cache-notify" style="position: absolute;right: 30px;"><i class="fa fa-check-circle"></i> ' + json['success'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+          }
+          $('.cache-notify').fadeOut(5000);
+        },
+        error: function(xhr, ajaxOptions, thrownError) {
+          alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+        }
+      });
+    }
+    {% if is_demo_data_removed != 1 %}
+    function clearDemoData()
+    {
+       if(confirm('{{ text_confirm }}')){
+         $.ajax({
+           url: 'index.php?route=common/developer/clearDemoData&user_token={{ user_token }}',
+           dataType: 'json',
+           success: function(json) {
+              location.reload();
+           },
+           error: function(xhr, ajaxOptions, thrownError) {
+             alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+           }
+         });
+       }
+    }
+
+    function leaveDemoData()
+    {
+      if(confirm('{{ text_confirm }}')){
+        $.ajax({
+          url: 'index.php?route=common/developer/leaveDemoData&user_token={{ user_token }}',
+          dataType: 'json',
+          success: function(json) {
+            $('#rdd_li').fadeOut();
+          },
+          error: function(xhr, ajaxOptions, thrownError) {
+            alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+          }
+        });
+      }
+    }
+    {% endif %}
+  </script>

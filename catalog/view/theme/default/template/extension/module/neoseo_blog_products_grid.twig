@@ -1,0 +1,144 @@
+<div class="module">
+    {% if (heading_title is not empty) %}
+        <h3>{{ heading_title }}</h3>
+    {% endif %}
+    <div class="row">
+        {% if (related_products is not empty) %}
+            <div class="related-products-container">
+                {% for product in related_products %}
+                    <div class="product-layout product-grid col-md-4 col-sm-6 col-xs-12">
+                        <div class="product-thumb box-shadow box-corner clearfix">
+                            <div class="product-thumb_top">
+                                <!-- NeoSeo Product Labels - begin -->
+                                {% if (product['labels'] is defined and product['labels'] ) %}
+                                    {% for label_wrap,group_label in product['labels'] %}
+                                        <div class="{{ label_wrap }}">
+                                            {% for label in group_label %}
+                                                <div class="tag {{ label['label_type'] }} {{ label['position'] }} {{ label['class'] }}"><span style="{{ label['style'] }}">{{ label['text'] }}</span></div>
+                                                {% endfor %}
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                                <!-- NeoSeo Product Labels - end -->
+                                <div class="image">
+                                    <a href="{{ product['href'] }}">
+                                        {% if (product['thumb']) %}
+                                            <img class="hoverable" src="{{ product['thumb'] }}" alt="{{ product['name'] }}" title="{{ product['name'] }}" class="img-responsive"  over="{{ product['thumb'] }}" out="{{ product['thumb'] }}" />
+                                        {% else %}
+                                            <img src="{{ product['thumb'] }}" alt="{{ product['name'] }}" title="{{ product['name'] }}" class="img-responsive" />
+                                        {% endif %}
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="product-thumb_middle">
+                                <div class="rating-container">
+                                    <div class="caption">
+                                        <h4><a href="{{ product['href'] }}">{{ product['name'] }}</a></h4>
+                                    </div>
+                                    <span class="rating">
+                                        {% if (product['rating']) %}
+                                            {% set i = 1 %}{% for i in i..5 %}
+                                                {% if (product['rating'] < i) %}
+                                                    <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
+                                                    {% else %}
+                                                    <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                {% endif %}
+                                    </span>
+                                </div>
+                                <div class="caption">
+                                    <h4><a href="{{ product['href'] }}">{{ product['name'] }}</a></h4>
+                                        {% if (product['additional_attributes'] is defined and product['additional_attributes']) %}
+                                        <div class="attributes-top">
+                                            {% set counter = 1 %}
+                                            {% for key,attribute in product['additional_attributes'] %}
+                                                <span><b>{{ attribute['name'] }}</b> {{ attribute['text'] }}</span>{% if (counter < product['total_attributes']) %} {{ divider ? divider : '' }} {% endif %}
+                                                {% set counter = counter + 1 %}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="price-and-cart-add">
+                                    {% if (product['price']) %}
+                                        <div class="price-wrapper">
+                                            <p class="price">
+                                                {% if (not product['special']) %}
+                                                    {{ product['price'] }}
+                                                {% else %}
+                                                    <span class="price-old">{{ product['price'] }}</span><span class="price-new">{{ product['special'] }}</span>
+                                                    {% endif %}
+                                                    {% if (product['tax']) %}
+                                                    <span class="price-tax">{{ text_tax }} {{ product['tax'] }}</span>
+                                                {% endif %}
+                                            </p>
+                                        </div>
+                                    {% endif %}
+                                    <div class="input-group input-quantity-group" data-min-quantity="{{ product['minimum'] }}">
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default" data-type="minus" data-field="input-quantity">
+                                                <span class="glyphicon glyphicon-minus"></span>
+                                            </button>
+                                        </span>
+                                        <input type="text" name="quantity" value="{{ product['minimum'] }}" size="2" class="form-control quantity">
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default" data-type="plus" data-field="input-quantity">
+                                                <span class="glyphicon glyphicon-plus"></span>
+                                            </button>
+                                        </span>
+                                    </div>
+                                    <div class="button-group-cart">
+                                        <h6 class="text-right stock-status-text-{{ product['stock_status_id'] }}" style="color:{{ product['stock_status_color'] }};"><span>{{ product['stock_status'] }}</span></h6>
+                                        <!-- NeoSeo Notify When Available - begin -->
+                                        {% if (not product['snwa_status']) %}
+                                            <!-- NeoSeo Notify When Available - end -->
+                                            <!-- NeoSeo Product Options PRO - begin -->
+                                            {% if (product_list_status == 1) %}
+                                                <button class="cart-add-button"  type="button" onclick="addToCart('{{ product['product_id'] }}', '{{ product['minimum'] }}', this);"><i class="fa fa-shopping-cart"></i> <span class="hidden-xs hidden-sm hidden-md">{{ button_cart }}</span></button>
+                                                {% else %}
+                                                <button class="cart-add-button" type="button" onclick="cart.add('{{ product['product_id'] }}', '{{ product['minimum'] }}');"><i class="fa fa-shopping-cart"></i> <span class="hidden-xs">{{ button_cart }}</span></button>
+                                                {% endif %}
+                                            <!-- NeoSeo Product Options PRO - end -->
+                                            <!-- NeoSeo Notify When Available - begin -->
+                                        {% endif %}
+                                        <!-- NeoSeo Notify When Available - end -->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="description">
+                                <div class="description-top">
+                                    {{ product['short_description'] }}
+                                </div>
+                                <div class="description-bottom">
+                                    <div class="button-group">
+                                        <a class="wishlist-button" type="button" onclick="wishlist.add('{{ product['product_id'] }}');">
+                                            <i class="fa fa-heart"></i>
+                                            <span>{{ text_wishlist }}</span>
+                                        </a>
+                                        <a class="compare-button" type="button"  onclick="compare.add('{{ product['product_id'] }}');">
+                                            <i class="fa fa-exchange"></i>
+                                            <span>{{ text_compare }}</span>
+                                        </a>
+                                        {% if (not product['snwa_status'] and neoseo_quick_order_status) %}
+                                            <a class="buy-one-click" onclick="showQuickOrder('{{ product['product_id'] }}', '{{ product['minimum'] }}');">
+                                                <i class="ns-mouse"></i>
+                                                <span>{{ text_one_click_buy }}</span>
+                                            </a>
+                                        {% elseif product['snwa_status'] %}
+                                            <!-- NeoSeo Notify When Available - begin -->
+                                            <a type="button" class="buy-one-click" data-checked="{{ product['snwa_requested'] ? 'true' : 'false' }}" data-product="{{ product['product_id']}}"  onclick="showNWA('{{ product['product_id'] }}', this);">
+                                                <i class="fa fa-bell"></i>
+                                                <span>{{ product['snwa_requested'] ? button_snwa_unsubscribe : button_snwa_subscribe }}</span>
+                                            </a>
+                                            <!-- NeoSeo Notify When Available - end -->
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+</div>

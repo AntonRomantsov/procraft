@@ -1,0 +1,163 @@
+<footer class="footer" id="footer">
+  <div class="container footer__container">
+    <div class="row">
+      <div class="col-sm-6 col-md-3">
+        <p class="footer-title">{{ text_procraft }}</p>
+        <ul class="list-unstyled footer-list">
+		  <li><a href="{{ about }}">{{ text_about }}</a></li>
+          <li><a href="{{ store }}">{{ text_store }}</a></li>
+		  <li><a href="{{ news }}">{{ text_news }}</a></li> 
+          <li><a href="{{ bestseller }}">{{ text_bestseller }}</a></li>
+      <!--<li><a href="{{ all_category }}">{{ text_all_category }}</a></li>-->
+          <li><a href="{{ blog }}">{{ text_blog }}</a></li>
+        <!--   <li><a href="{{ partnery }}">{{ text_partnery }}</a></li>-->
+        </ul>
+      </div>
+      <div class="col-sm-6 col-md-3">
+        <p class="footer-title">{{ text_extra }}</p>
+        <ul class="list-unstyled footer-list">
+          <li><a href="/contacts">{{ text_contact }}</a></li>
+          <li><a href="{{ delivery }}">{{ text_delivery }}</a></li>
+          <li><a href="/sitemap">{{ text_sitemap }}</a></li>
+          <li><a href="{{ black_list }}">{{ text_black_list }}</a></li>
+        </ul>
+      </div>
+      <div class="col-sm-6 col-md-3">
+        <p class="footer-title">{{ text_service }}</p>
+        <ul class="list-unstyled footer-list">
+          <li><a href="{{ service_map }}">{{ text_service_map }}</a></li>
+          <!-- <li><a href="{{ instrument }}">{{ text_instrument }}</a></li>  -->
+        </ul>
+				<div class="social-links">
+					<p class="footer-title">{{ text_social }}</p>
+					<ul class="list-unstyled social-links__list">
+						<li class="social-links__item">
+							<a class="social-links__link" href="https://www.instagram.com/procraft.ua/" rel="nofollow noindex" target="_blank"><i class="fa fa-instagram"></i></a>
+						</li>
+						<li class="social-links__item">
+							<a class="social-links__link" href="https://www.facebook.com/Procraft.ua" rel="nofollow noindex" target="_blank"><i class="fa fa-facebook"></i></a>
+						</li>
+						<li class="social-links__item">
+							<a class="social-links__link" href="https://www.youtube.com/channel/UCxpqLkXMr-C8he2-BPiyDKg" rel="nofollow noindex" target="_blank"><i class="fa fa-youtube"></i></a>
+						</li>
+						<li class="social-links__item">
+							<a class="social-links__link" href="https://t.me/Procraftinfo" rel="nofollow noindex" target="_blank"><i class="fa fa-telegram"></i></a>
+						</li>
+						<li class="social-links__item">
+							<a class="social-links__link" href="https://www.tiktok.com/@procraft.ua?_t=8ewabgHYZ1y&_r=1" target="_blank" class="tiktok"><img src="/image/tik_tok.svg" alt=""></a>
+						</li>
+					</ul>
+				</div>
+      </div>
+      <div class="col-sm-6 col-md-3">
+        <p class="footer-title">{{ text_call }}</p>
+        <ul class="list-unstyled footer-list footer-contact">
+          <li class="footer-contact__item footer-contact__item--phone"><a class="binct-phone-number-1" href="{{ footer_phone_href }}">{{ footer_phone }}</a></li>
+          <li class="footer-contact__item footer-contact__item--email"><a href="mailto:info@procraft.ua">info@procraft.ua</a></li>
+        </ul>
+				{% if form_newsletter %}
+				<div class="footer-newsletter">
+					{{ form_newsletter }}
+				</div>
+				{% endif %}
+      </div>
+    </div>
+  </div>
+	<div class="footer-bottom">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-2">
+					<div class="logo-footer"><img src="/image/catalog/news/logo.png" alt="logo-footer" width="113"></div>
+				</div>
+				<div class="col-md-7">
+					<div class="footer-copy">{{ powered }}</div>
+				</div>
+				<div class="col-md-3">
+					<div class="payment-home-custom">
+						<span>{{ text_accept }}</span>
+						<img class="visa" src="/image/icon/visa.png" alt="visa"> 
+						<img class="mastercard" src="/image/icon/mastercard.png" alt="mastercard">
+          </div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<a id="tbScrollToTop" class="btn btn-default tb_no_text" href="javascript:;" style="opacity: 100;"><i class="fa fa-angle-up"></i></a>
+</footer>
+<div id="underfooter"></div>
+{% for style in styles %}
+<link href="/{{ style.href }}" type="text/css" rel="{{ style.rel }}" media="{{ style.media }}" />
+{% endfor %}
+{% for script in scripts %}
+<script src="/{{ script }}" type="text/javascript"></script>
+{% endfor %}
+<script type="text/javascript">
+// function hideBlock() {
+//     var block = $('#tbScrollToTop');
+//     if($('body').scrollTop() >= 120) {
+//       block.css('opacity', 100);
+//     }else {
+//       block.css('opacity', 0);
+//     }
+//   }
+//   $(window).scroll(hideBlock);
+
+
+
+	$("#tbScrollToTop").bind('click', function(e){
+        e.preventDefault();
+        $('body,html').animate({scrollTop: 0}, 400);    
+    });
+
+</script>
+<!--
+OpenCart is open source software and you are free to remove the powered by OpenCart if you want, but its generally accepted practise to make a small donation.
+Please donate via PayPal to donate@opencart.com
+//-->
+<script>var modal = document.getElementById("myModal");
+
+var span = document.getElementsByClassName("close")[0];
+
+span.onclick = function() {
+  modal.style.display = "none";
+  sessionStorage.setItem("modalShown", "true");
+}
+
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+    sessionStorage.setItem("modalShown", "true");
+  }
+}
+
+window.onload = function() {
+  if(sessionStorage.getItem("modalShown") !== "true"){
+    modal.style.display = "block";
+  }
+}
+</script>
+<script type="text/javascript">
+	$(document).ready(function(){
+	      window.addEventListener('scroll', function() {
+	      	var footer = document.getElementById('underfooter');
+	      var footer_box = footer.getBoundingClientRect();
+	      var doc_footer = footer_box.top + window.pageYOffset;
+	      var control_point = doc_footer - $('footer').height() - document.documentElement.clientHeight;
+          if(window.pageYOffset > control_point){
+       	    $('.modules-menu').css('position', 'absolute');
+       	    $('.modules-menu').css('top', 125 + +control_point +'px');
+          }else{
+       	    $('.modules-menu').css('position', 'fixed');
+       	    $('.modules-menu').css('top', '155px');
+          }
+        });
+		}, 0);
+</script>
+<div id="myModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <div class="warning">На сайті будуть проводитись технічні роботи 08.07.2023 з 17.00 - 20.00. Пробачте за незручності.</div>
+  </div>
+</div>
+
+</body></html>

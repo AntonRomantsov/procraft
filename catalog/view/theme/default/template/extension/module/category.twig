@@ -1,0 +1,11 @@
+<h3>{{ heading_title }}</h3>
+<div class="list-group ad-category-list cat-main">
+  {% for category in categories %}
+  <div class="ad-category-item"><a href="{{ category.href }}">
+   <svg class="svg-icon ad-icon">
+      <use xlink:href="/image/sprite-category.svg#{{ category.category_id }}"></use>
+    </svg>
+   <p class="list-group-item">{{ category.name }}</p>
+  </a></div>
+  {% endfor %}
+</div>

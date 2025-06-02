@@ -1,0 +1,28 @@
+{% if (heading_title_raw is not empty) %}
+    <div class="title">
+        <div class="title-inner">
+            <i class="icon-newspaper-folded"></i><span class="title-text">{{ heading_title_raw }}</span>
+            <div class="customNavigation" style=" width:80px"></div>
+        </div>
+    </div>
+{% endif %}
+<div class="row article-block arbful" style="margin-bottom:25px;">
+    {% for article in articles %}
+        <div class="product-layout col-lg-4 col-md-4 col-sm-6 col-xs-12">
+            <div class="news">
+
+                <div class="image">
+                    <a href="{{ article['href'] }}"><img src="{{ article['thumb'] }}" alt="{{ article['name'] }}" title="{{ article['name'] }}" class="img-responsive"/></a>
+                </div>
+
+                <div class="caption">
+
+                    <h4><a href="{{ article['href'] }}">{{ article['name'] }}</a></h4>
+
+                    <p>{{ article['description'] }}</p>
+
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>

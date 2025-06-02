@@ -1,0 +1,70 @@
+<!-- START GoogleLogin -->
+
+<style type="text/css">
+	{{ data.GoogleLogin.CustomCSS }}
+</style>
+<div class="box" id="googleLoginBox"></div>
+<script type="text/html" class="googleLoginHTML">
+	{% if (data.GoogleLogin.WrapIntoWidget == 'Yes') %}
+		<div class="box box-ggllogin list-group">
+		  <a href="javascript:void(0)" class="box-heading list-group-item active">{{ data.GoogleLogin.WrapperTitle }}</a>
+		  <div class="box-content list-group-item">
+			<div class="googleButton"><a href="javascript:void(0)" onclick="initiateGoogleLogin()" class="googleLoginAnchor {{ (data.GoogleLogin.ButtonDesign is not empty) ? data.GoogleLogin.ButtonDesign : 'gglNoDesign' }}"><span></span>{{ data.GoogleLogin.ButtonLabel }}</a></div>
+		  </div>
+		</div>
+	{% else %}
+		<div class="googleButton"><a href="javascript:void(0)" onclick="initiateGoogleLogin()" class="googleLoginAnchor {{ data.GoogleLogin.ButtonDesign }}"><span></span>{{ data.GoogleLogin.ButtonLabel }}</a></div>
+	{% endif %}
+</script>
+<script language="javascript" type="text/javascript"> <!-- 
+{% if (data.GoogleLogin.position_use_selector is not empty) %}
+    var posGGLSelector = '{{ data.GoogleLogin.position_selector }}';
+    var positionGGLButton = function() {
+		if (posGGLSelector) {
+            $(posGGLSelector).prepend($('.googleLoginHTML:first').html());	
+        } else {
+            $('#content').prepend($('.googleLoginHTML:first').html());	
+        }	
+    }
+    
+    $(document).ready(function() {
+        if ($(posGGLSelector).find('.googleLoginAnchor').length == 0) {
+            positionGGLButton();
+        }
+    });
+    $(document).ajaxComplete(function() {
+        var tries = 0;
+        var tryAppendButton = setInterval(function() {
+            tries++;
+            if ($(posGGLSelector).find('.googleLoginAnchor').length == 0) {
+                positionGGLButton();
+            }
+            if (tries > 20 || $(posGGLSelector).find('.googleLoginAnchor').length > 0) {
+                clearInterval(tryAppendButton);	
+            }
+        }, 300);
+    });
+{% else %}
+	$('#googleLoginBox').after($('.googleLoginHTML:first').html());
+{% endif %}
+
+$('#googleLoginBox').remove();
+
+var popupData = '';
+
+$.ajax({
+	url: '{{ url_login }}',
+	success: function(data) {
+		popupData = data;	
+	}
+});
+
+function initiateGoogleLogin() {
+	var newwindow = window.open(popupData, 'name', 'height=320,width=550,scrollbars=yes');
+	if (window.focus) newwindow.focus();
+	return false;
+};
+
+ --> 
+</script>
+<!-- END GoogleLogin -->

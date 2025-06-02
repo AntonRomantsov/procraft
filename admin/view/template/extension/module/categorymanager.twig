@@ -1,0 +1,190 @@
+{{ header }}
+<style type="text/css">
+fieldset{margin-top:10px; margin-bottom:30px; margin-left: 20px}
+.well:nth-child(even){background-color:#FCFCFC} .panel-footer{background-color: #eef2f7 !important;padding:20px; font-size: 13px;text-align:center}
+.toggle,.toggle:after,.toggle:before{-webkit-transition:all .2s cubic-bezier(.445,.05,.55,.95)}.addpad{padding-top:0;padding-bottom:0}.toggleWrapper{position:absolute;top:50%;overflow:hidden}.toggleWrapper input{position:absolute;left:-99em}.toggle{cursor:pointer;display:inline-block;position:relative;width:120px;height:30px;background:#ccc;border-radius:5px;transition:all .2s cubic-bezier(.445,.05,.55,.95)}.toggle:after,.toggle:before{position:absolute;line-height:30px;font-size:14px;z-index:2;transition:all .2s cubic-bezier(.445,.05,.55,.95)}.toggle:before{content:"OFF";left:20px;color:#ccc}.toggle:after{content:"ON";right:20px;color:#fff}.toggle__handler{display:inline-block;position:relative;z-index:1;background:#fff;width:65px;height:24px;border-radius:3px;top:3px;left:3px;-webkit-transition:all .2s cubic-bezier(.445,.05,.55,.95);transition:all .2s cubic-bezier(.445,.05,.55,.95);-webkit-transform:translateX(0);transform:translateX(0)}input:checked+.toggle{background:#66B317}input:checked+.toggle:before{color:#fff}input:checked+.toggle:after{color:#66B317}input:checked+.toggle .toggle__handler{width:54px;-webkit-transform:translateX(60px);transform:translateX(60px);border-color:#fff}.form-horizontal .nav>li>a{outline:none}.form-horizontal .nav-tabs>li.active>a{border-top:2px solid #39B3D7!important} blockquote {
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+</style>
+{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button type="submit" form="form-latest" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+		<a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+      <h1>Category Manager 1.35</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if error_warning %}
+    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
+      </div>
+      <div class="panel-body">
+        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-latest" class="form-horizontal">
+          <ul class="nav nav-tabs">
+            <li class="active"><a href="#tab-general" data-toggle="tab">{{ text_settings }}</a></li>
+          </ul>
+
+		<div class="tab-content">
+		<div class="tab-pane active" id="tab-general">
+
+		<div class="form-group">
+			<label class="col-sm-3 col-xs-4 control-label">{{ entry_status }}</label>
+			<div class="col-sm-3 col-xs-2">
+			<div class="toggleWrapper">
+				{% if module_categorymanager_status %}
+				<input type="checkbox" id="input-status" name="module_categorymanager_status" value="1" checked="checked" />
+				{% else %}
+				<input type="checkbox" id="input-status" name="module_categorymanager_status" value="1" />
+				{% endif %}
+			<label class="toggle" for="input-status"><span class="toggle__handler"></span>
+			</label>
+			</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-3 control-label" for="input-limit">{{ entry_limit }}</label>
+			<div class="col-sm-3">
+				<input type="text" name="module_categorymanager_limit" value="{{ module_categorymanager_limit ?? '20' }}" id="input-limit" class="form-control" />
+			</div>
+		</div>
+
+	<div class="form-group">
+        <div class="col-sm-6">
+		<div class="form-group">
+            <label class="col-sm-6 col-xs-4 control-label">{{ entry_hide }}</label>
+            <div class="col-sm-6 col-xs-2">
+			<div class="toggleWrapper">
+				{% if module_categorymanager_hide %}
+				<input type="checkbox" id="input-hide" name="module_categorymanager_hide" value="1" checked="checked" />
+				{% else %}
+				<input type="checkbox" id="input-hide" name="module_categorymanager_hide" value="1" />
+				{% endif %}
+			<label class="toggle" for="input-hide"><span class="toggle__handler"></span>
+			</label>
+			</div>
+			</div>
+		</div>
+		</div>
+        <div class="col-sm-6">
+		<blockquote>
+			<span style="color:#888;">{{ help_hide }}</span>
+		</blockquote>
+		</div>
+	</div>
+	<div class="form-group">
+        <div class="col-sm-6">
+		<div class="form-group">
+            <label class="col-sm-6 col-xs-4 control-label">{{ entry_udate }}</label>
+            <div class="col-sm-6 col-xs-2">
+			<div class="toggleWrapper">
+				{% if module_categorymanager_udate %}
+				<input type="checkbox" id="input-udate" name="module_categorymanager_udate" value="1" checked="checked" />
+				{% else %}
+				<input type="checkbox" id="input-udate" name="module_categorymanager_udate" value="1" />
+				{% endif %}
+			<label class="toggle" for="input-udate"><span class="toggle__handler"></span>
+			</label>
+			</div>
+			</div>
+		</div>
+		</div>
+        <div class="col-sm-6">
+		<blockquote>
+			<span style="color:#888;">{{ help_udate }}</span>
+		</blockquote>
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-sm-6">
+		<div class="form-group">
+			<label class="col-sm-6 col-xs-4 control-label">{{ entry_hideck }}</label>
+			<div class="col-sm-6 col-xs-2">
+			<div class="toggleWrapper">
+				{% if module_categorymanager_hideck %}
+				<input type="checkbox" id="input-hideck" name="module_categorymanager_hideck" value="1" checked="checked" />
+				{% else %}
+				<input type="checkbox" id="input-hideck" name="module_categorymanager_hideck" value="1" />
+				{% endif %}
+			<label class="toggle" for="input-hideck"><span class="toggle__handler"></span>
+			</label>
+			</div>
+			</div>
+		</div>
+		</div>
+        <div class="col-sm-6">
+		<blockquote>
+			<span style="color:#888;">{{ help_hideck }}</span>
+		</blockquote>
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-sm-6">
+		<div class="form-group">
+			<label class="col-sm-6 col-xs-4 control-label">{{ entry_hidecs }}</label>
+			<div class="col-sm-6 col-xs-2">
+			<div class="toggleWrapper">
+				{% if module_categorymanager_hidecs %}
+				<input type="checkbox" id="input-hidecs" name="module_categorymanager_hidecs" value="1" checked="checked" />
+				{% else %}
+				<input type="checkbox" id="input-hidecs" name="module_categorymanager_hidecs" value="1" />
+				{% endif %}
+			<label class="toggle" for="input-hidecs"><span class="toggle__handler"></span>
+			</label>
+			</div>
+			</div>
+		</div>
+		</div>
+        <div class="col-sm-6">
+		<blockquote>
+			<span style="color:#888;">{{ help_hidecs }}</span>
+		</blockquote>
+		</div>
+	</div>
+	<div class="form-group">
+        <div class="col-sm-6">
+		<div class="form-group">
+            <label class="col-sm-6 control-label">{{ entry_col }}</label>
+            <div class="col-sm-6">
+			<select name="module_categorymanager_col" id="input-col" class="form-control">
+				{% for col in cols %}
+					{% if col == module_categorymanager_col %}
+					<option value="{{ col }}" selected="selected">{{ col }}</option>
+					{% else %}
+					<option value="{{ col }}">{{ col }}</option>
+					{% endif %}
+				{% endfor %}
+			</select>
+			</div>
+		</div>
+		</div>
+        <div class="col-sm-6">
+		<blockquote>
+			<span style="color:#888;">{{ help_col }}</span>
+		</blockquote>
+		</div>
+	</div>
+		</div>
+		</div>
+        </form>
+	</div>
+	</div>
+	<div class="alert alert-info">
+	  <i class="fa fa-check-circle"></i> Магазин дополнений для Opencart. <i class="fa fa-external-link"></i> <a target="_blank" href="https://opencart-hub.com">Перейти в магазин</a>
+	</div>
+</div>
+</div>
+{{ footer }}

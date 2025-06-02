@@ -1,0 +1,215 @@
+{{ header }}
+
+<main>
+  <section class="profile">
+    <div class="breadcrumbs__container" bis_skin_checked="1">
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+          <li>
+            <a href="{{ breadcrumb.href }}">
+              {{ breadcrumb.text }}
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div class="profile__container">
+      <div class="profile__wrapper">
+        {{ account }}
+        <div class="profile__main" style="padding-bottom: 120px;">
+        <div class="return_order">
+          <a href="{{ orders }}"><svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="25" height="16" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+          viewBox="0 0 295.06 192.52"
+           xmlns:xlink="http://www.w3.org/1999/xlink"
+           xmlns:xodm="http://www.corel.com/coreldraw/odm/2003">
+           <defs>
+            <style type="text/css"> 
+              .fil0 {fill:#ED6E00}
+            </style>
+           </defs>
+           <g id="Слой_x0020_1">
+            <metadata id="CorelCorpID_0Corel-Layer"/>
+            <path class="fil0" d="M63.06 33.08l152.28 0c43.96,0 79.72,35.76 79.72,79.72 0,43.96 -35.76,79.72 -79.72,79.72l-25.03 0 0 -21.08 25.03 0c32.34,0 58.64,-26.3 58.64,-58.64 0,-32.34 -26.3,-58.64 -58.64,-58.64l-152.28 0 0 33.08 -63.06 -43.62 63.06 -43.62 0 33.08z"/>
+           </g>
+          </svg> {{ text_return }}</a>
+        </div>
+        <div class="profile__block">
+          <h2 class="profile__title">
+            {{ text_order }}
+            <span>
+              №
+              {{ order_id }}
+            </span>
+          </h2>
+          <ul class="profile__order_list">
+            <li class="profile__order_list_item">
+              <span class="profile__order_list_option">
+                {{ text_firstname }}
+              </span>
+              <span class="profile__order_list_value">
+                {{ firstname }}
+              </span>
+            </li>
+            <li class="profile__order_list_item">
+              <span class="profile__order_list_option">
+                {{ text_lastname }}
+              </span>
+              <span class="profile__order_list_value">
+                {{ lastname }}
+              </span>
+            </li>
+            <li class="profile__order_list_item">
+              <span class="profile__order_list_option">
+                {{ text_phone }}
+                :
+              </span>
+              <span class="profile__order_list_value">
+                {{ phone }}
+              </span>
+            </li>
+            <li class="profile__order_list_item">
+              <span class="profile__order_list_option">
+                Email:
+              </span>
+              <span class="profile__order_list_value">
+                {{ email }}
+              </span>
+            </li>
+            <li class="profile__order_list_item">
+              <span class="profile__order_list_option">
+                {{ text_shipping_method }}
+              </span>
+              <span class="profile__order_list_value">
+                {{ shipping_method }}
+              </span>
+            </li>
+            <li class="profile__order_list_item">
+              <span class="profile__order_list_option">
+                {{ text_city }}
+              </span>
+              <span class="profile__order_list_value">
+                {{ city }}
+              </span>
+            </li>
+            <li class="profile__order_list_item">
+              <span class="profile__order_list_option">
+                {{ text_shipping_address }}
+              </span>
+              <span class="profile__order_list_value">
+                {{ address }}
+              </span>
+            </li>
+            <li class="profile__order_list_item">
+              <span class="profile__order_list_option">
+                {{ text_payment_method }}
+              </span>
+              <span class="profile__order_list_value">
+                {{ payment_method }}
+              </span>
+            </li>
+            <li class="profile__order_list_item">
+              <span class="profile__order_list_option">
+                {{ column_comment }}
+              </span>
+              <span class="profile__order_list_value">
+                {{ comment }}
+              </span>
+            </li>
+          </ul>
+        </div>
+        <div class="profile__block profile__block--line_mod">
+          <h2 class="profile__title">
+            {{ text_products_list }}
+          </h2>
+          <div class="profile__table_wrapper profile__table--details-mod">
+            <div class="profile__table">
+              <div class="profile__table_head">
+                <div class="profile__table_row profile__table_row--head">
+                  <div class="profile__table_cell">
+                    N°
+                  </div>
+                  <div class="profile__table_cell">
+                    {{ column_name }}
+                  </div>
+                  <div class="profile__table_cell">
+                    {{ column_price }}
+                  </div>
+                  <div class="profile__table_cell">
+                    {{ column_quantity }}
+                  </div>
+                  <div class="profile__table_cell">
+                    {{ column_total }}
+                  </div>
+                </div>
+              </div>
+              <div class="profile__table_body">
+                {% set i = 1 %}
+                {% for product in products %}
+                  <div class="profile__table_row">
+                    <div class="profile__table_cell">
+                      <span class="profile__table_cell--mob">
+                        N°
+                      </span>
+                      <span class="profile__table_cell--mob_span">
+                        {{ i }}
+                      </span>
+                    </div>
+                    <div class="profile__table_cell">
+                      <span class="profile__table_cell--mob">
+                        {{ column_name }}
+                      </span>
+                      <span class="profile__table_cell--mob_span">
+                        <img class="profile__table_cell_photo" src="{{ product.image }}" alt="Product" />
+                        <span>
+                          {{ product.name }}
+                        </span>
+                      </span>
+                    </div>
+                    <div class="profile__table_cell">
+                      <span class="profile__table_cell--mob">
+                        {{ column_price }}
+                      </span>
+                      <span class="profile__table_cell--mob_span">
+                        {{ product.price }}
+                      </span>
+                    </div>
+                    <div class="profile__table_cell">
+                      <span class="profile__table_cell--mob">
+                        {{ column_quantity }}
+                      </span>
+                      <span class="profile__table_cell--mob_span">
+                        {{ product.quantity }}
+                      </span>
+                    </div>
+                    <div class="profile__table_cell">
+                      <span class="profile__table_cell--mob">
+                        {{ column_total }}
+                      </span>
+                      <span class="profile__table_cell--mob_span">
+                        {{ product.total }}
+                      </span>
+                    </div>
+                  </div>
+                  {% set i = i + 1 %}
+                {% endfor %}
+
+              </div>
+            </div>
+          </div>
+
+        {# <div class="profile__table_footer">
+          <div class="progress">
+          <p>Показано 5 із 28 товарів</p>
+          <div class="progress__wrapper">
+          <div class="progress__bar"></div>
+          </div>
+          </div>
+          <button class="button button_outline">Завантажити ще</button>
+        </div> #}
+        </div>
+      </div
+      </div>
+    </div>
+  </section>
+</main>
+{{ footer }}

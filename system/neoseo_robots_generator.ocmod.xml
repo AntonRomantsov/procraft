@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification>
+    <name>NeoSeo Robots Generator</name>
+    <version>1.0</version>
+    <code>neoseo-robots-generator</code>
+    <author>NeoSeo</author>
+    <link>https://neoseo.com.ua/generator-robotstxt</link>
+
+    <file path="admin/controller/common/column_left.php">
+        <operation>
+            <search><![CDATA[if ($this->user->hasPermission('access', 'tool/backup')) {]]></search>
+            <add position="before"><![CDATA[
+			/* NeoSeo Robots Generator - begin */
+			if( $this->user->hasPermission('access','tool/neoseo_robots_generator') && isset($this->session->data['user_token']) ) {
+				$this->language->load("tool/neoseo_robots_generator");
+				if( $this->config->get("neoseo_robots_generator_status") ) {
+					if ($this->user->hasPermission('access', 'tool/neoseo_robots_generator')) {
+						$maintenance[] = array(
+							'name'	   => $this->language->get('heading_title'),
+							'href'     => $this->url->link('tool/neoseo_robots_generator', 'user_token=' . $this->session->data['user_token'], true),
+							'children' => array()
+						);
+					}
+				}
+			}
+			/* NeoSeo Robots Generator - begin */]]></add>
+        </operation>
+    </file>
+
+</modification>

@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Components</title>
+    <link rel="stylesheet" href="assets/style/main.css" />
+  </head>
+
+  <li style="position: absolute; top: 110px; left: 10px; z-index: 1001; display: flex; flex-direction: column; padding: 10px; background-color: gray">
+    <a href="index.html">index</a>
+    <a href="catalog.html">catalog</a>
+    <a href="category.html">category</a>
+    <a href="subcategory-1.html">subcategory-1</a>
+    <a href="subcategory-2.html">subcategory-2</a>
+    <a href="single-product-1.html">single-product-1</a>
+    <a href="modal.html">modal</a>
+    <a href="single-product-2-1.html">single-product-2-1</a>
+    <a href="single-product-2-2.html">single-product-2-2</a>
+    <a href="single-product-3.html">single-product-3</a>
+    <a href="single-product-4.html">single-product-4</a>
+    <a href="components.html">components</a>
+  </li>
+
+  <body>
+    <main>
+      <div class="questions__container">
+        <div class="questions__wrapper">
+          <div class="questions__row">
+            <div class="questions__content">
+              <h2 class="questions__title">ОСТАЛИСЬ ВОПРОСЫ?</h2>
+              <div class="questions__description">
+                <p>Укажите свой номер телефона и мы с Вами свяжемся в ближайшее время</p>
+              </div>
+            </div>
+            <form action="#" class="questions__form">
+              <input class="questions__input" type="text" placeholder="+38 (0__) ___ __ __" />
+              <button class="button questions__button" type="submit">
+                <p>Перезвоните мне</p>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="product">
+        <div class="product__wrapper">
+          <div class="product__labels">
+            <span class="product__labels-label">industial</span>
+            <span class="product__labels-label">f20</span>
+            <span class="product__labels-overwiev">
+              <img src="assets/image/product/overview.png" alt="360" />
+            </span>
+          </div>
+          <div class="product__like">
+            <svg class="product__like-item" viewBox="0 0 24 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M11.9626 19.5381L2.10281 9.80024C1.07574 8.78576 0.5 7.41137 0.5 5.97966C0.5 4.548 1.07574 3.17365 2.10281 2.15928C3.13034 1.1449 4.52508 0.573975 5.98067 0.573975C7.43626 0.573975 8.83108 1.1449 9.85873 2.15928L11.9626 4.23506L14.0665 2.15928C15.094 1.1449 16.4888 0.573975 17.9444 0.573975C19.4 0.573975 20.7948 1.1449 21.8224 2.15928C22.8499 3.17365 23.4287 4.548 23.4287 5.97966C23.4287 7.41137 22.8499 8.78576 21.8224 9.80024L11.9626 19.5381Z"
+              />
+            </svg>
+          </div>
+          <div class="product__image">
+            <a class="product__image-link" href="#">
+              <img class="product__image-item" src="assets/image/product/image-1.png" alt="Product" />
+            </a>
+          </div>
+          <div class="product__content-row">
+            <div class="product__content">
+              <h4 class="product__title"><a href="#">Акумуляторна ланцюгова. пила Procraft PKA32L i (3 1 акб)</a></h4>
+              <div class="product__rating">
+                <div class="rating">
+                  <span class="rating-star rating-filled"></span>
+                  <span class="rating-star rating-filled"></span>
+                  <span class="rating-star rating-filled"></span>
+                  <span class="rating-star"></span>
+                  <span class="rating-star"></span>
+                </div>
+                <span class="product__rating-total">0 відгуків</span>
+              </div>
+              <div class="product__price-row">
+                <p class="product__price">
+                  <span>4 080 грн</span>
+                </p>
+                <p class="product__price-old">4 080 грн</p>
+              </div>
+            </div>
+            <div class="product__badges">
+              <span class="product__badge-discount">-15%</span>
+            </div>
+          </div>
+          <div class="product__additional">
+            <button class="product__additional-button">
+              <svg class="product__additional-icon"><use href="assets/icons.svg#cartSmall"></use></svg>
+              <p>купити</p>
+            </button>
+            <div class="product__additional-attributes">
+              <div class="product__additional-attribute">
+                <span>Число оборотів холостого ходу:</span>
+                5500 - 7500 об/хв
+              </div>
+
+              <div class="product__additional-attribute">
+                <span>Плавний пуск:</span>
+                Є
+              </div>
+
+              <div class="product__additional-attribute">
+                <span>Тип штанги:</span>
+                Розбірна
+              </div>
+
+              <div class="product__additional-attribute">
+                <span>Клас захисту:</span>
+                II
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="video">
+        <div class="video__wrapper">
+          <img class="video__item" src="assets/image/video/image-1.png" alt="Video" />
+          <div class="video__play-button"></div>
+        </div>
+        <div class="video__description">
+          <p class="video__title">До нового року з потужними новинками! Акумуляторний перфоратор Procraft industrial Procraft industrial</p>
+          <div class="video__info">
+            <span>1,1 тис. переглядів</span>
+            <span>•</span>
+            <span>1 день тому</span>
+          </div>
+        </div>
+      </div>
+
+      <ul class="breadcrumbs">
+        <li class="breadcrumbs__item">
+          <a class="breadcrumbs__link" href="#">Главная</a>
+        </li>
+        <li class="breadcrumbs__item">
+          <a class="breadcrumbs__link" href="#">Электроинструменты</a>
+        </li>
+        <li class="breadcrumbs__item">
+          <a class="breadcrumbs__link" href="#">Шуруповерты</a>
+        </li>
+        <li class="breadcrumbs__item">
+          <a class="breadcrumbs__link breadcrumbs__link--active" href="#">Шуруповерт сетевой Procraft РВ 1250</a>
+        </li>
+      </ul>
+
+      <div class="product_secondary">
+        <div class="product_secondary__wrapper">
+          <div class="product_secondary__main">
+            <div class="product_secondary__image_wrapper">
+              <a class="product_secondary__image-link" href="#">
+                <img class="product_secondary__image-item" src="assets/image/product/image-1.png" alt="Product" />
+              </a>
+            </div>
+            <div class="product_secondary__content">
+              <h2 class="product_secondary__title">
+                <a href="#">Акумуляторна коса Procraft PTA24</a>
+              </h2>
+              <div class="product__rating">
+                <div class="rating">
+                  <span class="rating-star rating-filled"></span>
+                  <span class="rating-star rating-filled"></span>
+                  <span class="rating-star rating-filled"></span>
+                  <span class="rating-star"></span>
+                  <span class="rating-star"></span>
+                </div>
+                <span class="product__rating-total">243 отзывов</span>
+              </div>
+              <div class="product__price-row">
+                <p class="product__price">
+                  <span>2600 грн</span>
+                </p>
+                <p class="product__price-old">2600 грн</p>
+              </div>
+            </div>
+          </div>
+          <div class="product_secondary__buttons">
+            <button class="button">
+              <p>Купити</p>
+            </button>
+
+            <button type="button" class="button button_icon product_secondary__button_big">
+              <span class="button_icon__icon product_secondary__button_big_icon"></span>
+              Оплата частинами
+            </button>
+
+            <button class="button button_gray product_secondary__button_gray">
+              <svg class="product_secondary__button_gray_icon" viewBox="0 0 24 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M11.9626 19.5381L2.10281 9.80024C1.07574 8.78576 0.5 7.41137 0.5 5.97966C0.5 4.548 1.07574 3.17365 2.10281 2.15928C3.13034 1.1449 4.52508 0.573975 5.98067 0.573975C7.43626 0.573975 8.83108 1.1449 9.85873 2.15928L11.9626 4.23506L14.0665 2.15928C15.094 1.1449 16.4888 0.573975 17.9444 0.573975C19.4 0.573975 20.7948 1.1449 21.8224 2.15928C22.8499 3.17365 23.4287 4.548 23.4287 5.97966C23.4287 7.41137 22.8499 8.78576 21.8224 9.80024L11.9626 19.5381Z"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="feedback">
+        <div class="feedback__wrapper">
+          <div class="feedback__account">
+            <div class="feedback__image_wrapper">
+              <img class="feedback__image" src="/assets/image/feedback/image_1.jpg" alt="Profile image" />
+            </div>
+            <div class="feedback__account_info">
+              <h6 class="feedback__name">Володимир</h6>
+              <div class="rating" bis_skin_checked="1">
+                <span class="rating-star rating-filled"></span>
+                <span class="rating-star rating-filled"></span>
+                <span class="rating-star rating-filled"></span>
+                <span class="rating-star"></span>
+                <span class="rating-star"></span>
+              </div>
+            </div>
+          </div>
+          <span class="feedback__date">20.04.2021</span>
+          <div class="feedback__content">
+            <p>
+              В користуванні 2 місяці. Цілком задоволений. Бажано мати 2 комплекта акумуляторів. З плюсів: Дуже потужна, легка, тихо працює, проста в експлуатації. З мінусів: Туга кнопка запуску, через хвилин 10 починає втомлюватись кість (можливо це
+              тільки в моєму екземплярі).
+            </p>
+            <p>Причина покупк</p>
+          </div>
+          <div class="feedback__button_row">
+            <button class="feedback__respond">Відповісти</button>
+            <span class="feedback__deco"></span>
+            <span class="feedback__quantity">1 ответ</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="answer">
+        <div class="answer__wrapper">
+          <div class="answer__image_wrapper">
+            <img class="answer__image" src="/assets/image/feedback/image_1.jpg" alt="Profile image" />
+          </div>
+          <h6 class="answer__name">Експерт Procraft</h6>
+          <div class="answer__date">21.04.2021</div>
+          <span class="answer__deco"></span>
+          <div class="answer__content">
+            <p>Дякуємо за вибір нашого бренду та ваші враження</p>
+            <p>Приємно, що ви гідно оцінили функціонал тримера, який чудово впорався з поставленими завданнями</p>
+            <p>Побажання щодо кнопки зафіксували</p>
+            <p>Бажаємо й надалі приємного користування та комфорту у роботі, який вам гарантовано</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="feedback_block">
+        <div class="feedback_block__wrapper">
+          <div class="feedback">
+            <div class="feedback__wrapper">
+              <div class="feedback__account">
+                <div class="feedback__image_wrapper">
+                  <img class="feedback__image" src="/assets/image/feedback/image_1.jpg" alt="Profile image" />
+                </div>
+                <div class="feedback__account_info">
+                  <h6 class="feedback__name">Володимир</h6>
+                  <div class="rating" bis_skin_checked="1">
+                    <span class="rating-star rating-filled"></span>
+                    <span class="rating-star rating-filled"></span>
+                    <span class="rating-star rating-filled"></span>
+                    <span class="rating-star"></span>
+                    <span class="rating-star"></span>
+                  </div>
+                </div>
+              </div>
+              <span class="feedback__date">20.04.2021</span>
+              <div class="feedback__content">
+                <p>
+                  В користуванні 2 місяці. Цілком задоволений. Бажано мати 2 комплекта акумуляторів. З плюсів: Дуже потужна, легка, тихо працює, проста в експлуатації. З мінусів: Туга кнопка запуску, через хвилин 10 починає втомлюватись кість
+                  (можливо це тільки в моєму екземплярі).
+                </p>
+                <p>Причина покупк</p>
+              </div>
+              <div class="feedback__button_row">
+                <button class="feedback__respond">Відповісти</button>
+                <span class="feedback__deco"></span>
+                <span class="feedback__quantity">1 ответ</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="answer">
+            <div class="answer__wrapper">
+              <div class="answer__image_wrapper">
+                <img class="answer__image" src="/assets/image/feedback/image_1.jpg" alt="Profile image" />
+              </div>
+              <h6 class="answer__name">Експерт Procraft</h6>
+              <div class="answer__date">21.04.2021</div>
+              <span class="answer__deco"></span>
+              <div class="answer__content">
+                <p>Дякуємо за вибір нашого бренду та ваші враження</p>
+                <p>Приємно, що ви гідно оцінили функціонал тримера, який чудово впорався з поставленими завданнями</p>
+                <p>Побажання щодо кнопки зафіксували</p>
+                <p>Бажаємо й надалі приємного користування та комфорту у роботі, який вам гарантовано</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="answer">
+            <div class="answer__wrapper">
+              <div class="answer__image_wrapper">
+                <img class="answer__image" src="/assets/image/feedback/image_1.jpg" alt="Profile image" />
+              </div>
+              <h6 class="answer__name">Експерт Procraft</h6>
+              <div class="answer__date">21.04.2021</div>
+              <span class="answer__deco"></span>
+              <div class="answer__content">
+                <p>Дякуємо за вибір нашого бренду та ваші враження</p>
+                <p>Приємно, що ви гідно оцінили функціонал тримера, який чудово впорався з поставленими завданнями</p>
+                <p>Побажання щодо кнопки зафіксували</p>
+                <p>Бажаємо й надалі приємного користування та комфорту у роботі, який вам гарантовано</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="feedback_block">
+        <div class="feedback">
+          <div class="feedback__wrapper">
+            <div class="feedback__account">
+              <div class="feedback__image_wrapper">
+                <img class="feedback__image" src="/assets/image/feedback/image_1.jpg" alt="Profile image" />
+              </div>
+              <div class="feedback__account_info">
+                <h6 class="feedback__name">Володимир</h6>
+                <div class="rating" bis_skin_checked="1">
+                  <span class="rating-star rating-filled"></span>
+                  <span class="rating-star rating-filled"></span>
+                  <span class="rating-star rating-filled"></span>
+                  <span class="rating-star"></span>
+                  <span class="rating-star"></span>
+                </div>
+              </div>
+            </div>
+            <span class="feedback__date">20.04.2021</span>
+            <div class="feedback__content">
+              <p>
+                В користуванні 2 місяці. Цілком задоволений. Бажано мати 2 комплекта акумуляторів. З плюсів: Дуже потужна, легка, тихо працює, проста в експлуатації. З мінусів: Туга кнопка запуску, через хвилин 10 починає втомлюватись кість (можливо
+                це тільки в моєму екземплярі).
+              </p>
+              <p>Причина покупк</p>
+            </div>
+            <div class="feedback__button_row">
+              <button class="feedback__respond">Відповісти</button>
+              <span class="feedback__deco"></span>
+              <span class="feedback__quantity">1 ответ</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="answer">
+          <div class="answer__wrapper">
+            <div class="answer__image_wrapper">
+              <img class="answer__image" src="/assets/image/feedback/image_1.jpg" alt="Profile image" />
+            </div>
+            <h6 class="answer__name">Експерт Procraft</h6>
+            <div class="answer__date">21.04.2021</div>
+            <span class="answer__deco"></span>
+            <div class="answer__content">
+              <p>Дякуємо за вибір нашого бренду та ваші враження</p>
+              <p>Приємно, що ви гідно оцінили функціонал тримера, який чудово впорався з поставленими завданнями</p>
+              <p>Побажання щодо кнопки зафіксували</p>
+              <p>Бажаємо й надалі приємного користування та комфорту у роботі, який вам гарантовано</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="answer">
+          <div class="answer__wrapper">
+            <div class="answer__image_wrapper">
+              <img class="answer__image" src="/assets/image/feedback/image_1.jpg" alt="Profile image" />
+            </div>
+            <h6 class="answer__name">Експерт Procraft</h6>
+            <div class="answer__date">21.04.2021</div>
+            <span class="answer__deco"></span>
+            <div class="answer__content">
+              <p>Дякуємо за вибір нашого бренду та ваші враження</p>
+              <p>Приємно, що ви гідно оцінили функціонал тримера, який чудово впорався з поставленими завданнями</p>
+              <p>Побажання щодо кнопки зафіксували</p>
+              <p>Бажаємо й надалі приємного користування та комфорту у роботі, який вам гарантовано</p>
+            </div>
+          </div>
+        </div>
+
+        <button class="feedback_block__button">Показати більше відповідей</button>
+      </div>
+
+      <div class="load">
+        <h2 class="h2 load__title">Інструкція користувача</h2>
+        <ul class="load__list">
+          <li class="load__item">
+            <svg width="18" height="20" viewBox="0 0 18 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M0.9985 0C0.44749 0 0 0.44405 0 0.9918V19.0082C0 19.5447 0.44476 20 0.9934 20H17.0066C17.5551 20 18 19.5489 18 18.9925L17.9997 5L13 0H0.9985ZM7.5 5.5H9.5C9.5 7.98994 11.6436 10.6604 14.3162 11.5513L13.8586 13.49C10.7234 13.0421 7.4821 14.3804 4.5547 16.3321L3.3753 14.7191C4.46149 13.8502 5.50293 12.3757 6.27499 10.6534C7.0443 8.9373 7.5 7.07749 7.5 5.5ZM8.1 11.4716C8.3673 10.8752 8.6043 10.2563 8.8037 9.6285C9.2754 10.3531 9.8553 11.0182 10.5102 11.5953C9.5284 11.7711 8.5666 12.0596 7.6353 12.4276C7.8 12.1143 7.9551 11.7948 8.1 11.4716Z"
+                fill="#101010"
+              />
+            </svg>
+            <a href="#" class="load__link">Завантажити інструкцію до «Акумуляторна коса Procraft PTA24»</a>
+          </li>
+          <li class="load__item">
+            <svg width="18" height="20" viewBox="0 0 18 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M0.9985 0C0.44749 0 0 0.44405 0 0.9918V19.0082C0 19.5447 0.44476 20 0.9934 20H17.0066C17.5551 20 18 19.5489 18 18.9925L17.9997 5L13 0H0.9985ZM7.5 5.5H9.5C9.5 7.98994 11.6436 10.6604 14.3162 11.5513L13.8586 13.49C10.7234 13.0421 7.4821 14.3804 4.5547 16.3321L3.3753 14.7191C4.46149 13.8502 5.50293 12.3757 6.27499 10.6534C7.0443 8.9373 7.5 7.07749 7.5 5.5ZM8.1 11.4716C8.3673 10.8752 8.6043 10.2563 8.8037 9.6285C9.2754 10.3531 9.8553 11.0182 10.5102 11.5953C9.5284 11.7711 8.5666 12.0596 7.6353 12.4276C7.8 12.1143 7.9551 11.7948 8.1 11.4716Z"
+                fill="#101010"
+              />
+            </svg>
+            <a href="#" class="load__link">Інструкція з електронним керуванням</a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="parameters">
+        <ul class="parameters__wrapper">
+          <li class="parameters__item">
+            <p class="parameters__label">Інструкція з експлуатації</p>
+            <p class="parameters__value">Є</p>
+          </li>
+          <li class="parameters__item">
+            <p class="parameters__label">Тип штанги</p>
+            <p class="parameters__value">2 шт - 1,5 Аг</p>
+          </li>
+          <li class="parameters__item">
+            <p class="parameters__label">Зарядний пристрій</p>
+            <p class="parameters__value">Штекерний - 1 шт</p>
+          </li>
+          <li class="parameters__item">
+            <p class="parameters__label">Ключ для зміни оснащення</p>
+            <p class="parameters__value">1 шт</p>
+          </li>
+          <li class="parameters__item">
+            <p class="parameters__label">Ніж</p>
+            <p class="parameters__value">2х лопастной металевий - 2 шт, 2х лопастной пластмасовий - 5 шт, диск 148х5 мм 40Т - 1 шт</p>
+          </li>
+        </ul>
+      </div>
+
+      <div class="product_overview">
+        <div class="product_overview__image_list">
+          <img src="assets/image/product/image-1.png" alt="Product" class="product_overview__item" />
+          <img src="assets/image/product/image-2.png" alt="Product" class="product_overview__item" />
+          <img src="assets/image/product/image-3.png" alt="Product" class="product_overview__item" />
+          <img src="assets/image/product/image-4.png" alt="Product" class="product_overview__item" />
+          <img src="assets/image/product/image-2.png" alt="Product" class="product_overview__item" />
+          <div class="product_overview__item"><div class="play_button" bis_skin_checked="1"></div></div>
+          <img class="product_overview__item" src="assets/image/product/overview.png" alt="360" />
+        </div>
+        <div class="product_overview__buttons">
+          <span class="product_overview__quantity">+14</span>
+          <span class="product_overview__arrow"></span>
+        </div>
+        <div class="product_overview__image--main">
+          <img src="assets/image/product/image-3.png" alt="Product" class="product_overview__image" />
+          <div class="product__labels">
+            <span class="product__labels-label">industial</span>
+            <span class="product__labels-label">f20</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="product_present">
+        <span class="product_present__number">1</span>
+        <div class="product_present__image_wraper">
+          <img class="product_present__image" src="assets/image/product/image-1.png" alt="Present image" />
+        </div>
+        <div class="product_present__content">
+          <h4 class="product_present__title">Акумуляторна коса Procraft PTA24</h4>
+          <div class="product_present__options">
+            <span class="product_present__quantity">2 шт</span>
+            <span class="product_present__price">180 грн</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="description_item">
+        <div class="description_item__text">
+          <h4 class="description_item__title">Универсальность и компактность</h4>
+          <p>
+            Дрель-шуруповерт CD-12C Compact — самая компактная модель в ассортименте. Она может работать со стандартными насадками, битами, сверлами по дереву и металлу, перьевыми сверлами небольших диаметров. Модель отлично показывает себя в
+            следующих задачах:
+          </p>
+          <ul>
+            <li>сборка мебели;</li>
+            <li>монтаж гипсокартона;</li>
+            <li>сверление металла и профиля;</li>
+            <li>сверление дерева перьевым сверлом;</li>
+            <li>сверление дерева небольшим винтовым сверлом.</li>
+          </ul>
+        </div>
+        <div class="description_item__image_wrapper">
+          <img class="description_item__image" src="assets/image/description/image_01.jpg" alt="" />
+        </div>
+      </div>
+
+      <div class="text_item">
+        <h4>Почему стоит выбрать электроинструмент Прокрафт?</h4>
+        <p>
+          В настоящее время на рынке электроинструментов в Украине достаточно много предложений как от крупных, так и небольших компаний. Большинство из них стремиться привлечь покупателя не только ассортиментом товаров, но и невысокой ценой.
+          Электроинструмент в интернет магазинах можно приобрести с запасными комплектующими, различными насадками, что делает их применение универсальным.
+        </p>
+        <p>
+          Компания Procraft в этом отношении относится к своим покупателям ответственно, изготавливая прежде всего качественную продукцию, которая соответствует всем международным стандартам. Производство всех моделей осуществляется на
+          роботизированных заводах, где все компоненты инструментов проходят тщательную проверку и отбор перед тем, как будут включены в сборку. Такой подход позволяет существенно сократить риск попадания бракованных товаров на рынок, ведь
+          изготовление и контроль продукции осуществляют опытные европейские специалисты.
+        </p>
+        <p>В числе основных преимуществ продукции стоит выделить:</p>
+      </div>
+    </main>
+
+    <footer>
+      <div class="footer">
+        <div class="footer__container">
+          <nav class="footer__wrapper">
+            <div class="footer__column">
+              <ul class="footer__list">
+                <li class="footer__title"><h4>О Procraft</h4></li>
+                <li class="footer__link"><a href="#">О компании</a></li>
+                <li class="footer__link"><a href="#">Магазины</a></li>
+                <li class="footer__link"><a href="#">Хиты продаж</a></li>
+                <li class="footer__link"><a href="#">Каталог</a></li>
+                <li class="footer__link"><a href="#">Блог</a></li>
+                <li class="footer__link"><a href="#">Партнеры за границей</a></li>
+              </ul>
+            </div>
+            <div class="footer__column">
+              <ul class="footer__list">
+                <li class="footer__title"><h4>Помощь</h4></li>
+                <li class="footer__link"><a href="#">Контакты</a></li>
+                <li class="footer__link"><a href="#">Доставка и оплата</a></li>
+                <li class="footer__link"><a href="#">Карта сайта</a></li>
+                <li class="footer__link"><a href="#">Черный список</a></li>
+              </ul>
+            </div>
+            <div class="footer__column">
+              <ul class="footer__list">
+                <li class="footer__title"><h4>Сервисы</h4></li>
+                <li class="footer__link"><a href="#">Сервис</a></li>
+                <li class="footer__link"><a href="#">Регистрация инструмента</a></li>
+              </ul>
+              <ul class="footer__list">
+                <li class="footer__title"><h4>Мы в соцсетях</h4></li>
+                <ul class="footer__list_media">
+                  <li class="footer__link footer__link_media">
+                    <a href="#"><img src="assets/image/icons/facebook.svg" alt="Facebook" /></a>
+                  </li>
+                  <li class="footer__link footer__link_media">
+                    <a href="#"><img src="assets/image/icons/instagram.svg" alt="Instagram" /></a>
+                  </li>
+                  <li class="footer__link footer__link_media">
+                    <a href="#"><img src="assets/image/icons/telegram.svg" alt="Telegram" /></a>
+                  </li>
+                  <li class="footer__link footer__link_media">
+                    <a href="#"><img src="assets/image/icons/youtube.svg" alt="Youtube" /></a>
+                  </li>
+                  <li class="footer__link footer__link_media">
+                    <a href="#"><img src="assets/image/icons/tik-tok.svg" alt="Tik-tok" /></a>
+                  </li>
+                </ul>
+              </ul>
+            </div>
+            <div class="footer__column">
+              <ul class="footer__list">
+                <li class="footer__title"><h4>Будьте на связи</h4></li>
+                <li class="footer__link footer__link--contact">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M11.3333 8.33334C10.5033 8.33334 9.7 8.2 8.95334 7.95334C8.72334 7.88 8.46 7.93334 8.27669 8.11669L6.81003 9.58669C4.92003 8.62669 3.37669 7.08334 2.41669 5.19669L3.88334 3.72334C4.06669 3.54 4.12 3.27669 4.04669 3.04669C3.80003 2.30003 3.66669 1.49669 3.66669 0.666687C3.66666 0.296656 3.37 0 3 0H0.666656C0.3 0 0 0.296656 0 0.666656C0 6.92666 5.07334 12 11.3333 12C11.7033 12 12 11.7033 12 11.3333V9C12 8.63 11.7033 8.33334 11.3333 8.33334Z"
+                      fill="#C0C0C0"
+                      fill-opacity="0.49"
+                    />
+                  </svg>
+                  <a href="callto:+380504655506">050 465 55 06</a>
+                </li>
+                <li class="footer__link footer__link--contact">
+                  <span class="footer__link--icon--empty"></span>
+                  <a href="callto:+380676186671">067 618 66 71</a>
+                </li>
+                <li class="footer__link footer__link--contact">
+                  <svg width="14" height="13" viewBox="0 0 16 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M16.0011 11.2981V0.870361L10.4844 6.08423L16.0011 11.2981Z" fill="#C0C0C0" fill-opacity="0.4" />
+                    <path d="M7.99805 8.43122L6.423 6.94263L0.90625 12.1565H15.0898L9.57309 6.94263L7.99805 8.43122Z" fill="#C0C0C0" fill-opacity="0.4" />
+                    <path d="M15.0898 0.0119629H0.90625L7.99805 6.7146L15.0898 0.0119629Z" fill="#C0C0C0" fill-opacity="0.4" />
+                    <path d="M0 0.870361V11.2981L5.51672 6.08423L0 0.870361Z" fill="#C0C0C0" fill-opacity="0.4" />
+                  </svg>
+                  <a href="mailto:info@procraft.ua">info@procraft.ua</a>
+                </li>
+              </ul>
+
+              <form class="footer__form" action="#">
+                <h5 class="footer__form__subtitle">Получайте уведомления о новых акциях, спецпредложениях и скидках</h5>
+                <div class="footer__form_wrapper">
+                  <input class="input---dark footer__form_input" type="email" placeholder="Email" />
+                  <button class="button footer__form_button">Ок</button>
+                </div>
+                <p class="footer__form_text">
+                  Подписываясь, вы принимаете условия
+                  <a href="#">пользовательского соглашения</a>
+                </p>
+              </form>
+            </div>
+          </nav>
+        </div>
+      </div>
+      <div class="footer_bottom__row">
+        <div class="footer_bottom__container">
+          <ul class="footer_bottom__wrapper">
+            <li class="footer_bottom__column">
+              <a href="index.html">
+                <img class="footer_bottom__logo" src="assets/image/footer/logo.png" alt="Logo" />
+              </a>
+            </li>
+            <li class="footer_bottom__column">
+              <span class="footer_bottom__span">©Procraft.ua 2005</span>
+              <span class="footer_bottom__span">Все права защищены</span>
+            </li>
+            <li class="footer_bottom__column">
+              <span class="footer_bottom__span">Мы принимаем</span>
+              <img class="footer_bottom__card" src="assets/image/footer/icon_01.png" alt="Visa" />
+              <img class="footer_bottom__card" src="assets/image/footer/icon_02.png" alt="Card" />
+            </li>
+          </ul>
+        </div>
+      </div>
+    </footer>
+
+    <div class="top_arrow">
+      <svg width="17" height="10" viewBox="0 0 17 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0.695312 8.66675L8.5 1.6355L16.3047 8.66675" stroke="#3E3F40" />
+      </svg>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+    <script src="assets/js/script.js"></script>
+  </body>
+</html>

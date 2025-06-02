@@ -1,0 +1,179 @@
+{{ header }}{{ column_left }}
+<div id="content">
+    <div class="page-header">
+        <div class="container-fluid">
+            <div class="pull-right">
+                <button type="submit" form="form-blog_article" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary">
+                    <i class="fa fa-save"></i></button>
+                <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a>
+            </div>
+            <img width="36" height="36" style="float:left" src="view/image/neoseo.png" alt=""/>
+            <h1>{{ heading_title_raw ~ " " ~ text_module_version }}</h1>
+            <ul class="breadcrumb">
+                {% for breadcrumb in breadcrumbs %}
+                    <li><a href="{{ breadcrumb['href'] }}">{{ breadcrumb['text'] }}</a></li>
+                    {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="container-fluid">
+        {% if (error_warning) %}
+            <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+            </div>
+        {% endif %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
+            </div>
+            <div class="panel-body">
+                <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-blog_article" class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="input-name">{{ entry_name }}</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="name" value="{{ name }}" placeholder="{{ entry_name }}" id="input-name" class="form-control"/>
+                            {% if (error_name) %}
+                                <div class="text-danger">{{ error_name }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="input-title">{{ entry_title }}</label>
+                        <div class="col-sm-10">
+                            {% for language in languages %}
+                                <div class="input-group">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" id="test" type="button" data-toggle="tooltip" title="" data-original-title="{{ button_clear }}" onclick="$('#input-title{{ language['language_id'] }}').val('');">
+                                            <img src="view/image/flags/{{ language['code'] }}.png" title="{{ language['name'] }}"/>
+                                        </button>
+                                    </span>
+                                    <input type="text" name="title[{{ language['language_id'] }}]" value="{{ title[language['language_id']] }}" placeholder="{{ entry_title }}" id="input-title{{ language['language_id'] }}" class="form-control"/>
+                                </div>
+                                {% if (languages|length > 1) %}
+                                    <br/>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="input-category">{{ entry_type }}</label>
+                        <div class="col-sm-10">
+                            <select name="type" class="form-control">
+                                <option value="">{{ text_select }}</option>
+                                <option value="latest"
+                                        {{ type == 'latest' ? "selected='selected'" : "" }}>
+                                    {{ text_latest }}
+                                </option>
+                                <option value="popular"
+                                        {{ type == 'popular' ? "selected='selected'" : "" }}>
+                                    {{ text_popular }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group" id="category">
+                        <label class="col-sm-2 control-label" for="input-category">{{ entry_category }}</label>
+                        <div class="col-sm-10">
+                            <select name="blog_category_id" class="form-control">
+                                <option value="">{{ text_select }}</option>
+                                {% for category in categories %}
+                                    <option value="{{ category['category_id'] }}" {{ category['category_id'] == blog_category_id ? "selected='selected'" : "" }}>{{ category['name'] }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group" id="root_category">
+                        <label class="col-sm-2 control-label" for="input-category">{{ entry_root_category }}</label>
+                        <div class="col-sm-10">
+                            <select name="root_category_id" class="form-control">
+                                <option value="">{{ text_select }}</option>
+                                {% for category in categories %}
+                                    <option value="{{ category['category_id'] }}"{{ category['category_id'] == root_category_id ? "selected='selected'" : "" }}>{{ category['name'] }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="input-template">{{ entry_template }}</label>
+                        <div class="col-sm-10">
+                            <select name="template" class="form-control">
+                                {% for _template in templates %}
+                                    <option value="{{ _template }}" {% if (template == _template ) %}selected="selected"{% endif %}>{{ _template }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="input-limit">{{ entry_limit }}</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="limit" value="{{ limit }}" placeholder="{{ entry_limit }}" id="input-limit" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="input-width">{{ entry_width }}</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="width" value="{{ width }}" placeholder="{{ entry_width }}" id="input-width" class="form-control"/>
+                            {% if (error_width) %}
+                                <div class="text-danger">{{ error_width }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="input-height">{{ entry_height }}</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="height" value="{{ height }}" placeholder="{{ entry_height }}" id="input-height" class="form-control"/>
+                            {% if (error_height) %}
+                                <div class="text-danger">{{ error_height }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="input-status">{{ entry_status }}</label>
+                        <div class="col-sm-10">
+                            <select name="status" id="input-status" class="form-control">
+                                {% if (status) %}
+                                    <option value="1" selected="selected">{{ text_enabled }}</option>
+                                    <option value="0">{{ text_disabled }}</option>
+                                {% else %}
+                                    <option value="1">{{ text_enabled }}</option>
+                                    <option value="0" selected="selected">{{ text_disabled }}</option>
+                                {% endif %}
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{{ footer }}
+<script type="text/javascript"><!--
+	$('input[name=\'product\']').autocomplete({
+		source: function (request, response) {
+			$.ajax({
+				url: 'index.php?route=catalog/product/autocomplete&user_token={{ user_token }}&filter_name=' + encodeURIComponent(request),
+				dataType: 'json',
+				success: function (json) {
+					response($.map(json, function (item) {
+						return {
+							label: item['name'],
+							value: item['product_id']
+						}
+					}));
+				}
+			});
+		},
+		select: function (item) {
+			$('input[name=\'product\']').val('');
+
+			$('#blog_article-product' + item['value']).remove();
+
+			$('#blog_article-product').append('<div id="blog_article-product' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="product[]" value="' + item['value'] + '" /></div>');
+		}
+	});
+
+	$('#blog_article-product').delegate('.fa-minus-circle', 'click', function () {
+		$(this).parent().remove();
+	});
+	//--></script>
+

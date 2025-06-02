@@ -1,0 +1,155 @@
+2025-05-30 22:24:48 - 
+ERROR: FILE NOT FOUND!
+FILE: /home/stromo/procraft.ua/dev/catalog/controller/extension/module/template_switcher.php
+MOD: Укркредит
+
+ERROR: FILE NOT FOUND!
+FILE: /home/stromo/procraft.ua/dev/system/library/seopro.php
+MOD: Укркредит
+
+ERROR: FILE NOT FOUND!
+FILE: /home/stromo/procraft.ua/dev/catalog/view/theme/*/template/product/product.tpl
+MOD: Укркредит
+
+ERROR: FILE NOT FOUND!
+FILE: /home/stromo/procraft.ua/dev/system/library/cart.php
+MOD: Укркредит
+
+ERROR: CODE NOT FOUND!
+FILE: admin/model/sale/order.php
+CODE: $this->db->query("DELETE FROM `" . DB_PREFIX . "order
+MOD: Укркредит управление заказами
+
+ERROR: FILE NOT FOUND!
+FILE: /home/stromo/procraft.ua/dev/admin/view/template/sale/order_info.tpl
+MOD: Укркредит управление заказами
+
+ERROR: FILE NOT FOUND!
+FILE: /home/stromo/procraft.ua/dev/catalog/view/theme/neoseo_unistor/template/checkout/cart.twig
+MOD: NeoSeo Checkout
+
+ERROR: FILE NOT FOUND!
+FILE: /home/stromo/procraft.ua/dev/admin/controller/common/menu.php
+MOD: OCFilter Modification
+
+ERROR: FILE NOT FOUND!
+FILE: /home/stromo/procraft.ua/dev/admin/controller/extension/module.php
+MOD: OCFilter Modification
+
+ERROR: CODE NOT FOUND!
+FILE: admin/controller/design/layout.php
+CODE: 'module/' . $code
+MOD: OCFilter Modification
+
+ERROR: FILE NOT FOUND!
+FILE: /home/stromo/procraft.ua/dev/admin/view/template/common/menu.tpl
+MOD: OCFilter Modification
+
+ERROR: CODE NOT FOUND!
+FILE: catalog/model/catalog/product.php
+CODE: getTotalProductSpecials() {
+MOD: OCFilter Modification
+
+ERROR: FILE NOT FOUND!
+FILE: /home/stromo/procraft.ua/dev/catalog/view/theme/*/template/product/category.tpl
+MOD: OCFilter Modification
+
+ERROR: FILE NOT FOUND!
+FILE: /home/stromo/procraft.ua/dev/catalog/view/theme/*/template/product/{category,search,manufacturer,special}.tpl
+MOD: OCFilter Modification
+
+ERROR: FILE NOT FOUND!
+FILE: /home/stromo/procraft.ua/dev/catalog/view/theme/*/template/product/product.tpl
+MOD: OCFilter Modification
+
+ERROR: FILE NOT FOUND!
+FILE: /home/stromo/procraft.ua/dev/system/library/seopro.php
+MOD: OCFilter Modification
+
+ERROR: FILE NOT FOUND!
+FILE: /home/stromo/procraft.ua/dev/admin/view/template/extension/module/modification_manager/list.twig
+MOD: DEV-OPENCART.COM - Порядок выполнения модификаторов
+
+ERROR: FILE NOT FOUND!
+FILE: /home/stromo/procraft.ua/dev/admin/model/extension/module/modification_manager.php
+MOD: DEV-OPENCART.COM - Порядок выполнения модификаторов
+
+ERROR: CODE NOT FOUND!
+FILE: catalog/language/en-gb/common/footer.php
+CODE: http://opencart.pro/
+MOD: DEV-OPENCART.COM — Товары которых нет в наличии в конце списка
+
+ERROR: CODE NOT FOUND!
+FILE: catalog/language/ru-ru/common/footer.php
+CODE: http://opencart.pro/
+MOD: DEV-OPENCART.COM — Товары которых нет в наличии в конце списка
+
+ERROR: CODE NOT FOUND!
+FILE: catalog/language/uk-ua/common/footer.php
+CODE: http://opencart.pro/
+MOD: DEV-OPENCART.COM — Товары которых нет в наличии в конце списка
+
+ERROR: CODE NOT FOUND!
+FILE: catalog/language/en-gb/common/footer.php
+CODE: http://myopencart.com/
+MOD: DEV-OPENCART.COM — Товары которых нет в наличии в конце списка
+
+ERROR: CODE NOT FOUND!
+FILE: catalog/language/ru-ru/common/footer.php
+CODE: http://myopencart.com/
+MOD: DEV-OPENCART.COM — Товары которых нет в наличии в конце списка
+
+ERROR: CODE NOT FOUND!
+FILE: catalog/language/uk-ua/common/footer.php
+CODE: http://myopencart.com/
+MOD: DEV-OPENCART.COM — Товары которых нет в наличии в конце списка
+
+ERROR: CODE NOT FOUND!
+FILE: catalog/language/ru-ru/common/footer.php
+CODE: http://www.opencart.com
+MOD: DEV-OPENCART.COM — Товары которых нет в наличии в конце списка
+
+ERROR: CODE NOT FOUND!
+FILE: catalog/language/uk-ua/common/footer.php
+CODE: http://www.opencart.com
+MOD: DEV-OPENCART.COM — Товары которых нет в наличии в конце списка
+
+ERROR: CODE NOT FOUND!
+FILE: catalog/language/en-gb/common/footer.php
+CODE: http://lowenet.biz/
+MOD: DEV-OPENCART.COM — Товары которых нет в наличии в конце списка
+
+ERROR: CODE NOT FOUND!
+FILE: catalog/language/ru-ru/common/footer.php
+CODE: http://lowenet.biz/
+MOD: DEV-OPENCART.COM — Товары которых нет в наличии в конце списка
+
+ERROR: CODE NOT FOUND!
+FILE: catalog/language/uk-ua/common/footer.php
+CODE: http://lowenet.biz/
+MOD: DEV-OPENCART.COM — Товары которых нет в наличии в конце списка
+
+ERROR: CODE NOT FOUND!
+FILE: catalog/view/theme/default/template/common/footer2.twig
+CODE: <li><a href="{{ sitemap }}">{{ text_sitemap }}</a></li>
+MOD: Form Builder
+
+ERROR: FILE NOT FOUND!
+FILE: /home/stromo/procraft.ua/dev/admin/view/template/common/column_left.tpl
+MOD: SEO CMS
+
+ERROR: FILE NOT FOUND!
+FILE: /home/stromo/procraft.ua/dev/admin/view/template/common/header.tpl
+MOD: SEO CMS
+
+ERROR: FILE NOT FOUND!
+FILE: /home/stromo/procraft.ua/dev/system/library/journal3/cache.php
+MOD: WebP Image Converter
+
+ERROR: FILE NOT FOUND!
+FILE: /home/stromo/procraft.ua/dev/catalog/view/theme/*/template/common/header.twig
+MOD: XD Stickers for Opencart | ocStore 3.x
+
+ERROR: FILE NOT FOUND!
+FILE: /home/stromo/procraft.ua/dev/catalog/view/theme/*/template/common/header.twig
+MOD: Корзина Popup

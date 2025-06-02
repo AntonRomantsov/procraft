@@ -1,0 +1,373 @@
+<footer class="footer" id="footer">
+  <div class="container footer__container">
+    <div class="row">
+      <div class="col-sm-6 col-md-3">
+        <p class="footer-title">{{ text_procraft }}</p>
+        <ul class="list-unstyled footer-list">
+		  <li><a href="{{ about }}">{{ text_about }}</a></li>
+          <li><a href="{{ store }}">{{ text_store }}</a></li>
+		  <li><a href="{{ news }}">{{ text_news }}</a></li> 
+          <li><a href="{{ bestseller }}">{{ text_bestseller }}</a></li>
+      <!--<li><a href="{{ all_category }}">{{ text_all_category }}</a></li>-->
+          <li><a href="{{ blog }}">{{ text_blog }}</a></li>
+        <!--   <li><a href="{{ partnery }}">{{ text_partnery }}</a></li>-->
+        </ul>
+      </div>
+      <div class="col-sm-6 col-md-3">
+        <p class="footer-title">{{ text_extra }}</p>
+        <ul class="list-unstyled footer-list">
+          <li><a href="/contacts">{{ text_contact }}</a></li>
+          <li><a href="{{ delivery }}">{{ text_delivery }}</a></li>
+          <li><a href="/sitemap">{{ text_sitemap }}</a></li>
+          <li><a href="{{ black_list }}">{{ text_black_list }}</a></li>
+        </ul>
+      </div>
+      <div class="col-sm-6 col-md-3">
+        <p class="footer-title">{{ text_service }}</p>
+        <ul class="list-unstyled footer-list">
+          <li><a href="{{ service_map }}">{{ text_service_map }}</a></li>
+          <!-- <li><a href="{{ instrument }}">{{ text_instrument }}</a></li>  -->
+        </ul>
+				<div class="social-links">
+					<p class="footer-title">{{ text_social }}</p>
+					<ul class="list-unstyled social-links__list">
+						<li class="social-links__item">
+							<a class="social-links__link" href="https://www.instagram.com/procraft.ua/" rel="nofollow noindex" target="_blank"><i class="fa fa-instagram"></i></a>
+						</li>
+						<li class="social-links__item">
+							<a class="social-links__link" href="https://www.facebook.com/Procraft.ua" rel="nofollow noindex" target="_blank"><i class="fa fa-facebook"></i></a>
+						</li>
+						<li class="social-links__item">
+							<a class="social-links__link" href="https://www.youtube.com/channel/UCxpqLkXMr-C8he2-BPiyDKg" rel="nofollow noindex" target="_blank"><i class="fa fa-youtube"></i></a>
+						</li>
+						<li class="social-links__item">
+							<a class="social-links__link" href="https://t.me/Procraftinfo" rel="nofollow noindex" target="_blank"><i class="fa fa-telegram"></i></a>
+						</li>
+						<li class="social-links__item">
+							<a class="social-links__link" href="https://www.tiktok.com/@procraft.ua?_t=8ewabgHYZ1y&_r=1" target="_blank" class="tiktok"><img src="/image/tik_tok.svg" alt=""></a>
+						</li>
+					</ul>
+				</div>
+      </div>
+      <div class="col-sm-6 col-md-3">
+        <p class="footer-title">{{ text_call }}</p>
+        <ul class="list-unstyled footer-list footer-contact">
+          <li class="footer-contact__item footer-contact__item--phone"><a class="binct-phone-number-1" href="{{ footer_phone_href }}">{{ footer_phone }}</a></li>
+          <li class="footer-contact__item footer-contact__item--email"><a href="mailto:info@procraft.ua">info@procraft.ua</a></li>
+        </ul>
+				{% if form_newsletter %}
+				<div class="footer-newsletter">
+					{{ form_newsletter }}
+				</div>
+				{% endif %}
+      </div>
+    </div>
+  </div>
+	<div class="footer-bottom">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-2">
+					<div class="logo-footer"><img src="/image/catalog/news/logo.png" alt="logo-footer" width="113"></div>
+				</div>
+				<div class="col-md-7">
+					<div class="footer-copy">{{ powered }}</div>
+				</div>
+				<div class="col-md-3">
+					<div class="payment-home-custom">
+						<span>{{ text_accept }}</span>
+						<img class="visa" src="/image/icon/visa.png" alt="visa"> 
+						<img class="mastercard" src="/image/icon/mastercard.png" alt="mastercard">
+          </div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<a id="tbScrollToTop" class="btn btn-default tb_no_text" href="javascript:;" style="opacity: 100;"><i class="fa fa-angle-up"></i></a>
+</footer>
+<section class="secondary-footer">
+      <div class="secondary-footer__wrapper">
+        <a href="" class="secondary-footer__item">
+          <span class="secondary-footer__icon">
+            <svg><use href="image/icons.svg#catalog-1"></use></svg>
+          </span>
+          <p class="secondary-footer__title">{{ text_homepage }}</p>
+        </a>
+        <a href="{{ catalog }}" class="secondary-footer__item">
+          <span class="secondary-footer__icon">
+            <svg><use href="image/icons.svg#catalog-1"></use></svg>
+          </span>
+          <p class="secondary-footer__title">{{ text_catalog }}</p>
+        </a>
+        <a class="secondary-footer__item" onclick="call_cp(false,'load');">
+          <span class="secondary-footer__icon">
+            <svg><use href="image/icons.svg#cart"></use></svg>
+            <span class="secondary-footer__number">{{ count_cart }}</span>
+          </span>
+          <p class="secondary-footer__title">{{ text_cart }}</p>
+        </a>
+        <a href="{{ special }}" class="secondary-footer__item">
+          <span class="secondary-footer__icon">
+            <svg><use href="image/icons.svg#promotion-1"></use></svg>
+          </span>
+          <p class="secondary-footer__title">{{ text_special }}</p>
+        </a>
+        <a href="#user-login" class="secondary-footer__item" data-fancybox>
+          <span class="secondary-footer__icon secondary-footer__icon--profile">
+            <svg><use href="image/icons.svg#profile-1"></use></svg>
+          </span>
+          <p class="secondary-footer__title">{{ text_account2 }}</p>
+        </a>
+      </div>
+    </section>
+<div id="underfooter"></div>
+{% for style in styles %}
+<link href="/{{ style.href }}" type="text/css" rel="{{ style.rel }}" media="{{ style.media }}" />
+{% endfor %}
+{% for script in scripts %}
+<script src="/{{ script }}" type="text/javascript"></script>
+{% endfor %}
+<script type="text/javascript">
+// function hideBlock() {
+//     var block = $('#tbScrollToTop');
+//     if($('body').scrollTop() >= 120) {
+//       block.css('opacity', 100);
+//     }else {
+//       block.css('opacity', 0);
+//     }
+//   }
+//   $(window).scroll(hideBlock);
+
+
+
+	$("#tbScrollToTop").bind('click', function(e){
+        e.preventDefault();
+        $('body,html').animate({scrollTop: 0}, 400);    
+    });
+
+</script>
+<!--
+OpenCart is open source software and you are free to remove the powered by OpenCart if you want, but its generally accepted practise to make a small donation.
+Please donate via PayPal to donate@opencart.com
+//-->
+<script>var modal = document.getElementById("myModal");
+
+var span = document.getElementsByClassName("close")[0];
+
+if(span){
+  span.onclick = function() {
+    modal.style.display = "none";
+    sessionStorage.setItem("modalShown", "true");
+  }
+}
+
+if(modal){
+  window.onclick = function(event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+      sessionStorage.setItem("modalShown", "true");
+    }
+  } 
+
+  window.onload = function() {
+    if(sessionStorage.getItem("modalShown") !== "true"){
+      modal.style.display = "block";
+    }
+  }
+}
+
+
+</script>
+<script type="text/javascript">
+	$(document).ready(function(){
+	      window.addEventListener('scroll', function() {
+	      	var footer = document.getElementById('underfooter');
+	      var footer_box = footer.getBoundingClientRect();
+	      var doc_footer = footer_box.top + window.pageYOffset;
+	      var control_point = doc_footer - $('footer').height() - document.documentElement.clientHeight;
+          if(window.pageYOffset > control_point){
+       	    $('.modules-menu').css('position', 'absolute');
+       	    $('.modules-menu').css('top', 125 + +control_point +'px');
+          }else{
+       	    $('.modules-menu').css('position', 'fixed');
+       	    $('.modules-menu').css('top', '155px');
+          }
+        });
+		}, 0);
+</script>
+<script>
+function open_cart(){
+  $('#cart > ul').load('index.php?route=common/cart/info ul li');
+
+}
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const backToTop = document.getElementById("tbScrollToTop");
+   
+    window.addEventListener("scroll", function () {
+      if (window.pageYOffset > 300) {
+        backToTop.style.display = "flex";
+      } else {
+        backToTop.style.display = "none";
+      }
+    });
+   
+    backToTop.addEventListener("click", function (event) {
+      event.preventDefault();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  });</script>
+<div id="myModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <div class="warning">На сайті будуть проводитись технічні роботи 08.07.2023 з 17.00 - 20.00. Пробачте за незручності.</div>
+  </div>
+</div>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha512-SfTiTlX6kk+qitfevl/7LibUOeJWlt9rbyDn92a1DqWOw9vWG2MFoays0sgObmWazO5BQPiFucnnEAjpAB+/Sw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+
+        {% if cp_setting['customer_groups'] %}
+            {% set customer_groups = cp_setting['customer_groups'] %}
+        {% else %}
+            {% set customer_groups = {} %}
+        {% endif %}
+        {% if cp_setting['stores'] %}
+            {% set stores = cp_setting['stores'] %}
+        {% else %}
+            {% set stores = {} %}
+        {% endif %}
+
+        {% if cp_setting['activate'] and (cp_customer_group_id not in customer_groups) and (cp_store_id not in stores) %}
+        <script type="text/javascript">
+          $(function() {
+            $.ajax({
+              type: 'get',
+              url:  'index.php?route=extension/module/cart_popup/initcart',
+              dataType: 'json',
+              cache: false,
+              success: function(json) {
+                $.each($("[onclick^='"+json['add_function_selector']+"']"), function() {
+                  var product_id = $(this).attr('onclick').match(/[0-9]+/);
+                    $(this)
+                    .attr('onclick', 'call_cp(\'' + $(this).attr('onclick').match(/[0-9]+/) + '\',\'' + 'add' + '\');');
+                    //.addClass('cp-call-button');
+                });
+                var product_id_in_page = $("input[name='product_id']").val();
+                  $('#'+json['add_id_selector'])
+                  .unbind('click')
+                  .attr('onclick', 'call_cp(\'' + product_id_in_page + '\',\'' + 'add_option' + '\');');
+
+                if (json['cart_products']) {
+                  $.each(json['cart_products'], function(i,value) {
+                    $('[onclick="call_cp(\'' + value + '\',\'' + 'add' + '\');"]')
+                    {% if route != 'account/wishlist' %}
+                    .html('<i class="fa fa-shopping-cart"></i> <span class="hidden-xs hidden-sm hidden-md">' + json['text_in_cart'] + '</span>')
+                    .attr('onclick', 'call_cp(\'' + value + '\',\'' + 'load' + '\');');
+                    {% else %}
+                    $('[onclick="call_cp(\'' + value + '\',\'' + 'add' + '\');"]')
+                    .html('<i class="fa fa-shopping-cart" style="color: #ed6e00;"></i>');
+                    {% endif %}
+                    $('[onclick="call_cp(\'' + value + '\',\'' + 'add_option' + '\');"]')
+                    .html(json['text_in_cart'])
+                    .attr('onclick', 'call_cp(\'' + value + '\',\'' + 'load_option' + '\');');
+                  });
+                }
+                if (json['cart_products_vs_options']) {
+                  $.each(json['cart_products_vs_options'], function(i,value) {
+                    {% if route != 'account/wishlist' %}
+                    $('[onclick="call_cp(\'' + value + '\',\'' + 'add' + '\');"]')
+                    .html('<i class="fa fa-shopping-cart"></i> <span class="hidden-xs hidden-sm hidden-md">' + json['text_in_cart'] + '</span>');
+                    {% else %}
+                    $('[onclick="call_cp(\'' + value + '\',\'' + 'add' + '\');"]')
+                    .html('<i class="fa fa-shopping-cart" style="color: #ed6e00;></i>');
+                    {% endif %}
+                    $('[onclick="call_cp(\'' + value + '\',\'' + 'add_option' + '\');"]')
+                    .html(json['text_in_cart_vs_options']);
+                  });
+                }
+              }
+            });
+          });
+          function call_cp(product_id, action) {
+            quantity = typeof(quantity) != 'undefined' ? quantity : 1;
+            if (action == "add") {
+              $.ajax({
+                url: 'index.php?route=checkout/cart/add',
+                type: 'post',
+                data: 'product_id=' + product_id + '&quantity=' + quantity,
+                dataType: 'json',
+                cache: false,
+                success: function(json) {
+                  if (json['redirect']) {
+                    location = json['redirect'];
+                  }
+                  if (json['success']) {
+                    
+                    call_cp(product_id,'load');
+                    $('#cart-total').html(json['total']);
+                    $('#cart > button > span').html(json['count_cart']);
+                    $('.secondary-footer__number').html(json['count_cart']);
+                  }
+                }
+              });
+            }
+
+            if (action == "load" || action == "load_option") {
+              $.magnificPopup.open({
+                tLoading: '<img src="catalog/view/theme/default/stylesheet/cart_popup/loading.svg" alt="" />',
+                items: {
+                  src: 'index.php?route=extension/module/cart_popup',
+                  type: 'ajax'
+                },
+                showCloseBtn: false
+              });
+              $('.mfp-bg').css({
+                'background': 'url(image/cart_popup/background/{{ cp_setting['style_beckground'] }})',
+                'opacity': '{% if cp_setting['background_opacity'] == 0 %}{{ cp_setting['background_opacity'] }}{% else %}{{ cp_setting['background_opacity']/10 }}{% endif %}'
+              });
+            }
+
+            if (action == "add_option") {
+              $.ajax({
+                url: 'index.php?route=checkout/cart/add',
+                type: 'post',
+                data: $('#product input[type=\'text\'], #product input[type=\'hidden\'], #product input[type=\'radio\']:checked, #product input[type=\'checkbox\']:checked, #product select, #product textarea'),
+                dataType: 'json',
+                cache: false,
+                beforeSend: function() {
+                  $('#button-cart').button('loading');
+                },
+                complete: function() {
+                  $('#button-cart').button('reset');
+                },
+                success: function(json) {
+                  $('.alert, .text-danger').remove();
+                  $('.form-group').removeClass('has-error');
+
+                  if (json['error']) {
+                    if (json['error']['option']) {
+                      for (i in json['error']['option']) {
+                        var element = $('#input-option' + i.replace('_', '-'));
+
+                        if (element.parent().hasClass('input-group')) {
+                          element.parent().after('<div class="text-danger">' + json['error']['option'][i] + '</div>');
+                        } else {
+                          element.after('<div class="text-danger">' + json['error']['option'][i] + '</div>');
+                        }
+                      }
+                    }
+                    $('.text-danger').parent().addClass('has-error');
+                  }
+                  if (json['success']) {
+                    call_cp(product_id, 'load_option');
+                    $('#cart-total').html(json['total']);
+                    $('#cart > button > span').html(json['count_cart']);
+                    $('.secondary-footer__number').html(json['count_cart']);
+                  }
+                }
+              });
+            }
+          }
+        </script>
+        {% endif %}
+      
+</body></html> 

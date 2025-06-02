@@ -1,0 +1,56 @@
+{% set exists = constant('false') %}
+{% for payment_method in payment_methods if not exists %}
+    {% if payment_method['code'] == code %}
+        {% set exists = constant('true') %}
+    {% endif %}
+{% endfor %}
+
+{% if not payment_methods %}
+    <div class="alert alert-danger"><span class="glyphicon glyphicon-exclamation-sign"
+                                          aria-hidden="true"></span> {{ error_warning }}</div>
+
+{% else %}
+
+    {% if neoseo_checkout_payment_control %}
+        <div id="payment_methods">
+            {% for payment_method in payment_methods %}
+                <div class="radio radio-primary {% if neoseo_checkout_compact %}radio-inline{% endif %}"
+                     {% if neoseo_checkout_compact %}style="display: inline-block; margin-right: 1em;"{% else %} style="margin-bottom: 1em;"{% endif %}>
+
+                    {% if (payment_method['code'] == code or not code or not exists) %}
+                        {% set code = payment_method['code'] %}
+                        {% set exists = constant('true') %}
+                        <input type="radio" name="payment_method" value="{{ payment_method['code'] }}"
+                               id="{{ payment_method['code'] }}" checked="checked"/>
+                    {% else %}
+                        <input type="radio" name="payment_method" value="{{ payment_method['code'] }}"
+                               id="{{ payment_method['code'] }}"/>
+                    {% endif %}
+                    <label for="{{ payment_method['code'] }}">
+                        {{ payment_method['title'] }}
+                    </label>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="field">
+            <div class="title-label">{{ text_payment_method }}</div>
+            <select name="payment_method" class="large-field">
+                {% for payment_method in payment_methods %}
+                    {% if (payment_method['code'] == code or not code or not exists) %}
+                        {% set code = payment_method['code'] %}
+                        {% set exists = constant('true') %}
+                        <option value="{{ payment_method['code'] }}" selected="selected">
+                    {% else %}
+                        <option value="{{ payment_method['code'] }}">
+                    {% endif %}
+                    {{ payment_method['title'] }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    {% endif %}
+{% endif %}
+
+<div id="payment-method-fields" class="large-field"></div>
+<div id="payment-method-info" class="large-field"></div>
+

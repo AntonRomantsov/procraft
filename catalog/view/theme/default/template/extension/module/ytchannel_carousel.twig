@@ -1,0 +1,196 @@
+<section class="videos">
+        <div class="videos__container main__swiper-container">
+        	{% if heading_title %}
+          <div class="hero__title-row videos__title-row">
+            <h3 class="videos__title">{{ heading_title }}</h3>
+            {# <a href="https://www.youtube.com/@ProCraftofficial/featured" class="videos__button">{{ text_show_all }}</a> #}
+          </div>
+          {% endif %}
+          <div class="videos__row">
+            <div class="swiper main__swiper-video">
+              <div class="swiper-wrapper main__swiper-wrapper">
+              	{% for video in videos %}
+                <div class="swiper-slide">
+                  <div class="video">
+                    <a class="video__wrapper" href="https://www.youtube.com/watch?v={{ video.video_id }}">
+                      <img class="video__item" src="{{ video.thumb }}" alt="{{ video.title }}" />
+                      {% if 'playicon' in video_setting %}<div class="video__play-button"></div>{% endif %}
+                    </a>
+                    <div class="video__description">
+                      <p class="video__title">{{ video.title }}</p>
+                      <div class="video__info">
+                        {% if 'views' in video_setting %}<span>{{ video.views }} {{ text_yt_views }}</span>{% endif %}
+                        <span>•</span>
+                        {% if 'date' in video_setting %}<span>{{ video.date }}</span>{% endif %}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+            </div>
+          </div>
+
+          <div class="swiper-button-prev main__swiper-button-prev main__swiper-button-prev-video"></div>
+          <div class="swiper-button-next main__swiper-button-next main__swiper-button-next-video"></div>
+        </div>
+      </section>
+
+<!-- <div class="ytchannel ytchannel{{ module_id }}">
+	{% if heading_title %}
+		<h3>{{ heading_title }}</h3>
+	{% endif %}
+	<div class="ytchannel-content">
+		{% if header_setting and header_data %}
+			<div class="ytchannel-header">
+				{% if 'logo' in header_setting %}
+					<div class="ytchannel-logo">
+						<img src="{{ header_data.thumb }}" alt="{{ header_data.title }}" class="img-responsive">
+					</div>
+				{% endif %}
+				<div class="ytchannel-data">
+					{% if 'name' in header_setting %}<h4 class="ytchannel-name">{{ header_data.title }}</h4>{% endif %}
+					{% if 'description' in header_setting and header_data.description %}
+						<p class="ytchannel-description">{{ header_data.description }}</p>
+						<div class="yt-shadow">
+							<div class="yt-shadow-inner"></div>
+						</div>
+						<div class="yt-show-description">{{ text_yt_showmore }}</div>
+						<div class="yt-hide-description">{{ text_yt_showless }}</div>
+					{% endif %}
+					<div class="yt-statistic">
+						{% if 'videos' in header_setting and header_data.videos %}<span class="yt-videos yt-divider">{{ header_data.videos }} {{ text_yt_videos }}</span>{% endif %}
+						{% if 'views' in header_setting and header_data.views %}<span class="yt-views yt-divider">{{ header_data.views }} {{ text_yt_views }}</span>{% endif %}
+						{% if 'subscribers' in header_setting and header_data.subscribers %}<span class="yt-subscribers yt-divider">{{ header_data.subscribers }} {{ text_yt_subscribers }}</span>{% endif %}
+					</div>
+				</div>
+				{% if 'subscribe' in header_setting and subscribe_link %}<span class="btn-yt-subscribe" onclick="window.open('{{ subscribe_link }}')" class="yt-subscribe">{{ text_yt_subscribe }}</span>{% endif %}
+				<div class="clearfix"></div>
+			</div>
+		{% endif %}
+		<div class="ytchannel-carousel swiper-viewport">
+			<div id="ytchannel-carousel{{ module_id }}" class="swiper-container">
+				<div class="swiper-wrapper">
+					{% for video in videos %}
+						<div class="ytchannel-item swiper-slide">
+							<div class="yt-video">
+								<a href="https://www.youtube.com/watch?v={{ video.video_id }}">
+									<img src="{{ video.thumb }}" alt="{{ video.title }}" class="img-responsive center-block">
+									{% if 'playicon' in video_setting %}<i class="yt-play"></i>{% endif %}
+									{% if 'duration' in video_setting %}<span class="yt-duration">{{ video.duration }}</span>{% endif %}
+								</a>
+							</div>
+							{% if video_setting %}
+								{% if 'title' in video_setting %}<h5 class="yt-video-title">{{ video.title }}</h5>{% endif %}
+								{% if 'date' in video_setting %}<time>{{ video.date }}</time>{% endif %}
+								{% if 'description' in video_setting and video.description %}<p>{{ video.description }}</p>{% endif %}
+								{% if 'views' in video_setting %}<span class="yt-views yt-divider">{{ video.views }} {{ text_yt_views }}</span>{% endif %}
+								{% if 'likes' in video_setting %}<span class="yt-likes yt-divider">{{ video.likes }} {{ text_yt_likes }}</span>{% endif %}
+								{% if 'comments' in video_setting %}<span class="yt-comments yt-divider">{{ video.comments }} {{ text_yt_comments }}</span>{% endif %}
+							{% endif %}
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+			<div class="swiper-pager">
+				<div class="swiper-button-next"></div>
+				<div class="swiper-button-prev"></div>
+			</div>
+		</div>
+	</div>
+</div> -->
+
+{% if 'description' in header_setting and header_data.description %}
+<script><!--
+$(document).ready(function() {
+	var yt_description = $(".ytchannel-description"),
+	yt_description_height = yt_description.height();
+	if (yt_description_height > 80) {
+		yt_description.height('80px');
+		$('.yt-show-description').on('click', function(){
+			yt_description.animate({height: yt_description_height+'px'},200);
+			$('.yt-shadow').hide();
+			$('.yt-show-description').hide();
+			$('.yt-hide-description').show();
+		});
+
+		$('.yt-hide-description').on('click', function(){
+			yt_description.animate({height:'80px'},200);
+			$('.yt-shadow').show();
+			$('.yt-hide-description').hide();
+			$('.yt-show-description').show();
+		});
+	} else {
+		$('.yt-shadow').hide();
+		$('.yt-show-description').hide();
+	}
+});
+--></script>
+{% endif %}
+
+<script><!--
+$('#ytchannel-carousel{{ module_id }}').swiper({
+	mode: 'horizontal',
+	slidesPerView: {{ columns }},
+	spaceBetween: 30,
+	nextButton: '.ytchannel-carousel .swiper-button-next',
+	prevButton: '.ytchannel-carousel .swiper-button-prev',
+	autoplay: 3000,
+	loop: true,
+	breakpoints: {
+		540: {
+			slidesPerView: 1
+		},
+		768: {
+			slidesPerView: {{ columns }}
+		}
+	}
+});
+--></script>
+
+<script><!--
+$(document).ready(function() {   
+	$('.videos__row').magnificPopup({
+		type: 'iframe',
+		delegate: 'a',
+		gallery: {
+			enabled: true
+		},
+		iframe: {
+			patterns: {
+				youtube: {
+					index: 'youtube.com/', 
+					id: function(url) {        
+						var m = url.match(/[\\?\\&]v=([^\\?\\&]+)/);
+						if ( !m || !m[1] ) return null;
+						return m[1];
+					},
+					src: '//www.youtube.com/embed/%id%?fs={{ fullscreen }}&modestbranding={{ branding }}'
+				}
+			}
+		},
+	}); 
+}); 
+//--></script>
+
+{% if videos %}
+{% set counter = videos|length %}
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "WebPage",
+  "video":
+  [
+{% set i = 0 %}{% for video in videos %}	{
+	  "@type": "VideoObject",
+	  "name": "{{ video.title|escape }}",
+	  "description": "{{ video.description_micro ? video.description_micro|escape : video.title|escape }}",
+	  "thumbnailUrl": "{{ video.thumb }}",
+	  "uploadDate": "{{ video.date_micro }}",
+	  "duration": "{{ video.duration_micro }}",
+	  "embedUrl": "https://www.youtube.com/embed/{{ video.video_id }}"
+	}{% set i = i + 1 %}{% if i < counter %},{% endif %}
+{% endfor %}
+  ]
+}
+</script>
+{% endif %}

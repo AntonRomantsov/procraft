@@ -1,0 +1,122 @@
+<div class="modal fade" id="modal-mob-menu" tabindex="-1" role="dialog" aria-labelledby="modalLabel1">
+	<nav class="mob-menu">
+		<div class="mob-menu__header">
+			<a href="{{ home }}" class="mob-menu__logo"><img src="{{ logo }}" title="{{ name }}" alt="{{ name }}" class="img-responsive" /></a>
+			<div class="mob-menu__lang">{{ language }}</div>
+		</div>
+		<div class="mob-menu__body">
+			{% if categories %}
+			<div class="mob-menu__category categor-mob">
+				<a class="categor-mob__btn" data-toggle="collapse"  href="#categor-mob" role="button" aria-expanded="false" aria-controls="categor-mob">
+					{{ text_category }}
+					<i class="fa fa-angle-down"></i>
+				</a>
+				<div class="collapse" id="categor-mob">
+					<ul class="categor-mob__list list-unstyled">
+						{% for category in categories %}
+						{% if category.children %}
+						<li class="categor-mob__item">
+							<a href="{{ category.href }}" class="categor-mob__link">
+								<svg class="svg-icon">
+									<use xlink:href="/image/sprite-category.svg#{{ category.category_id }}"></use>
+								</svg>
+								{{ category.name }}
+								<div class="categor-mob__arrow">
+									<i class="fa fa-angle-down"></i>
+								</div>
+							</a>
+							<div class="categor-mob__dropdown categor-mob-dropdown">
+								<ul class="list-unstyled categor-mob-dropdown__list">
+								    {% if category.category_id == 73 %}
+							            <li class="categor-mob-dropdown__item">
+							            	<a class="categor-mob-dropdown__link" href="{{ href_acum }}">
+							            	    {{ text_acum }}
+							                </a>
+							            </li>
+							        {% endif %}
+									{% for child in category.children %}
+										<li class="categor-mob-dropdown__item">
+											<a class="categor-mob-dropdown__link" href="{{ child.href }}">
+												{{ child.name }}
+											</a>
+										</li>
+									{% endfor %}
+								</ul>
+							</div>
+						</li>
+						{% else %}
+						<li class="mob-menu__item"><a class="mob-menu__link" href="{{ category.href }}">{{ category.name }}</a></li>
+						{% endif %}
+						{% endfor %}
+					</ul>
+				</div>
+			</div>
+			{% endif %}
+			<nav class="mob-menu__top mob-menu-top">
+				<ul class="mob-menu-top__list list-unstyled">
+					<li class="mob-menu-top__item">
+						<a href="{{ link_bestseller }}" class="mob-menu-top__link mob-menu-top__link--fire">
+							<svg class="svg-icon"><use xlink:href="/image/sprite.svg#fire"></use></svg>
+							{{ text_bestseller }}
+						</a>
+					</li>
+					<li class="mob-menu-top__item">
+						<a href="{{ link_special }}" class="mob-menu-top__link mob-menu-top__link--fire">
+							<!-- <svg class="svg-icon"><use xlink:href="/image/sprite.svg#fire"></use></svg> -->
+							{{ text_special }}
+						</a>
+					</li>
+					<li class="mob-menu-top__item">
+						<a href="{{ link_news }}" class="mob-menu-top__link mob-menu-top__link--fire">
+							<!-- <svg class="svg-icon"><use xlink:href="/image/sprite.svg#fire"></use></svg> -->
+							{{ text_news }}
+						</a>
+					</li>
+					<li class="mob-menu-top__item dropdown">
+						<a href="javascript:void(0);" class="mob-menu-top__link" role="button" aria-expanded="false" data-toggle="collapse" data-target=".mob-menu-top__dropdown">
+							<svg class="svg-icon"><use xlink:href="/image/sprite.svg#users"></use></svg>
+							{{ text_buyer }} 
+							<i class="fa fa-angle-down"></i>
+						</a>
+						<ul class="collapse mob-menu-top__dropdown list-unstyled">
+							<!-- <li><a href="{{ link_register }}">{{ text_register_instr }}</a></li> -->
+							<li><a href="{{ link_store }}">{{ text_store }}</a></li>
+							<li><a href="{{ link_services }}">{{ text_services }}</a></li>
+							<li><a href="{{ link_delivery }}">{{ text_delivery }}</a></li>
+							<li><a href="{{ link_black_list }}">{{ text_black_list }}</a></li>
+							<!-- <li><a href="{{ link_partner }}">{{ text_partner }}</a></li>-->
+						</ul>
+					</li>
+					<li class="mob-menu-top__item">
+						<a href="{{ link_about }}" class="mob-menu-top__link">
+							<svg class="svg-icon"><use xlink:href="/image/sprite.svg#work"></use></svg>
+							О Procraft
+						</a>
+					</li>
+					<li class="mob-menu-top__item">
+						<a href="#" class="mob-menu-top__link">
+							<svg class="svg-icon"><use xlink:href="/image/sprite.svg#blog"></use></svg>
+							Блог
+						</a>
+					</li>
+				</ul>
+			</nav>
+			<div class="mob-menu__footer mob-menu-footer">
+				<ul class="list-unstyled mob-menu-footer__list">
+					<li class="mob-menu-footer__item">
+						<a href="tel:{{ telephone }}" class="mob-menu-footer__link">
+							<svg class="svg-icon"><use xlink:href="/image/sprite.svg#phone"></use></svg>
+							{{ telephone }}
+						</a>
+					</li>
+					<li class="mob-menu-footer__item">
+						<a href="mailto:{{ email }}" class="mob-menu-footer__link">
+							<svg class="svg-icon"><use xlink:href="/image/sprite.svg#email"></use></svg>
+							{{ email }}
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+</div>

@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+    <name>NeoSeo Payment+</name>
+    <code>neoseo_payment</code>
+    <version>1.0</version>
+    <author>NeoSeo</author>
+
+    <file path="admin/model/sale/order.php">
+        <operation>
+            <search><![CDATA[$this->load->model('localisation/language');]]></search>
+            <add position="after"><![CDATA[			/* NeoSeo Payment - begin */
+			$payment_code = explode(".",$order_query->row['payment_code']);
+			/* NeoSeo Payment - end */]]></add>
+        </operation>
+        <operation>
+            <search><![CDATA['payment_code'            => $order_query->row['payment_code'],]]></search>
+            <add position="replace"><![CDATA[/* NeoSeo Payment - begin */
+				'payment_code'            => $payment_code['0'],
+			/* NeoSeo Payment - end */]]></add>
+        </operation>
+    </file>
+
+    <file path="admin/view/template/sale/order_form.twig">
+        <operation>
+            <search><![CDATA[if (json['payment_methods']) {]]></search>
+            <add position="before" offset="1">
+                <![CDATA[							//  NeoSeo Payment - begin //
+							$text = $('select[name="payment_method"] option:selected').text();
+							//  NeoSeo Payment - end //]]>
+            </add>
+        </operation>
+        <operation>
+            <search><![CDATA[if (json['payment_methods'][i]['code'] == $('select[name=\'payment_method\'] option:selected').val()) {]]></search>
+            <add position="replace" >
+                <![CDATA[//  NeoSeo Payment - begin //
+									if (json['payment_methods'][i]['quote']) {
+										html += '<optgroup label="' + json['payment_methods'][i]['title'] + '">';
+									} else if (json['payment_methods'][i]['code'] == $('select[name=\'payment_method\'] option:selected').val()) {
+									//  NeoSeo Payment - end //]]>
+            </add>
+        </operation>
+        <operation>
+            <search><![CDATA[html += '<option value="' + json['payment_methods'][i]['code'] + '">' + json['payment_methods'][i]['title'] + '</option>';]]></search>
+            <add position="after" offset="1" >
+                <![CDATA[									//  NeoSeo Payment - begin //
+                if (!json['payment_methods'][i]['error']) {
+										for (j in json['payment_methods'][i]['quote']) {
+											if (JSON.stringify(json['payment_methods'][i]['quote'][j]['title']) == '"' + $text + '"') {
+												html += '<option value="' + json['payment_methods'][i]['quote'][j]['code'] + '" selected="selected">' + json['payment_methods'][i]['quote'][j]['title'] + '</option>';
+											} else {
+												html += '<option value="' + json['payment_methods'][i]['quote'][j]['code'] + '">' + json['payment_methods'][i]['quote'][j]['title'] + ' </option>';
+											}
+										}
+									} else {
+										html += '<option value="" style="color: #F00;" disabled="disabled">' + json['payment_method'][i]['error'] + '</option>';
+									}
+									if (json['payment_methods'][i]['quote']) {
+										html += '</optgroup>';
+									}
+									//  NeoSeo Payment - end //]]>
+            </add>
+        </operation>
+    </file>
+
+    <file path="catalog/controller/api/order.php">
+        <operation>
+            <search><![CDATA[if (!$json && !empty($this->request->post['payment_method'])) {]]>
+            </search>
+            <add position="replace" offset="11">
+                <![CDATA[/* NeoSeo Payment - begin */
+			$payment = explode('.', $this->request->post['payment_method']);
+			// Payment Method
+			if (count($payment) > 1) {
+				if (!$json && !empty($this->request->post['payment_method'])) {
+					if (empty($this->session->data['payment_methods'])) {
+						$json['error'] = $this->language->get('error_no_payment');
+					} else {
+						if (!isset($payment[0]) || !isset($payment[1]) || !isset($this->session->data['payment_methods'][$payment[0]]['quote'][$payment[1]])) {
+							$json['error'] = $this->language->get('error_payment_method');
+						}
+					}
+					if (!$json) {
+						$this->session->data['payment_method'] = $this->session->data['payment_methods'][$payment[0]]['quote'][$payment[1]];
+					}
+				}
+			}
+			else {
+				if (!$json && !empty($this->request->post['payment_method'])) {
+					if (empty($this->session->data['payment_methods'])) {
+						$json['error'] = $this->language->get('error_no_payment');
+					} elseif (!isset($this->session->data['payment_methods'][$this->request->post['payment_method']])) {
+						$json['error'] = $this->language->get('error_payment_method');
+					}
+					if (!$json) {
+						$this->session->data['payment_method'] = $this->session->data['payment_methods'][$this->request->post['payment_method']];
+					}
+				}
+			}
+			/* NeoSeo Payment - end */]]>
+            </add>
+        </operation>
+    </file>
+
+    <file path="catalog/controller/api/payment.php">
+        <operation>
+            <search><![CDATA[if (empty($this->session->data['payment_methods'])) {]]></search>
+            <add position="replace" offset="12">
+                <![CDATA[/* NeoSeo Payment - begin */
+			$payments = explode('.', $this->request->post['payment_method']);
+			if (count($payments) > 1 && isset($payments[0]) && $payments[0] == 'neoseo_paymentplus') {
+				if (empty($this->session->data['payment_methods'])) {
+					$json['error'] = $this->language->get('error_no_shipping');
+				} elseif (!isset($this->request->post['payment_method'])) {
+					$json['error'] = $this->language->get('error_method');
+				} else {
+					if (!isset($payments[0]) || !isset($payments[1]) || !isset($this->session->data['payment_methods'][$payments[0]]['quote'][$payments[1]])) {
+						$json['error'] = $this->language->get('error_method');
+					}
+				}
+				if (!$json) {
+					$this->session->data['payment_method'] = $this->session->data['payment_methods'][$payments[0]]['quote'][$payments[1]];
+					$json['success'] = $this->language->get('text_method');
+				}
+			} else {
+				// Payment Method
+				if (empty($this->session->data['payment_methods'])) {
+					$json['error'] = $this->language->get('error_no_payment');
+				} elseif (!isset($this->request->post['payment_method'])) {
+					$json['error'] = $this->language->get('error_method');
+				} elseif (!isset($this->session->data['payment_methods'][$this->request->post['payment_method']])) {
+					$json['error'] = $this->language->get('error_method');
+				}
+				if (!$json) {
+					$this->session->data['payment_method'] = $this->session->data['payment_methods'][$this->request->post['payment_method']];
+					$json['success'] = $this->language->get('text_method');
+				}
+			}
+			/* NeoSeo Payment - end */]]>
+            </add>
+        </operation>
+    </file>
+
+    <file path="catalog/controller/checkout/confirm.php">
+        <operation>
+            <search><![CDATA[$data['payment'] = $this->load->controller('extension/payment/' . $this->session->data['payment_method']['code']);]]></search>
+            <add position="replace"><![CDATA[/* NeoSeo Payment - begin */
+			if (isset($this->session->data['payment_method']['parent']) ){
+				$data['payment'] = $this->load->controller('extension/payment/' . $this->session->data['payment_method']['parent']);
+			} else {
+				$data['payment'] = $this->load->controller('extension/payment/' . $this->session->data['payment_method']['code']);
+			}
+			/* NeoSeo Payment - end */]]></add>
+        </operation>
+    </file>
+
+    <file path="catalog/controller/checkout/payment_method.php">
+        <operation>
+            <search index="1"><![CDATA[$method_data[$result['code']] = $method;]]></search>
+            <add position="replace"><![CDATA[/* NeoSeo Payment - begin */
+							if (isset($method['quote']) ){
+								foreach ($method['quote'] as $quote) {
+									$method_data[$quote['code']] = $quote;
+								}
+							} else {
+								$method_data[$result['code']] = $method;
+							}
+							/* NeoSeo Payment - end */]]></add>
+        </operation>
+    </file>
+
+</modification>
+

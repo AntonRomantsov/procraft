@@ -1,0 +1,419 @@
+{{ header }}
+<style>
+.bootstrap-datetimepicker-widget{
+	z-index: 19000 !important;
+}
+
+</style>
+<main>
+	<section	class="profile">
+		<div	class="breadcrumbs__container">
+			<ul	class="breadcrumb">
+				{% for breadcrumb in breadcrumbs %}
+					<li>
+						<a	href="{{ breadcrumb.href }}">
+							{{ breadcrumb.text }}
+						</a>
+					</li>
+				{% endfor %}
+			</ul>
+		</div>
+		<div	class="profile__container">
+			<div	class="profile__wrapper">
+				{{ account }}
+				<div	class="profile__main">
+					{{ account_discount }}
+					<div	class="profile__block profile__block--line_mod">
+						<h2	class="profile__title">
+							{{ heading_title }}
+						</h2>
+						<h3	class="pforile__subtitle">
+							{{ text_top }}
+						</h3>
+						<form	action="{{ action }}"	class="profile__create"	method="post">
+							<input	type="hidden"	name="customer_id"	value="{{ customer_id }}">
+								<div	class="profile__create_item">
+									<label	class="profile__create_label">
+										<span>
+											*
+										</span>
+										{{ text_product_category }}
+									</label>
+									<div	class="profile__create_custom_select"	id="select-category">
+										<div	class="profile__create_select_current profile__create_select_current--placeholder"	id="selected-category-name">
+											{{ text_category_placeholder }}
+										</div>
+										<ul	class="profile__create_select_dropdown">
+											{% for category in categories %}
+												<li	class="profile__create_select_option selected-category"	data-value="{{ category.category_id }}">
+													{{ category.name }}
+												</li>
+											{% endfor %}
+										{# <li class="profile__create_select_option" data-value="Електроінструмент">Електроінструмент</li>
+											<li class="profile__create_select_option" data-value="Деревообробний інструмент">Деревообробний інструмент</li>
+											<li class="profile__create_select_option" data-value="Зварювальне обладнання">Зварювальне обладнання</li>
+											<li class="profile__create_select_option" data-value="Садово парковий інструмент">Садово парковий інструмент</li>
+											<li class="profile__create_select_option" data-value="Бензоінструменти">Бензоінструменти</li>
+											<li class="profile__create_select_option" data-value="Компресори та пневмоінструменти">Компресори та пневмоінструменти</li>
+											<li class="profile__create_select_option" data-value="Будівельна техніка та обладнання">Будівельна техніка та обладнання</li>
+											<li class="profile__create_select_option" data-value="Верстати">Верстати</li>
+											<li class="profile__create_select_option" data-value="Автоінструмент">Автоінструмент</li>
+											<li class="profile__create_select_option" data-value="Електротранспорт">Електротранспорт</li>
+											<li class="profile__create_select_option" data-value="Набори інструментів">Набори інструментів</li>
+											<li class="profile__create_select_option" data-value="Аксесуари та комплектуючі для інструментів">Аксесуари та комплектуючі для інструментів</li>
+										<li class="profile__create_select_option" data-value="Драбини">Драбини</li> #}
+										</ul>
+									</div>
+								</div>
+								<div	class="profile__create_item">
+									<label	class="profile__create_label">
+										<span>
+											*
+										</span>
+										{{ text_product_subcategory }}
+									</label>
+									<div	class="profile__create_custom_select"	id="select-subcategory">
+										<div	class="profile__create_select_current profile__create_select_current--placeholder"	id="selected-subcategory-name">
+											{{ text_subcategory_placeholder }}
+										</div>
+										<ul	class="profile__create_select_dropdown selected-subcategories">{# <li class="profile__create_select_option" data-value="Шуруповерти">Шуруповерти</li>
+											<li class="profile__create_select_option" data-value="Перфоратори">Перфоратори</li>
+											<li class="profile__create_select_option" data-value="Кутошліфувальні машини">Кутошліфувальні машини</li>
+											<li class="profile__create_select_option" data-value="Дрилі">Дрилі</li>
+											<li class="profile__create_select_option" data-value="Електролобзики">Електролобзики</li>
+											<li class="profile__create_select_option" data-value="Відбійні молотки">Відбійні молотки</li>
+											<li class="profile__create_select_option" data-value="Паяльники для труб">Паяльники для труб</li>
+											<li class="profile__create_select_option" data-value="Будівельні фени">Будівельні фени</li>
+											<li class="profile__create_select_option" data-value="Полірувальні машини">Полірувальні машини</li>
+											<li class="profile__create_select_option" data-value="Степлери">Степлери</li>
+											<li class="profile__create_select_option" data-value="Багатофункціональні інструменти">Багатофункціональні інструменти</li>
+											<li class="profile__create_select_option" data-value="Гравери">Гравери</li>
+											<li class="profile__create_select_option" data-value="Гайковерти">Гайковерти</li>
+											<li class="profile__create_select_option" data-value="Лазерні рівні">Лазерні рівні</li>
+											<li class="profile__create_select_option" data-value="Прямі шліфувальні машини">Прямі шліфувальні машини</li>
+											<li class="profile__create_select_option" data-value="Шабельні пили">Шабельні пили</li>
+											<li class="profile__create_select_option" data-value="Ножиці">Ножиці</li>
+										<li class="profile__create_select_option" data-value="Металорізи">Металорізи</li> #}
+										</ul>
+									</div>
+								</div>
+								<div	class="profile__create_item">
+									<label	class="profile__create_label">
+										<span>
+											*
+										</span>
+										{{ text_name }}
+									</label>
+									<div	class="profile__create_custom_select"	id="select-name">
+										<div	class="profile__create_select_current profile__create_select_current--placeholder"	id="selected-product-name">
+											{{ text_placeholder_name }}
+										</div>
+										<ul	class="profile__create_select_dropdown selected-names">{# <li class="profile__create_select_option" data-value="Lorem ipsum">Lorem ipsum</li>
+											<li class="profile__create_select_option" data-value="Lorem ipsum">Lorem ipsum</li>
+										<li class="profile__create_select_option" data-value="Lorem ipsum">Lorem ipsum</li> #}
+										</ul>
+										<input	type="hidden"	name="product_id"	value="" />
+									</div>
+								</div>
+								<div	class="profile__create_item">
+									<label	class="profile__create_label">
+										<span>
+											*
+										</span>
+										{{ text_order_date }}
+									</label>
+									<input	class="profile__create_custom_select datetimepicker-input"	id="order_date"	type="text"	name="order_date"	readonly>{# <div class="profile__create_custom_select">
+										<div class="profile__create_select_current profile__create_select_current--placeholder">Оберіть дату придбання</div>
+										<div class="calendar profile__create_select_dropdown profile__create_select_dropdown--calendar_mod">
+										<div class="calendar__header">
+										<button class="calendar__nav">
+										<svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path d="M11.7267 12L12.6667 11.06L9.61341 8L12.6667 4.94L11.7267 4L7.72675 8L11.7267 12Z" fill="#ED6E00" />
+										<path d="M7.33344 12L8.27344 11.06L5.2201 8L8.27344 4.94L7.33344 4L3.33344 8L7.33344 12Z" fill="#ED6E00" />
+										</svg>
+										</button>
+										<div class="calendar__title">Квітень 2025</div>
+										<button class="calendar__nav">
+										<svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path d="M4.27325 12L3.33325 11.06L6.38659 8L3.33325 4.94L4.27325 4L8.27325 8L4.27325 12Z" fill="#ED6E00" />
+										<path d="M8.66656 12L7.72656 11.06L10.7799 8L7.72656 4.94L8.66656 4L12.6666 8L8.66656 12Z" fill="#ED6E00" />
+										</svg>
+										</button>
+										</div>
+										<div class="calendar__weekdays">
+										<div>Пн</div>
+										<div>Вт</div>
+										<div>Ср</div>
+										<div>Чт</div>
+										<div>Пт</div>
+										<div class="calendar__weekend">Сб</div>
+										<div class="calendar__weekend">Нд</div>
+										</div>
+										<div class="calendar__days">
+										<div class="calendar__day calendar__day--prev">31</div>
+										<div class="calendar__day">1</div>
+										<div class="calendar__day">2</div>
+										<div class="calendar__day">3</div>
+										<div class="calendar__day">4</div>
+										<div class="calendar__day calendar__weekend">5</div>
+										<div class="calendar__day calendar__weekend">6</div>
+										<div class="calendar__day">7</div>
+										<div class="calendar__day">8</div>
+										<div class="calendar__day">9</div>
+										<div class="calendar__day">10</div>
+										<div class="calendar__day">11</div>
+										<div class="calendar__day calendar__weekend">12</div>
+										<div class="calendar__day calendar__weekend">13</div>
+										<div class="calendar__day">14</div>
+										<div class="calendar__day">15</div>
+										<div class="calendar__day">16</div>
+										<div class="calendar__day">17</div>
+										<div class="calendar__day">18</div>
+										<div class="calendar__day calendar__weekend">19</div>
+										<div class="calendar__day calendar__weekend">20</div>
+										<div class="calendar__day">21</div>
+										<div class="calendar__day">22</div>
+										<div class="calendar__day">23</div>
+										<div class="calendar__day calendar__day--today">24</div>
+										<div class="calendar__day">25</div>
+										<div class="calendar__day calendar__weekend">26</div>
+										<div class="calendar__day calendar__weekend">27</div>
+										<div class="calendar__day">28</div>
+										<div class="calendar__day">29</div>
+										<div class="calendar__day">30</div>
+										<div class="calendar__day calendar__day--next">1</div>
+										<div class="calendar__day calendar__day--next">2</div>
+										<div class="calendar__day calendar__day--next calendar__weekend">3</div>
+										<div class="calendar__day calendar__day--next calendar__weekend">4</div>
+										<div class="calendar__day calendar__day--next">5</div>
+										<div class="calendar__day calendar__day--next">6</div>
+										<div class="calendar__day calendar__day--next">7</div>
+										<div class="calendar__day calendar__day--next">8</div>
+										<div class="calendar__day calendar__day--next">9</div>
+										<div class="calendar__day calendar__day--next calendar__weekend">10</div>
+										<div class="calendar__day calendar__day--next calendar__weekend">11</div>
+										</div>
+										</div>
+										<input type="hidden" name="category" value="" />
+									</div> #}
+									</div>
+									<div	class="profile__create_item">
+										<label	class="profile__create_label">
+											<span>
+												*
+											</span>
+											{{ text_serial_number }}
+										</label>
+										<input	class="profile__create_custom_select"	type="text"	name="serial_number" id="serial_number"	value=""	required>
+									    <span "sn-hint">{{ text_min6 }}</span>
+										{# <div class="profile__create_custom_select">
+											<div class="profile__create_select_current profile__create_select_current--placeholder">
+											<span class="profile__create_select_current-seria">SN</span>
+											0215874-2596548
+											</div>
+											<ul class="profile__create_select_dropdown">
+											<li class="profile__create_select_option" data-value="Аксесуари">Електроінструмент</li>
+											<li class="profile__create_select_option" data-value="Аксесуари">Аксесуари</li>
+											<li class="profile__create_select_option" data-value="Садова техніка">Садова техніка</li>
+											</ul>
+											<input type="hidden" name="category" value="" />
+										</div> #}
+										</div>
+										<button	class="button profile__create_button"	type="submit">
+											{{ text_submit }}
+										</button>
+										<div	class="profile__create_image_wrapp">
+											<img	class="profile__create_image"	src="image/profile/create.png"	alt="Product" />
+										</div>
+									</form>
+								</div>
+								<div	class="profile__block"	style="padding-bottom: 120px;">
+									<h2	class="profile__title">
+										{{ text_instruments }}
+									</h2>
+									<div	class="profile__table_wrapper profile__table--products-mod">
+										<div	class="profile__table">
+											<div	class="profile__table_head">
+												<div	class="profile__table_row profile__table_row--head">
+													<div	class="profile__table_cell">
+														{{ text_registration_date }}
+													</div>
+													<div	class="profile__table_cell">
+														{{ text_category }}
+													</div>
+													<div	class="profile__table_cell">
+														{{ text_name }}
+													</div>
+													<div	class="profile__table_cell">
+														{{ text_order_date }}
+													</div>
+													<div	class="profile__table_cell">
+														SN
+													</div>
+												</div>
+											</div>
+											<div	class="profile__table_body">
+												{% for instrument in instruments %}
+													<div	class="profile__table_row">
+														<div	class="profile__table_cell">
+															<span	class="profile__table_cell--mob">
+																{{ text_registration_date }}
+															</span>
+															<span	class="profile__table_cell--mob_span">
+																{{ instrument.registration_date }}
+															</span>
+														</div>
+														<div	class="profile__table_cell">
+															<span	class="profile__table_cell--mob">
+																{{ text_category }}
+															</span>
+															<span	class="profile__table_cell--mob_span">
+																{{ instrument.category }}
+															</span>
+														</div>
+														<div	class="profile__table_cell">
+															<span	class="profile__table_cell--mob">
+																{{ text_name }}
+															</span>
+															<span	class="profile__table_cell--mob_span">
+																{{ instrument.product }}
+															</span>
+														</div>
+														<div	class="profile__table_cell">
+															<span	class="profile__table_cell--mob">
+																{{ text_order_date }}
+															</span>
+															<span	class="profile__table_cell--mob_span">
+																{{ instrument.order_date }}
+															</span>
+														</div>
+														<div	class="profile__table_cell">
+															<span	class="profile__table_cell--mob">
+																SN
+															</span>
+															<span	class="profile__table_cell--mob_span">
+																{{ instrument.serial_number }}
+															</span>
+														</div>
+													</div>
+												{% endfor %}
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</section>
+				</main>
+				{{ footer }}
+				<script>
+  $('.profile__create_custom_select').click(function(){
+	if($(this).hasClass('profile__create_custom_select--active')){
+      $(this).removeClass('profile__create_custom_select--active');
+	}else{
+	  $(this).addClass('profile__create_custom_select--active');	
+	}
+  });
+
+  $('.selected-category').click(function(){
+	$('#selected-category-name').removeClass('profile__create_select_current--placeholder');
+	$('#selected-category-name').html($(this).text());
+	var category_id = $(this).attr('data-value');
+
+	$.ajax({
+		url: 'index.php?route=account/instrument/get_subcategory&parent_id=' + category_id + '&lang={{ lang }}',
+		type: 'get',
+		dataType: 'json',
+		success: function(json){
+			var  html = '';
+            for(category in json['categories']){
+                html += '<li class="profile__create_select_option selected-subcategory" data-value="' + json['categories'][category]['category_id'] + '" onclick="selectSubcategory(' + json['categories'][category]['category_id'] + ', \'' + json['categories'][category]['name'] + '\')">' + json['categories'][category]['name'] + '</li>';
+			}
+			$('.selected-subcategories').html(html);
+		}
+	});
+
+	$('#select-category').class('profile__create_custom_select');
+  });
+
+  function selectSubcategory(subcategory_id, name){
+	$('#selected-subcategory-name').removeClass('profile__create_select_current--placeholder');
+	$('#selected-subcategory-name').html(name);
+
+	$.ajax({
+		url: 'index.php?route=account/instrument/get_product&category_id=' + subcategory_id,
+		type: 'get',
+		dataType: 'json',
+		success: function(json){
+			var  html = '';
+            for(product in json['products']){
+                html += '<li class="profile__create_select_option" data-value="' + json['products'][product]['product_id'] + '" onclick="selectName(' + json['products'][product]['product_id'] + ', \'' + json['products'][product]['name'] + '\')">' + json['products'][product]['name'] + '</li>';
+			}
+			$('.selected-names').html(html);
+		}
+	});
+
+	$('#select-subcategory').class('profile__create_custom_select');
+  }
+
+  function selectName(product_id, name){
+	$('#selected-product-name').removeClass('profile__create_select_current--placeholder');
+	$('#selected-product-name').html(name);
+	$('input[name=\'product_id\']').val(product_id);
+	$('#select-subcategory').class('profile__create_custom_select');
+  }
+
+  $.fn.setCursorPosition = function(pos) {
+  if ($(this).get(0).setSelectionRange) {
+    $(this).get(0).setSelectionRange(pos, pos);
+  } else if ($(this).get(0).createTextRange) {
+    var range = $(this).get(0).createTextRange();
+    range.collapse(true);
+    range.moveEnd('character', pos);
+    range.moveStart('character', pos);
+    range.select();
+  }
+  };
+
+  $("#center_ok").click(function(){
+    $(this).setCursorPosition(4);
+  }).mask("SN hhhhhh?hhhhhhhhhhhhhhhhhhhh");
+
+  $.mask.definitions['h'] = "[A-Za-z0-9]";
+  $('#serial_number').mask('SN hhhhhh?hhhhhhhhhhhhhhhhhhhh', {autoclear: false});
+</script>
+				<script type="text/javascript"><!--
+var date = new Date();
+var startDate = date.getDate() + '/' + (date.getMonth()) + '/' + date.getFullYear() - 10;
+
+$('#order_date').datetimepicker({
+  pickTime: false,
+  minDate: startDate ,
+  format: 'YYYY-MM-DD',
+});
+
+//--></script>
+<script>
+$('#serial_number').on('keydown', function(){
+	setTimeout(function(){
+        var sn = $('#serial_number').val();
+	    var count = 0;
+	    for(i in sn){
+		    if (sn[i] != '_'){
+                count++;
+		    }
+	    }
+	    if(count > 3 && count < 9){
+		    $('#serial_number').addClass('sn-active');
+	    }else{
+		    $('#serial_number').removeClass('sn-active');
+	    }
+	}, 0);	
+})
+</script>
+<script>
+	$('#order_date').click(function(){
+        console.log($('.bootstrap-datetimepicker-widget').parent());
+	});
+</script>
+				

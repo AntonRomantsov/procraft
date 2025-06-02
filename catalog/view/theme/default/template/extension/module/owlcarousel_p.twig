@@ -1,0 +1,192 @@
+{% if modules|length > 1 %}
+    <ul class="nav nav-tabs" id="nav-owl-{{ module }}">
+    	{% set is_first_tab = true %}
+        {% for m in modules %}
+            {% if m.products|length > 1 %}
+                <li><a href="#owlcarousel_p-{{ module_id }}">{{ m.heading_title }}</a></li>
+                {% set is_first_tab = false %}
+            {% endif %} 
+        {% endfor %} 
+    </ul>
+{% endif %} 
+
+{% if modules|length > 1 %}
+<div id="products-tabs-content" class="tab-content">
+{% endif %} 
+
+{% for m in modules %} 
+    {% if m.products|length >= 1 %}
+        {% set is_first_tab = true %}
+        <div class="tab-pane module-tab-pane" id="owlcarousel_p-{{ module_id }}">
+            {% if m.show_title == 1 %} 
+                <h3>{{ m.heading_title }}</h3>
+            {% endif %}
+            {% if subcategories %}
+            {% for category in subcategories %} 
+            {% if category.id in cats_ids_array %}
+            <a class="btn btn-subcategory" onclick="getSubcat({{ module_id }}, '{{ category.id }}', '{{ location }}', '{{ cats_ids }}');" style="background: #ED6E00; color: #fff; font-weight: bold;">{{ category.name }}</a>
+            {% else %}
+            <a class="btn btn-subcategory" onclick="getSubcat({{ module_id }}, '{{ category.id }}', '{{ location }}', '{{ cats_ids }}');">{{ category.name }}</a>
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+            <div class="row product-layout {{ m.add_class_name }}">
+                <div id="owl-{{ m.module }}" class="owl-carousel">
+                    {% for product in m.products %} 
+                        <div class="col-lg-12 item ad-category-item hits-actions {% if product.stock_id == 5 and product.quantity < 1 %}out-of-stock{% endif %}">
+                            <div class="product-thumb transition">
+                                {% if product.thumb %}
+                                    <div class="image">{% if product.is_rotate %}<span class="three_de_cover"></span>{% endif %}
+                                        <!-- XD stickers start -->
+                    {% if product.product_xdstickers is not empty %}
+                    <div class="xdstickers_wrapper {{xdstickers_position}}">
+                        {% for xdsticker in product.product_xdstickers %}
+                            <div class="xdstickers {{xdsticker.id}}">
+                                {{xdsticker.text}}
+                            </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    {% if product.product_xdstickers_custom is not empty %}
+                    <div class="xdstickers_wrapper xdstickers_wrapper_custom {{xdstickers_position}}">
+                        {% for xdsticker in product.product_xdstickers_custom %}
+                            <div class="xdstickers {{xdsticker.id}}">
+                                {{xdsticker.text}}
+                            </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    <!-- XD stickers end -->
+                                        <a href="{{ product.href }}"><img {% if m.show_lazy_load == 1 %}data-{% endif %}src="{{ product.thumb }}" alt="{{ product.name }}" class="img-responsive {% if m.show_lazy_load == 1 %}lazyOwl{% endif %} {% if product.stock_id == 5 and product.quantity < 1 %}img-out-of-stock{% endif %}"/></a>
+                                    </div>
+                                {% endif %}
+                                <div class="caption">
+                                    {% if m.show_name  == 1 %}
+                                        <h4><a href="{{ product.href }}">{{ product.name }}</a></h4>
+                                    {% endif %}
+                                    {% if product.rating and m.show_rate == 1 %} 
+                                        <div class="rating">
+                                            {% for i in 5 %}
+                                                {% if product.rating < i %}
+                                                    <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
+                                                {% else %}
+                                                    <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %} 
+                                    {% if product.stock_id == 5 and product.quantity < 1 %}
+                <a class="product-actions__form-btn" href="javascript:OpenFormBuilderPopup(2);">{{ text_form_stock }}</a>
+                {% else %}
+                                    {% if product.price %} 
+                                        <p class="price">
+                                            {% if not product.special %}
+                                                {{ product.price }}
+                                            {% else %}
+                                                <span class="price-new">{{ product.special }}</span> <span class="price-old">{{ product.price }}</span>
+                                                <span class="tb_label_special">-{{ product.percent }}%</span>
+                                            {% endif %}
+                                            {% if product.tax %}
+                                                <span class="price-tax">{{ text_tax }} {{ product.tax }}</span>
+                                            {% endif %}
+                                        </p>
+                                    {% endif %}
+                                    {% endif %}
+                                </div>
+                                <div class="ad-scis">
+                                    {% if product.stock_id != 5 or product.quantity >= 1 %}
+                                        {% if m.show_cart == 1 %}
+                                            <button type="button" onclick="cart.add('{{ product.product_id }}');"> <span class="hidden-xs hidden-sm hidden-md">{{ button_cart }}</span></button>
+                                        {% endif %}
+                                    {% endif %}    
+                                        <div class="product_in_category_attributes">
+            {% for attr in product.attributes %}
+              <div> <span>{{ attr.name }}</span> {{ attr.text }} </div>
+            {% endfor %}
+            </div>
+        </div>
+                            </div>
+                        </div>
+                    {% endfor %} 
+                </div>
+            </div>
+            <script type="text/javascript">$(document).ready(function() {function random(owlSelector){owlSelector.children().sort(function(){return Math.round(Math.random()) - 0.5;}).each(function(){$(this).appendTo(owlSelector);});}var owl = $("#owl-{{ m.module }}");owl.owlCarousel({items : {{ m.visible }},itemsDesktop : [1000, {{ m.visible_1000 }} ],itemsDesktopSmall : [900, {{ m.visible_900}} ],itemsTablet: [600, {{ m.visible_600 }} ],itemsMobile : [479, {{ m.visible_479 }} ],{% if m.show_random_item == 1 %}beforeInit : function(elem){random(elem);},{% endif %} {% if m.show_nav == 1 %} navigation: true,{% endif %} {% if m.slide_speed %} slideSpeed: {{ m.slide_speed }},{% endif %} {% if m.pagination_speed %}paginationSpeed: {{ m.pagination_speed }},{% endif %} {% if m.autoscroll %}autoPlay: {{ m.autoscroll }},{% endif %} {% if m.show_stop_on_hover == 1 %} stopOnHover: true,{% endif %} {% if m.rewind_speed %}rewindSpeed: {{ m.rewind_speed }},{% endif %} {% if m.show_lazy_load == 1 %} lazyLoad : true,{% endif %}{% if m.show_mouse_drag == 0 %} mouseDrag: false,{% endif %}{% if m.show_touch_drag == 1 %} touchDrag: true,{% endif %}{% if m.show_page == 1 %} pagination: false,{% endif %}{% if m.show_per_page == 1 %} scrollPerPage: true,{% endif %}{% if m.item_prev_next and m.show_per_page == 0 %} slideItems: {{ m.item_prev_next }},{% endif %} navigationText: ['<i class="fa fa-chevron-left fa-5x"></i>', '<i class="fa fa-chevron-right fa-5x"></i>']});{% if modules|length > 1 %}$('#nav-owl-{{ module }} a:first').tab('show');$('#nav-owl-{{ module }} a').click(function (e) {e.preventDefault();$(this).tab('show');}){% endif %} });</script>
+        </div>
+        {% set is_first_tab = false %}
+    {% endif %} 
+{% endfor %} 
+
+{% if modules|length > 1 %}
+</div>
+{% endif %}
+<script type="text/javascript">
+    function getSubcat(module_id, subcat_id, redir, cats_ids){
+        var cats_ids = explode('_', cats_ids);
+
+        if(cats_ids == ''){
+           cats_ids = [];
+        }
+
+        var subcat = [];
+        subcat['m' + module_id] = cats_ids;
+        subcat['m' + module_id] = new_arr(subcat['m' + module_id], subcat_id);
+        if(subcat['m' + module_id].length > 0){
+            var module_string = '&subcats' + module_id + '=' + implode('_', subcat['m' + module_id]);
+            location = redir + module_string;
+        }else{
+            location = redir;
+        }
+        return false;
+    }
+
+    function implode( glue, pieces ) {
+ 
+        return ( ( pieces instanceof Array ) ? pieces.join ( glue ) : pieces );
+    }
+
+    function explode( delimiter, string ) { 
+ 
+        var emptyArray = { 0: '' };
+ 
+        if ( arguments.length != 2
+            || typeof arguments[0] == 'undefined'
+            || typeof arguments[1] == 'undefined' )
+        {
+            return null;
+        }
+ 
+        if ( delimiter === ''
+            || delimiter === false
+            || delimiter === null )
+        {
+            return false;
+        }
+ 
+        if ( typeof delimiter == 'function'
+            || typeof delimiter == 'object'
+            || typeof string == 'function'
+            || typeof string == 'object' )
+        {
+            return emptyArray;
+        }
+ 
+        if ( delimiter === true ) {
+            delimiter = '1';
+        }
+ 
+        return string.toString().split ( delimiter.toString() );
+    }
+
+    function new_arr(arr, elem) {
+        for (var i = 0; i < arr.length; i++) {
+            if (arr[i] === elem) {
+                arr.splice(i, 1);
+                var j = true;
+            }
+        }
+        if(!j){
+            arr.push(elem);
+        }
+        return arr;
+    }
+</script>

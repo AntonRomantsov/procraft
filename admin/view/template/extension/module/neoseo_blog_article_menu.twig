@@ -1,0 +1,13 @@
+{% if (heading_title) %}
+    <img width="36" height="36" style="float:left" src="view/image/neoseo.png" alt=""/>
+    <h3>{{ heading_title_raw ~ " " ~ text_module_version }}</h3>
+{% endif %}
+<div class="list-group">
+    {% for article in articles %}
+        {% if (article['article_id'] == article_id) %}
+            <a href="{{ article['href'] }}" class="list-group-item active">{{ article['name'] }}</a>
+        {% else %}
+            <a href="{{ article['href'] }}" class="list-group-item">{{ article['name'] }}</a>
+        {% endif %}
+    {% endfor %}
+</div>

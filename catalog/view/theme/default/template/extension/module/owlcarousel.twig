@@ -1,0 +1,141 @@
+{% if modules|length > 1 %}
+    <ul class="nav nav-tabs" id="nav-owl-{{ module }}">
+    	{% set is_first_tab = true %}
+        {% for m in modules %}
+            {% if m.products|length > 1 %}
+                <li><a href="#tab-owl-{{ module }}">{{ m.heading_title }}</a></li>
+                {% set is_first_tab = false %}
+            {% endif %} 
+        {% endfor %} 
+    </ul>
+{% endif %} 
+
+{% if modules|length > 1 %}
+<div id="products-tabs-content" class="tab-content">
+{% endif %} 
+
+{% for m in modules %} 
+    {% if m.products|length > 1 %}
+        {% set is_first_tab = true %}
+        <section class="promotions" id="tab-owl-{{ module }}" style="margin-bottom: 30px;">
+        <div class="promotions__container main__swiper-container">
+        <div class="hero__title-row promotions__title-row">
+            {% if m.show_title == 1 %} 
+            <h3 class="promotions__title">{{ m.heading_title }}</h3>
+            {% if link %}
+            <a href="{{ link }}" class="promotions__button">{{ text_show_all }}</a>
+            {% endif %}
+            {% endif %}
+        </div>
+        <div class="promotions__row">
+            <div class="swiper main__swiper-{{ module }}">
+              <div class="swiper-wrapper main__swiper-wrapper">
+                    {% for product in m.products %} 
+                        <div class="swiper-slide {% if product.stock_id == 5 and product.quantity < 1 %}out-of-stock{% endif %}">
+                            <div class="product">
+                            <div class="product__wrapper">
+                      <div class="product__labels">
+                      {% if product.product_xdstickers is not empty %}
+                      {% for xdsticker in product.product_xdstickers %}
+                        <span class="product__labels-label">{{ xdsticker.text }}</span>
+                      {% endfor %}
+                      {% endif %}
+                      {% if product.product_xdstickers_custom is not empty %}
+                      {% for xdsticker in product.product_xdstickers_custom %}
+                        <span class="product__labels-label">{{ xdsticker.text }}</span>
+                      {% endfor %}
+                      {% endif %}
+                      {% if product.is_rotate %}
+                        <span class="product__labels-overwiev">
+                          <img src="catalog/view/theme/default/image//product/overview.png" alt="360" />
+                        </span>
+                       {% endif %}
+                      </div>
+                      <div class="product__like">
+                        <svg class="product__like-item product-like-{{ product.product_id }}{% if product.wl_class %} product__like-active{% endif %}" viewBox="0 0 24 21" fill="none" xmlns="http://www.w3.org/2000/svg" id="product-like-{{ product.product_id }}" {% if not product.wl_class %}onclick="wishlist.add({{ product.product_id }})"{% else %}onclick="wishlist.remove({{ product.product_id }})"{% endif %}>
+                          <path
+                            d="M11.9626 19.5381L2.10281 9.80024C1.07574 8.78576 0.5 7.41137 0.5 5.97966C0.5 4.548 1.07574 3.17365 2.10281 2.15928C3.13034 1.1449 4.52508 0.573975 5.98067 0.573975C7.43626 0.573975 8.83108 1.1449 9.85873 2.15928L11.9626 4.23506L14.0665 2.15928C15.094 1.1449 16.4888 0.573975 17.9444 0.573975C19.4 0.573975 20.7948 1.1449 21.8224 2.15928C22.8499 3.17365 23.4287 4.548 23.4287 5.97966C23.4287 7.41137 22.8499 8.78576 21.8224 9.80024L11.9626 19.5381Z"
+                          />
+                        </svg>
+                      </div>
+                      <div class="product__image">
+                        <a class="product__image-link" href="{{ product.href }}">
+                          <img class="product__image-item" src="{{ product.thumb }}" alt="Product" />
+                        </a>
+                      </div>
+                      <div class="product__content-row">
+                        <div class="product__content">
+                          <h4 class="product__title"><a href="{{ product.href }}">{{ product.name }}</a></h4>
+                          <div class="product__rating">
+                            <div class="rating">
+                            {% for i in 1..5 %}
+                              {% if product.rating < i %}
+                              <span class="rating-star"></span>
+                              {% else %}
+                              <span class="rating-star rating-filled"></span>
+                              {% endif %}
+                            {% endfor %}
+                            </div>
+                            <span class="product__rating-total">{{ product.reviews }}</span>
+                          </div>
+                          <div class="product__price-row">
+                            {% if product.special %}
+                            <p class="product__price">
+                              <span>{{ product.special }}</span>
+                            </p>
+                            {% else %}
+                            <p class="product__price">
+                              {{ product.price }}
+                            </p>
+                            {% endif %}
+                            {% if product.special %}
+                            <p class="product__price-old">{{ product.price }}</p>
+                            {% endif %}
+                          </div>
+                        </div>
+                        <div class="product__badges">
+                        {% if product.gifts %}
+                          <span class="product__badge-present">{{ text_gift }}</span>
+                        {% endif %}
+                        {% if product.is_new %}
+                          <span class="product__badge-new">New</span>
+                        {% endif %}
+                        {% if product.special %}
+                          <span class="product__badge-discount">-{{ product.percent }}%</span>
+                        {% endif %}
+                        </div>
+                      </div>
+                      <div class="product__additional">
+                        <button class="product__additional-button" onclick="call_cp('{{ product.product_id }}','add');">
+                          <svg class="product__additional-icon"><use href="catalog/view/theme/default/image/icons.svg#cartSmall"></use></svg>
+                          <p>{{ button_cart }}</p>
+                        </button>
+                        <ul class="product__additional-attributes">
+                          {% for attr in product.attributes %}
+                          <li class="product__additional-attribute">
+                            <span class="product__additional-attribute_parameter">{{ attr.name }}</span>
+                            <span class="product__additional-attribute_value">{{ attr.text }}</span>
+                          </li>
+                          {% endfor %}
+                        </ul>
+                      </div>
+                    </div>
+                            </div>
+                        </div>
+                    {% endfor %} 
+                </div>
+            </div>
+            <script type="text/javascript">$(document).ready(function() {function random(owlSelector){owlSelector.children().sort(function(){return Math.round(Math.random()) - 0.5;}).each(function(){$(this).appendTo(owlSelector);});}var owl = $("#owl-{{ m.module }}");owl.owlCarousel({items : {{ m.visible }},itemsDesktop : [1000, {{ m.visible_1000 }} ],itemsDesktopSmall : [900, {{ m.visible_900}} ],itemsTablet: [600, {{ m.visible_600 }} ],itemsMobile : [479, {{ m.visible_479 }} ],{% if m.show_random_item == 1 %}beforeInit : function(elem){random(elem);},{% endif %} {% if m.show_nav == 1 %} navigation: true,{% endif %} {% if m.slide_speed %} slideSpeed: {{ m.slide_speed }},{% endif %} {% if m.pagination_speed %}paginationSpeed: {{ m.pagination_speed }},{% endif %} {% if m.autoscroll %}autoPlay: {{ m.autoscroll }},{% endif %} {% if m.show_stop_on_hover == 1 %} stopOnHover: true,{% endif %} {% if m.rewind_speed %}rewindSpeed: {{ m.rewind_speed }},{% endif %} {% if m.show_lazy_load == 1 %} lazyLoad : true,{% endif %}{% if m.show_mouse_drag == 0 %} mouseDrag: false,{% endif %}{% if m.show_touch_drag == 1 %} touchDrag: true,{% endif %}{% if m.show_page == 1 %} pagination: false,{% endif %}{% if m.show_per_page == 1 %} scrollPerPage: true,{% endif %}{% if m.item_prev_next and m.show_per_page == 0 %} slideItems: {{ m.item_prev_next }},{% endif %} navigationText: ['<i class="fa fa-chevron-left fa-5x"></i>', '<i class="fa fa-chevron-right fa-5x"></i>']});{% if modules|length > 1 %}$('#nav-owl-{{ module }} a:first').tab('show');$('#nav-owl-{{ module }} a').click(function (e) {e.preventDefault();$(this).tab('show');}){% endif %} });
+        </script>    
+        </div>  
+        <div class="swiper-button-prev main__swiper-button-prev main__swiper-button-prev-{{ module }}"></div>
+        <div class="swiper-button-next main__swiper-button-next main__swiper-button-next-{{ module }}"></div>  
+        </div>    
+        </section>
+        {% set is_first_tab = false %}
+    {% endif %} 
+{% endfor %} 
+
+{% if modules|length > 1 %}
+</div>
+{% endif %}

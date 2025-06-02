@@ -1,0 +1,17 @@
+{% for zone in zones %}
+    {% if fromlist %}
+        {% if zone['city_count'] >= 1 %} {# Если отключить подсчет, то будет отображать все регионы, а не те в которых есть города #}
+            {% if zone['zone_id'] == zone_id %}
+                <option value="{{ zone['zone_id'] }}" selected="selected">{{ zone['name'] }}</option>
+            {% else %}
+                <option value="{{ zone['zone_id'] }}">{{ zone['name'] }}</option>
+            {% endif %}
+        {% endif %}
+    {% else %}
+        {% if zone['zone_id'] == zone_id %}
+            <option value="{{ zone['zone_id'] }}" selected="selected">{{ zone['name'] }}</option>
+        {% else %}
+            <option value="{{ zone['zone_id'] }}">{{ zone['name'] }}</option>
+        {% endif %}
+    {% endif %}
+{% endfor %}

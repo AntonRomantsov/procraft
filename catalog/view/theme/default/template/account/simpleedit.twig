@@ -1,0 +1,68 @@
+{% if not ajax and not popup and not as_module %}
+
+{% set simple_page = 'simpleedit' %}
+{{ header }}
+
+      <main>
+        <section class="profile">
+          <div class="breadcrumbs__container" bis_skin_checked="1">
+          <ul class="breadcrumb">
+          {% for breadcrumb in breadcrumbs %}
+          <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+          {% endfor %}
+        </ul>
+          </div>
+          <div class="profile__container">
+            <div class="profile__wrapper">
+            {{ account }}
+              <div class="profile__main">
+              {{ account_discount }}
+                <div class="profile__block profile__block--line_mod">
+                  <h2 class="profile__title">{{ heading_title }}</h2>
+                  <form class="profile__form" action="{{ action }}" method="post" enctype="multipart/form-data">
+                  <div class="profile__form_row">
+                    <div class="profile__form_column">
+                      <label class="registration_input__label" for="profileEmail">
+                        <span>*</span>
+                        {{ entry_email }}
+                      </label>
+                      <input class="input--profile_mod" id="profileEmail" type="email" placeholder="{{ entry_email }}" name="edit[email]" value="{{ email }}" required />
+                    </div>
+                    <div class="profile__form_column">
+                      <label class="registration_input__label" for="profileName">
+                        <span>*</span>
+                          {{ entry_firstname }}
+                      </label>
+                      <input class="input--profile_mod" id="profileName" type="text" placeholder="{{ entry_firstname }}" name="edit[firstname]" value="{{ firstname }}" required />
+                    </div>
+                  </div>
+                  <div class="profile__form_row">
+                    <div class="profile__form_column">
+                      <label class="registration_input__label" for="profileLastName">
+                        <span>*</span>
+                        {{ entry_lastname }}
+                      </label>
+                      <input class="input--profile_mod" id="profileLastName" type="text" placeholder="{{ entry_lastname }}" name="edit[lastname]" value="{{ lastname }}" required />
+                    </div>
+                    <div class="profile__form_column">
+                      <label class="registration_input__label" for="profileTel">
+                        <span>*</span>
+                          {{ entry_telephone }}
+                      </label>
+                      <input class="input--profile_mod" id="profileTel" type="tel" placeholder="+380 __ ___ __ __"  name="edit[telephone]" value="{{ telephone }}" required />
+                    </div>
+                  </div>
+                  <button class="button profile__form_button" type="submit" name="submitted" value="1">{{ text_continue }}</button>
+                </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+      
+{% include simple_footer %}
+{% endif %}
+<script>
+$('#profileTel').mask('+38(999) 999 99 99');
+</script>

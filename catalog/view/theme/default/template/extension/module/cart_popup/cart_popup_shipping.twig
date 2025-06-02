@@ -1,0 +1,195 @@
+<p>{{ text_shipping_help }}</p>
+<form class="form-horizontal">
+	<select name="cp_country_id" id="cp-input-country">
+		<option value="">{{ entry_country }}</option>
+		{% for country in countries %}
+		{% if country.country_id  is  country_id %}
+		<option value="{{ country.country_id }}" selected="selected">{{ country.name }}</option>
+		{% else %}
+		<option value="{{ country.country_id }}">{{ country.name }}</option>
+		{% endif %}
+		{% endfor %}
+	</select>
+	<select name="cp_zone_id" id="cp-input-zone"></select>
+	<input type="text" name="cp_postcode" value="{{ postcode }}" placeholder="{{ entry_postcode }}" id="cp-input-postcode" />
+	<input type="button" value="{{ button_quote }}" id="cp-button-quote" data-loading-text="{{ text_loading }}" class="next-step-button" />
+</form>
+<div id="cp-shipping-result"></div>
+<script type="text/javascript"><!--
+	$('#cp-button-quote').on('click', function() {
+		maskElement('#check-data', true);
+		$.ajax({
+			url: 'index.php?route=extension/module/cart_popup/shipping_quote',
+			type: 'post',
+			data: 'cp_country_id=' + $('select[name=\'cp_country_id\']').val() + '&cp_zone_id=' + $('select[name=\'cp_zone_id\']').val() + '&cp_postcode=' + encodeURIComponent($('input[name=\'cp_postcode\']').val()),
+			dataType: 'json',
+			cache: false,
+			beforeSend: function() {
+				$('#cp-button-quote').button('loading');
+			},
+			complete: function() {
+				$('#cp-button-quote').button('reset');
+			},
+			success: function(json) {
+				$('.field-error').remove();
+
+				if (json['error']) {
+					if (json['error']['warning']) {
+						maskElement('#check-data', false);
+						$('#cp-shipping-result').before('<span class="error-text field-error">' + json['error']['warning'] + '</span>');
+					}
+
+					if (json['error']['country']) {
+						maskElement('#check-data', false);
+						$('select[name=\'cp_country_id\']').addClass('error-style').after('<span class="error-text field-error">' + json['error']['country'] + '</span>');
+					} else {
+						maskElement('#check-data', false);
+						$('select[name=\'cp_country_id\']').removeClass('error-style');
+					}
+
+					if (json['error']['zone']) {
+						maskElement('#check-data', false);
+						$('select[name=\'cp_zone_id\']').addClass('error-style').after('<span class="error-text field-error">' + json['error']['zone'] + '</span>');
+					} else {
+						maskElement('#check-data', false);
+						$('select[name=\'cp_zone_id\']').removeClass('error-style');
+					}
+
+					if (json['error']['postcode']) {
+						maskElement('#check-data', false);
+						$('input[name=\'cp_postcode\']').addClass('error-style').after('<span class="error-text field-error">' + json['error']['postcode'] + '</span>');
+					} else {
+						maskElement('#check-data', false);
+						$('input[name=\'cp_postcode\']').removeClass('error-style');
+					}
+				}
+
+
+				if (json['shipping_method']) {
+					$('#cp-block-shipping').remove();
+					$('select[name=\'cp_country_id\']').removeClass('error-style');
+					$('select[name=\'cp_zone_id\']').removeClass('error-style');
+					$('input[name=\'cp_postcode\']').removeClass('error-style');
+					maskElement('#check-data', false);
+
+					html  = '<div id="cp-block-shipping" class="table-responsive">';
+					html += '  <p>{{ text_cp_shipping_method }}</p>';
+					html += '  <table class="table table-bordered">';
+					html += '      <tbody>';
+					for (i in json['shipping_method']) {
+						if (!json['shipping_method'][i]['error']) {
+							for (j in json['shipping_method'][i]['quote']) {
+								html += '<tr>';
+								html += '  <td class="first-td">';
+								if (json['shipping_method'][i]['quote'][j]['code'] == '{{ shipping_method }}') {
+									html += '<div><input type="radio" id="' + json['shipping_method'][i]['quote'][j]['code'] + '" name="cp_shipping_method" value="' + json['shipping_method'][i]['quote'][j]['code'] + '" checked="checked" /></div>';
+								} else {
+									html += '<div><input type="radio" id="' + json['shipping_method'][i]['quote'][j]['code'] + '" name="cp_shipping_method" value="' + json['shipping_method'][i]['quote'][j]['code'] + '" /></div>';
+								}
+								html += '  </td>';
+								html += '  <td>';
+								html += 	'<label for="' + json['shipping_method'][i]['quote'][j]['code'] + '">' + json['shipping_method'][i]['quote'][j]['title'] + '</label>';
+								html += '  </td>';
+								html += '  <td style="text-align: right;">';
+								html += 	'<label for="' + json['shipping_method'][i]['quote'][j]['code'] + '">' + json['shipping_method'][i]['quote'][j]['text'] + '</label>';
+								html += '  </td>';
+								html += '</tr>';
+							}
+						} else {
+							html += '<tr><td class="first-td">' + json['shipping_method'][i]['error'] + '</td></tr>';
+						}
+					}
+					html += '      </tbody>';
+					html += '  </table>';
+
+					{% if shipping_method %}
+						html += '        <input type="button" value="{{ button_shipping }}" id="cp-button-shipping" data-loading-text="{{ text_loading }}" class="next-step-button" />';
+						{% endif %} {% else %}
+							html += '        <input type="button" value="{{ button_shipping }}" id="cp-button-shipping" data-loading-text="{{ text_loading }}" class="next-step-button" disabled="disabled" />';
+							
+
+							html += '</div> ';
+
+							$('#cp-shipping-result').append(html);
+
+							$('input[name=\'cp_shipping_method\']').on('change', function() {
+								$('#cp-button-shipping').prop('disabled', false);
+							});
+						}
+					}
+				});
+			});
+
+$(document).delegate('#cp-button-shipping', 'click', function() {
+	$.ajax({
+		url: 'index.php?route=extension/module/cart_popup/shipping',
+		type: 'post',
+		data: 'cp_shipping_method=' + encodeURIComponent($('input[name=\'cp_shipping_method\']:checked').val()),
+		dataType: 'json',
+		cache: false,
+		beforeSend: function() {
+			$('#cp-button-shipping').button('loading');
+		},
+		complete: function() {
+			$('#cp-button-shipping').button('reset');
+		},
+		success: function(json) {
+			$('.field-error').remove();
+			if (json['error']) {
+				maskElement('#check-data', false);
+				$('#cp-shipping-result').after('<span class="error-text field-error">' + json['error'] + '</span>');
+			} else {
+				maskElement('#check-data', false);
+				$('#cp-shipping-result').after('<span id="cp-shipping-success">' + json['success'] + '</span>').fadeIn();
+				$('#cp-shipping-success').delay(1000).fadeOut();
+				setTimeout(update_cart, 1000, 1, 'remove');
+			}
+		}
+	});
+});
+//--></script>
+<script type="text/javascript"><!--
+	$('select[name=\'cp_country_id\']').on('change', function() {
+		$.ajax({
+			url: 'index.php?route=extension/total/shipping/country&country_id=' + this.value,
+			dataType: 'json',
+			cache: false,
+			beforeSend: function() {
+				$('select[name=\'cp_country_id\']').after(' <i class="fa fa-circle-o-notch fa-spin"></i>');
+			},
+			complete: function() {
+				$('.fa-spin').remove();
+			},
+			success: function(json) {
+				if (json['postcode_required'] == '1') {
+					$('input[name=\'cp_postcode\']').parent().parent().addClass('required');
+				} else {
+					$('input[name=\'cp_postcode\']').parent().parent().removeClass('required');
+				}
+
+				html = '<option value="">{{ entry_zone }}</option>';
+
+				if (json['zone'] && json['zone'] != '') {
+					for (i = 0; i < json['zone'].length; i++) {
+						html += '<option value="' + json['zone'][i]['zone_id'] + '"';
+
+						if (json['zone'][i]['zone_id'] == '{{ zone_id }}') {
+							html += ' selected="selected"';
+						}
+
+						html += '>' + json['zone'][i]['name'] + '</option>';
+					}
+				} else {
+					html += '<option value="0" selected="selected">{{ text_none }}</option>';
+				}
+
+				$('select[name=\'cp_zone_id\']').html(html);
+			},
+			error: function(xhr, ajaxOptions, thrownError) {
+				alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+			}
+		});
+});
+
+$('select[name=\'cp_country_id\']').trigger('change');
+//--></script>

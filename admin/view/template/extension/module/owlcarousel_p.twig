@@ -1,0 +1,798 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button type="submit" form="form-module" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <div class="container-fluid">
+    {% if error_warning %}
+    <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ entry_tab_options }}</h3>
+      </div>
+
+      <div class="panel-body">
+        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-owlcarousel_p" class="form-horizontal">
+        
+        <div id="tab-module" class="vtabs-content">
+          <ul class="nav nav-tabs">
+            <li class="active"><a href="#tab-settings" data-toggle="tab">{{ entry_main }}</a></li>
+            <li><a href="#tab-product" data-toggle="tab">{{ entry_product }}</a></li>
+            <li><a href="#tab-additional" data-toggle="tab">{{ entry_additional }}</a></li>
+            <li><a href="#tab-display" data-toggle="tab">{{ entry_display }}</a></li>
+          </ul>
+
+          <div class="tab-content">
+
+            <div class="tab-pane active" id="tab-settings">
+              <div class="tab-pane">
+                <ul class="nav nav-tabs" id="language">
+                  {% for language in languages %} 
+                    <li><a href="#language{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+                  {% endfor %} 
+                </ul>
+                
+                <div class="tab-content">
+                  {% for language in languages %} 
+                    <div class="tab-pane" id="language{{ language.language_id }}">
+                      <div class="form-group required">
+                        <label class="col-sm-2 control-label" for="title-language{{ language.language_id }}">{{ entry_title }}</label>
+                        <div class="col-sm-10">
+                          <input type="text" name="owlcarousel_p_module[title][{{ language.language_id }}]" id="title-{{ language.language_id }}" value="{{ module.title[language.language_id] ? module.title[language.language_id] : '' }}" class="form-control" />
+                        </div>
+                      </div>
+                    </div>
+                  {% endfor %} 
+                </div>
+              </div>
+
+              <div class="form-group required">
+                <label class="col-sm-2 control-label">{{ entry_add_block_name }}</label>
+                <div class="col-sm-10">
+                  <input type="text" name="owlcarousel_p_module[name]" value="{{ module.name }}" class="form-control" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-2 control-label">{{ entry_status }}</label>
+                <div class="col-sm-10">
+                  <select name="owlcarousel_p_module[status]" class="form-control">
+                    {% if module.status %} 
+                      <option value="1" selected="selected">{{ text_enabled }}</option>
+                      <option value="0">{{ text_disabled }} </option>
+                    {% else %}
+                      <option value="1">{{ text_enabled }} </option>
+                      <option value="0" selected="selected">{{ text_disabled }}</option>
+                    {% endif %}
+                    </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-2 control-label">{{ entry_add_class_name }}</label>
+                <div class="col-sm-10">
+                  <input type="text" name="owlcarousel_p_module[add_class_name]" value="{{ module.add_class_name }}" class="form-control" />
+                </div>
+              </div>
+
+            </div>
+
+            <div class="tab-pane" id="tab-product">
+              <div class="form-group">
+                <label class="col-sm-2 control-label">{{ entry_source }}</label>
+                <div class="col-sm-10">
+                  <select name="owlcarousel_p_module[category_id][]" id="select" onchange="showhide();" class="form-control" multiple style="height: 300px;">
+                    <option value="0" {% if (0 in module.category_id) %}selected="selected"{% endif %}>{{ text_all_product }}</option>
+                    <option value="viewed" {% if ('viewed' in module.category_id) %}selected="selected"{% endif %}>{{ text_viewed }}</option>
+                    <option value="featured" {% if ('featured' in module.category_id) %}selected="selected"{% endif %}>{{ text_featured }}</option>
+                    {% for rootcat in rootcats %} 
+                    {% if (rootcat.category_id in module.category_id) %} 
+                      <option value="{{ rootcat.category_id }}" selected="selected">{{ rootcat.name }}</option>
+                    {% else %} 
+                      <option value="{{ rootcat.category_id }}">{{ rootcat.name }}</option>
+                    {% endif %} 
+                    {% endfor %} 
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="input-white-list"><span data-toggle="tooltip" title="{{ help_white_list }}">{{ entry_white_list }}</span></label>
+                <div class="col-sm-10">
+                  <input type="text" name="white_list" value="" placeholder="{{ entry_white_list }}" id="input-white-list" class="form-control"/>
+                  <div id="product-white-list" class="well well-sm" style="height: 150px; overflow: auto;"> {% for product in white_list %}
+                      <div id="product-{{ product.product_id }}"><i class="fa fa-minus-circle"></i> {{ product.name }}
+                        <input type="hidden" name="owlcarousel_p_module[white_list][]" value="{{ product.product_id }}"/>
+                      </div>
+                    {% endfor %}</div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="input-black-list"><span data-toggle="tooltip" title="{{ help_black_list }}">{{ entry_black_list }}</span></label>
+                <div class="col-sm-10">
+                  <input type="text" name="black_list" value="" placeholder="{{ entry_black_list }}" id="input-black-list" class="form-control"/>
+                  <div id="product-black-list" class="well well-sm" style="height: 150px; overflow: auto;"> {% for product in black_list %}
+                      <div id="product-{{ product.product_id }}"><i class="fa fa-minus-circle"></i> {{ product.name }}
+                        <input type="hidden" name="owlcarousel_p_module[black-list][]" value="{{ product.product_id }}"/>
+                      </div>
+                    {% endfor %}</div>
+                </div>
+              </div>
+              
+              {% if module.category_id == 'featured' %}
+                {% set show_block = 'block' %}
+              {% else %}
+                {% set show_block = 'none' %}
+              {% endif %}
+
+              <div class="form-group" id="rowfeatured" style="display:{{ show_block }};">
+               <label class="col-sm-2 control-label" for="visible"><span data-toggle="tooltip" title="{{ help_category }}">{{ entry_category }}</label> 
+                <div class="col-sm-10">
+                  <input type="text" name="product" value="" placeholder="{{ entry_product }}" id="input-product" class="form-control" />
+                  <br/>
+                  <div class="scrollbox well well-sm" id="featured-product" style="height: 150px; overflow: auto;">
+                    {% set class = 'odd' %}
+                    {% for product in products %} 
+                        {% set class = 'even' ? 'odd' : 'even' %}
+                        <div id="featured-product{{ product.product_id }} " class="{{ class }}">{{ product.name }} <i class="fa fa-minus-circle"></i>
+                              <input type="hidden" value="{{ product.product_id }}" />
+                        </div>
+                    {% endfor %} 
+                  </div>
+                  <input type="hidden" name="owlcarousel_p_module[featured]" value="{{ module.featured }}" />
+                </div>
+              </div>
+              
+              {% if module.category_id == 'viewed' %}
+                {% set show_block = 'block' %}
+              {% else %}
+                {% set show_block = 'none' %}
+              {% endif %}
+
+              <div class="form-group" id="rowviewed" style="display:{{ show_block }};">
+                <div class="col-sm-10 col-sm-push-2">
+                  <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ text_hide_module }}</div>
+                </div>
+              </div>
+
+              {% if module.category_id == 'featured' or module.category_id == 'viewed' %}
+                {% set hide_block = 'none' %}
+              {% else %}
+                {% set hide_block = 'block' %}
+              {% endif %}
+
+              <div class="form-group" id="rowcategory" style="display:{{ hide_block }};">
+                <label class="col-sm-2 control-label">{{ entry_manufacturer }}</label>
+                <div class="col-sm-10 scrollbox" id="featured-product">
+                 <select name="owlcarousel_p_module[manufacturer_id]" id="select" class="form-control">
+                    <option value="0" <{% if module.manufacturer_id in '0' %} selected="selected"{% endif %}>{{ text_all_manufacturers }}</option>
+                    {% if manufacturers%}
+                      {% for manufacturer in manufacturers %} 
+                        {% if manufacturer.manufacturer_id == module.manufacturer_id %} 
+                          <option value="{{ manufacturer.manufacturer_id }}" selected="selected">{{ manufacturer.name }}</option>
+                        {% else %}
+                          <option value="{{ manufacturer.manufacturer_id }}">{{ manufacturer.name }}</option>
+                        {% endif %}
+                      {% endfor %}
+                    {% endif %} 
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group" id="rowsort" style="display:{{ hide_block }};">
+                <label class="col-sm-2 control-label">{{ entry_sort }}</label>
+                <div class="col-sm-10">
+                  <select name="owlcarousel_p_module[sort]" class="form-control">
+                    {% if module.sort == 'p.date_added' %}
+                      <option value="p.date_added" selected="selected">{{ text_sort_date_added }}</option>
+                    {% else %}
+                      <option value="p.date_added">{{ text_sort_date_added }}</option>
+                    {% endif %}
+
+                    {% if module.sort == 'rating' %}
+                      <option value="rating" selected="selected">{{ text_sort_rating }}</option>
+                    {% else %}
+                      <option value="rating">{{ text_sort_rating }}</option>
+                    {% endif %}
+
+                    {% if module.sort == 'p.viewed' %}
+                      <option value="p.viewed" selected="selected">{{ text_sort_viewed }}</option>
+                    {% else %}
+                      <option value="p.viewed">{{ text_sort_viewed }}</option>
+                    {% endif %}
+
+                    {% if module.sort == 'p.sort_order' %} 
+                      <option value="p.sort_order" selected="selected">{{ text_sort_order }}</option>
+                    {% else %}
+                      <option value="p.sort_order">{{ text_sort_order }}</option>
+                    {% endif %}
+
+                    {% if module.sort == 'topsellers' %}
+                      <option value="topsellers" selected="selected">{{ text_sort_bestseller }}</option>
+                    {% else %}
+                      <option value="topsellers">{{ text_sort_bestseller }}</option>
+                    {% endif %}
+
+                    {% if module.sort == 'special' %}
+                      <option value="special" selected="selected">{{ text_sort_special }}</option>
+                    {% else %}
+                      <option value="special">{{ text_sort_special }}</option>
+                    {% endif %}
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-2 control-label">{{ entry_image }}</label>
+                <div class="col-sm-5">
+                  <input type="text" name="owlcarousel_p_module[image_width]" value="{{ module.image_width }}" class="form-control" />
+                </div>
+                <div class="col-sm-5">
+                  <input type="text" name="owlcarousel_p_module[image_height]" value="{{ module.image_height }}" class="form-control" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="description"><span data-toggle="tooltip" title="{{ help_count }}">{{ entry_description }}</label>
+                <div class="col-sm-10">
+                  <input type="text" name="owlcarousel_p_module[description]" value="{{ module.description }}" class="form-control" id="description" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="count"><span data-toggle="tooltip" title="{{ help_count }}">{{ entry_count }}</label>
+                <div class="col-sm-10">
+                  <input type="text" name="owlcarousel_p_module[count]" value="{{ module.count }}" class="form-control" id="count" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                 <label class="col-sm-2 control-label" for="visible"><span data-toggle="tooltip" title="{{ help_visible }}">{{ entry_visible }}</label>
+                <div class="col-sm-10">
+                  <input type="text" name="owlcarousel_p_module[visible]" value="{{ module.visible }}" class="form-control" id="visible" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="visible_1000"><span data-toggle="tooltip" title="{{ help_visible_1000 }}">{{ entry_visible_1000 }}</label>
+                <div class="col-sm-10">
+                  <input type="text" name="owlcarousel_p_module[visible_1000]" value="{{ module.visible_1000 }}" class="form-control" id="visible_1000" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="visible_900"><span data-toggle="tooltip" title="{{ help_visible_900 }}">{{ entry_visible_900 }}</label>
+                <div class="col-sm-10">
+                  <input type="text" name="owlcarousel_p_module[visible_900]" value="{{ module.visible_900 }}" class="form-control" id="visible_900" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                 <label class="col-sm-2 control-label" for="visible_600"><span data-toggle="tooltip" title="{{ help_visible_600 }}">{{ entry_visible_600 }}</label>
+                <div class="col-sm-10">
+                  <input type="text" name="owlcarousel_p_module[visible_600]" value="{{ module.visible_600 }}" class="form-control" id="visible_600" />
+                </div>
+              </div>
+
+              <div class="form-group">
+               <label class="col-sm-2 control-label" for="visible_479"><span data-toggle="tooltip" title="{{ help_visible_479 }}">{{ entry_visible_479 }}</label>
+                <div class="col-sm-10">
+                 <input type="text" name="owlcarousel_p_module[visible_479]" value="{{ module.visible_479 }}" class="form-control" id="visible_479" />
+                </div>
+              </div>
+            </div>
+
+            <div class="tab-pane" id="tab-additional">
+              <div class="form-group">
+               <label class="col-sm-2 control-label" for="slide_speed"><span data-toggle="tooltip" title="{{ help_slide_speed }}">{{ entry_slide_speed }}</span></label>
+                <div class="col-sm-10">
+                  <input type="text" name="owlcarousel_p_module[slide_speed]" value="{{ module.slide_speed }}" class="form-control" id="slide_speed" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="pagination_speed"><span data-toggle="tooltip" title="{{ help_pagination_speed }}">{{ entry_pagination_speed }}</span></label>
+                <div class="col-sm-10">
+                  <input type="text" name="owlcarousel_p_module[pagination_speed]" value="{{ module.pagination_speed }}" class="form-control" id="pagination_speed" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="autoscroll"><span data-toggle="tooltip" title="{{ help_autoscroll }}">{{ entry_autoscroll }}</span></label>
+                <div class="col-sm-10">
+                  <input type="text" name="owlcarousel_p_module[autoscroll]" value="{{ module.autoscroll }}" class="form-control" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="item_prev_next"><span data-toggle="tooltip" title="{{ help_item_prev_next }}">{{ entry_item_prev_next }}</span></label>
+                <div class="col-sm-10">
+                  <input type="text" name="owlcarousel_p_module[item_prev_next]" value="{{ module.item_prev_next }}" class="form-control" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-2 control-label"><span data-toggle="tooltip" title="{{ help_per_page }}">{{ entry_per_page }}</label>
+                <div class="col-sm-10">
+                  <div class="switch">
+                    <label for="no_per_page"></label>
+                    <input id="no_per_page" type="radio" name="owlcarousel_p_module[show_per_page]" value="0" {% if module.show_per_page is defined and module.show_per_page == '0' %} checked="checked" {% endif %} />
+                    <label for="yes_per_page"></label>
+                    <input id="yes_per_page" type="radio" name="owlcarousel_p_module[show_per_page]" value="1" {% if module.show_per_page is not defined or module.show_per_page == '1' %} checked="checked" {% endif %} />
+                    <span></span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-2 control-label">{{ entry_random_item }}</label>
+                <div class="col-sm-10">
+                  <div class="switch">
+                    <label for="no_random_item"></label>
+                    <input id="no_random_item" type="radio" name="owlcarousel_p_module[show_random_item]" value="0" {% if module.show_random_item is defined and module.show_random_item == '0' %} checked="checked" {% endif %} />
+                    <label for="yes_random_item"></label>
+                    <input id="yes_random_item" type="radio" name="owlcarousel_p_module[show_random_item]" value="1" {% if module.show_random_item is not defined or module.show_random_item == '1' %} checked="checked" {% endif %} />
+                    <span></span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-2 control-label">{{ entry_stock }}</label>
+                <div class="col-sm-10">
+                  <div class="switch">
+                    <label for="no_stock"></label>
+                    <input id="no_stock" type="radio" name="owlcarousel_p_module[show_stock]" value="0" {% if module.show_stock is defined and module.show_stock == '0' %} checked="checked" {% endif %} />
+                    <label for="yes_stock"></label>
+                    <input id="yes_stock" type="radio" name="owlcarousel_p_module[show_stock]" value="1" {% if module.show_stock is not defined or module.show_stock == '1' %} checked="checked" {% endif %} />
+                    <span></span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-2 control-label"><span data-toggle="tooltip" title="{{ help_current_category }}">{{ entry_current_category }}</span></label>
+                <div class="col-sm-10">
+                  <div class="switch">
+                    <label for="no_current_category"></label>
+                    <input id="no_current_category" type="radio" name="owlcarousel_p_module[show_current_category]" value="0" {% if module.show_current_category is defined and module.show_current_category == '0' %} checked="checked" {% endif %} />
+                    <label for="yes_current_category"></label>
+                    <input id="yes_current_category" type="radio" name="owlcarousel_p_module[show_current_category]" value="1" {% if module.show_current_category is not defined or module.show_current_category == '1' %} checked="checked" {% endif %} />
+                    <span></span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-2 control-label"><span data-toggle="tooltip" title="{{ help_current_product }}">{{ entry_current_product }}</span></label>
+                <div class="col-sm-10">
+                  <div class="switch">
+                    <label for="no_current_product"></label>
+                    <input id="no_current_product" type="radio" name="owlcarousel_p_module[show_current_product]" value="0" {% if module.show_current_product is defined and module.show_current_product == '0' %} checked="checked" {% endif %} />
+                    <label for="yes_current_product"></label>
+                    <input id="yes_current_product" type="radio" name="owlcarousel_p_module[show_current_product]" value="1" {% if module.show_current_product is not defined or module.show_current_product == '1' %} checked="checked" {% endif %} />
+                    <span></span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="hide_module"><span data-toggle="tooltip" title="{{ help_hide_module }}">{{ entry_hide_module }}</span></label>
+                <div class="col-sm-10">
+                  <div class="switch">
+                    <label for="no_hide_module"></label>
+                    <input id="no_hide_module" type="radio" name="owlcarousel_p_module[hide_module]" value="0" {% if module.hide_module is defined and module.hide_module == '0' %} checked="checked" {% endif %} />
+                    <label for="yes_hide_module"></label>
+                    <input id="yes_hide_module" type="radio" name="owlcarousel_p_module[hide_module]" value="1" {% if module.hide_module is not defined or module.hide_module == '1' %} checked="checked" {% endif %} />
+                    <span></span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-2 control-label" >{{ entry_use_cache }}</label>
+                <div class="col-sm-10">
+                  <div class="switch">
+                    <label for="no_use_cache"></label>
+                    <input id="no_use_cache" type="radio" name="owlcarousel_p_module[use_cache]" value="0" {% if module.use_cache is defined and module.use_cache == '0' %} checked="checked" {% endif %} />
+                    <label for="yes_use_cache"></label>
+                    <input id="yes_use_cache" type="radio" name="owlcarousel_p_module[use_cache]" value="1" {% if module.use_cache is not defined or module.use_cache == '1' %} checked="checked" {% endif %} />
+                    <span></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="tab-pane" id="tab-display">
+              <div class="form-group">
+                <label class="col-sm-2 control-label">{{ entry_show_title }}</label>
+                <div class="col-sm-10">
+                  <div class="switch">
+                    <label for="no_title"></label>
+                    <input id="no_title" type="radio" name="owlcarousel_p_module[show_title]" value="0" {% if module.show_title is defined and module.show_title == '0' %} checked="checked" {% endif %} />
+                    <label for="yes_title"></label>
+                    <input id="yes_title" type="radio" name="owlcarousel_p_module[show_title]" value="1" {% if module.show_title is not defined or module.show_title == '1' %} checked="checked" {% endif %} />
+                    <span></span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-2 control-label">{{ entry_show_name }}</label>
+                <div class="col-sm-10">
+                  <div class="switch">
+                    <label for="no_name"></label>
+                    <input id="no_name" type="radio" name="owlcarousel_p_module[show_name]" value="0" {% if module.show_name is defined and module.show_name == '0' %} checked="checked" {% endif %} />
+                    <label for="yes_name"></label>
+                    <input id="yes_name" type="radio" name="owlcarousel_p_module[show_name]" value="1" {% if module.show_name is not defined or module.show_name == '1' %} checked="checked" {% endif %} />
+                    <span></span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-2 control-label">{{ entry_show_desc }}</label>
+                <div class="col-sm-10">
+                  <div class="switch">
+                    <label for="no_desc"></label>
+                    <input id="no_desc" type="radio" name="owlcarousel_p_module[show_desc]" value="0" {% if module.show_desc is defined and module.show_desc == '0' %} checked="checked" {% endif %} />
+                    <label for="yes_desc"></label>
+                    <input id="yes_desc" type="radio" name="owlcarousel_p_module[show_desc]" value="1" {% if module.show_desc is not defined or module.show_desc == '1' %} checked="checked" {% endif %} />
+                    <span></span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-2 control-label">{{ entry_show_price }}</label>
+                <div class="col-sm-10">
+                  <div class="switch">
+                    <label for="no_price"></label>
+                    <input id="no_price" type="radio" name="owlcarousel_p_module[show_price]" value="0" {% if module.show_price is defined and module.show_price == '0' %} checked="checked" {% endif %} />
+                    <label for="yes_price"></label>
+                    <input id="yes_price" type="radio" name="owlcarousel_p_module[show_price]" value="1" {% if module.show_price is not defined or module.show_price == '1' %} checked="checked" {% endif %} />
+                    <span></span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-2 control-label">{{ entry_show_rate }}</label>
+                <div class="col-sm-10">
+                  <div class="switch">
+                    <label for="no_rate"></label>
+                    <input id="no_rate" type="radio" name="owlcarousel_p_module[show_rate]" value="0" {% if module.show_rate is defined and module.show_rate == '0' %} checked="checked" {% endif %} />
+                    <label for="yes_rate"></label>
+                    <input id="yes_rate" type="radio" name="owlcarousel_p_module[show_rate]" value="1" {% if module.show_rate is not defined or module.show_rate == '1' %} checked="checked" {% endif %} />
+                    <span></span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-2 control-label">{{ entry_show_cart }}</label>
+                <div class="col-sm-10">
+                  <div class="switch">
+                    <label for="no_cart"></label>
+                    <input id="no_cart" type="radio" name="owlcarousel_p_module[show_cart]" value="0" {% if module.show_cart is defined and module.show_cart == '0' %} checked="checked" {% endif %} />
+                    <label for="yes_cart"></label>
+                    <input id="yes_cart" type="radio" name="owlcarousel_p_module[show_cart]" value="1" {% if module.show_cart is not defined or module.show_cart == '1' %} checked="checked" {% endif %} />
+                    <span></span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-2 control-label">{{ entry_show_wishlist }}</label>
+                <div class="col-sm-10">
+                  <div class="switch">
+                    <label for="no_wishlist"></label>
+                    <input id="no_wishlist" type="radio" name="owlcarousel_p_module[show_wishlist]" value="0" {% if module.show_wishlist is defined and module.show_wishlist == '0' %} checked="checked" {% endif %} />
+                    <label for="yes_wishlist"></label>
+                    <input id="yes_wishlist" type="radio" name="owlcarousel_p_module[show_wishlist]" value="1" {% if module.show_wishlist is not defined or module.show_wishlist == '1' %} checked="checked" {% endif %} />
+                    <span></span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-2 control-label">{{ entry_show_compare }}</label>
+                <div class="col-sm-10">
+                  <div class="switch">
+                    <label for="no_compare"></label>
+                    <input id="no_compare" type="radio" name="owlcarousel_p_module[show_compare]" value="0" {% if module.show_compare is defined and module.show_compare == '0' %} checked="checked" {% endif %} />
+                    <label for="yes_compare"></label>
+                    <input id="yes_compare" type="radio" name="owlcarousel_p_module[show_compare]" value="1" {% if module.show_compare is not defined or module.show_compare == '1' %} checked="checked" {% endif %} />
+                    <span></span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-2 control-label">{{ entry_show_page }}</label>
+                <div class="col-sm-10">
+                  <div class="switch">
+                    <label for="no_page"></label>
+                    <input id="no_page" type="radio" name="owlcarousel_p_module[show_page]" value="0" {% if module.show_page is defined and module.show_page == '0' %} checked="checked" {% endif %} />
+                    <label for="yes_page"></label>
+                    <input id="yes_page" type="radio" name="owlcarousel_p_module[show_page]" value="1" {% if module.show_page is not defined or module.show_page == '1' %} checked="checked" {% endif %} />
+                    <span></span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-2 control-label">{{ entry_show_nav }}</label>
+                <div class="col-sm-10">
+                  <div class="switch">
+                    <label for="no_nav"></label>
+                    <input id="no_nav" type="radio" name="owlcarousel_p_module[show_nav]" value="0" {% if module.show_nav is defined and module.show_nav == '0' %} checked="checked" {% endif %} />
+                    <label for="yes_nav"></label>
+                    <input id="yes_nav" type="radio" name="owlcarousel_p_module[show_nav]" value="1" {% if module.show_nav is not defined or module.show_nav == '1' %} checked="checked" {% endif %} />
+                    <span></span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-2 control-label">{{ entry_show_lazy_load }}</label>
+                <div class="col-sm-10">
+                  <div class="switch">
+                    <label for="no_lazy_load"></label>
+                    <input id="no_lazy_load" type="radio" name="owlcarousel_p_module[show_lazy_load]" value="0" {% if module.show_lazy_load is defined and module.show_lazy_load == '0' %} checked="checked" {% endif %} />
+                    <label for="yes_lazy_load"></label>
+                    <input id="yes_lazy_load" type="radio" name="owlcarousel_p_module[show_lazy_load]" value="1" {% if module.show_lazy_load is not defined or module.show_lazy_load == '1' %} checked="checked" {% endif %} />
+                    <span></span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-2 control-label">{{ entry_show_mouse_drag }}</label>
+                <div class="col-sm-10">
+                  <div class="switch">
+                    <label for="no_mouse_drag"></label>
+                    <input id="no_mouse_drag" type="radio" name="owlcarousel_p_module[show_mouse_drag]" value="0" {% if module.show_mouse_drag is defined and module.show_mouse_drag == '0' %} checked="checked" {% endif %} />
+                    <label for="yes_mouse_drag"></label>
+                    <input id="yes_mouse_drag" type="radio" name="owlcarousel_p_module[show_mouse_drag]" value="1" {% if module.show_mouse_drag is not defined or module.show_mouse_drag == '1' %} checked="checked" {% endif %} />
+                    <span></span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-2 control-label">{{ entry_show_touch_drag }}</label>
+                <div class="col-sm-10">
+                  <div class="switch">
+                    <label for="no_touch_drag"></label>
+                    <input id="no_touch_drag" type="radio" name="owlcarousel_p_module[show_touch_drag]" value="0" {% if module.show_touch_drag is defined and module.show_touch_drag == '0' %} checked="checked" {% endif %} />
+                    <label for="yes_touch_drag"></label>
+                    <input id="yes_touch_drag" type="radio" name="owlcarousel_p_module[show_touch_drag]" value="1" {% if module.show_touch_drag is not defined or module.show_touch_drag == '1' %} checked="checked" {% endif %} />
+                    <span></span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-2 control-label">{{ entry_stop_on_hover }}</label>
+                <div class="col-sm-10">
+                  <div class="switch">
+                    <label for="no_stop_on_hover"></label>
+                    <input id="no_stop_on_hover" type="radio" name="owlcarousel_p_module[show_stop_on_hover]" value="0" {% if module.show_stop_on_hover is defined and module.show_stop_on_hover == '0' %} checked="checked" {% endif %} />
+                    <label for="yes_stop_on_hover"></label>
+                    <input id="yes_stop_on_hover" type="radio" name="owlcarousel_p_module[show_stop_on_hover]" value="1" {% if module.show_stop_on_hover is not defined or module.show_stop_on_hover == '1' %} checked="checked" {% endif %} />
+                    <span></span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-2 control-label">{{ entry_show_tabs }}</label>
+                <div class="col-sm-10">
+                  <div class="switch">
+                    <label for="no_tabs"></label>
+                    <input id="no_tabs" type="radio" name="owlcarousel_p_module[show_tabs]" value="0" {% if module.show_tabs is defined and module.show_tabs == '0' %} checked="checked" {% endif %} />
+                    <label for="yes_tabs"></label>
+                    <input id="yes_tabs" type="radio" name="owlcarousel_p_module[show_tabs]" value="1" {% if module.show_tabs is not defined or module.show_tabs == '1' %} checked="checked" {% endif %} />
+                    <span></span>
+                  </div>
+                  <div id="other_modules">
+                    {% for other in other_modules %} 
+                      <div>
+                        <label><input type="checkbox" value="1" name="owlcarousel_p_module[display_with][{{ other['id'] }}]" {{ module['display_with'][other['id']] is defined ? 'checked="checked"' : '' }}>&nbsp;{{ other['name'] }}</label>
+                      </div>
+                    {% endfor %} 
+                  </div>
+                </div>
+              </div>
+              
+            </div>
+
+          </div>
+
+        </div>
+
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  function showhide() {
+    var $select = $('#select');
+    var selectedValue = $select.val();
+    $("#rowfeatured")[selectedValue == 'featured' ? 'show' : 'hide'] ();
+    $("#rowviewed")[selectedValue == 'viewed' ? 'show' : 'hide'] ();
+    $("#rowcategory")[selectedValue == 'featured' || selectedValue == 'viewed' ? 'hide' : 'show'] ();
+    $("#rowsort, #rowbrand")[selectedValue == 'featured' || selectedValue == 'viewed' ? 'hide' : 'show'] ();
+  }
+</script>
+
+<script type="text/javascript"><!--
+  $('#featured-product div img').on('click', function() {
+    var modid = $(".selected").attr('modid');
+    $(this).parent().remove();
+
+    $('#featured-product'+ modid +' div:odd').attr('class', 'odd');
+    $('#featured-product'+ modid +' div:even').attr('class', 'even');
+
+    data = $.map($('#featured-product'+ modid +' input'), function(element){
+      return $(element).attr('value');
+    });
+
+    $('input[name=\'owlcarousel_p_module[' + modid + '][featured]\']').attr('value', data.join());
+  });
+
+
+  $('#module-add').before('<a href="#tab-module" modid =" id="module">{{ add_tab_module }}&nbsp;<img src="view/image/delete.png" alt="" onclick="$(\'.vtabs a:first\').trigger(\'click\'); $(\'#module\').remove(); $(\'#tab-module\').remove(); return false;" /></a>');
+
+  $('.vtabs a').tabs();
+  $('#module').trigger('click');
+//--></script>
+
+<script type="text/javascript"><!--
+  $('input[name=\'product\']').autocomplete({
+    source: function(request, response) {
+      $.ajax({
+        url: 'index.php?route=catalog/product/autocomplete&user_token={{ user_token }}&filter_name=' +  encodeURIComponent(request),
+        dataType: 'json',
+        success: function(json) {
+          response($.map(json, function(item) {
+            return {
+              label: item['name'],
+              value: item['product_id']
+            }
+          }));
+        }
+      });
+    },
+    select: function(item) {
+        $('#featured-product' + item.value).remove();
+
+        $('#featured-product').append('<div id="featured-product' +  item.value + '">' + item.label + ' <i class="fa fa-minus-circle"></i><input type="hidden" value="' + item.value + '" /></div>');
+
+        $('#featured-product div:odd').attr('class', 'odd');
+        $('#featured-product div:even').attr('class', 'even');
+
+        var data = $.map($('#featured-product input'), function(element){
+          return $(element).attr('value');
+        });
+
+        $('input[name=\'owlcarousel_p_module[featured]\']').attr('value', data.join());
+    }
+  });
+
+  $('.scrollbox').on('click', '.fa-minus-circle', function() {
+    $(this).parent().remove();
+
+    $('#featured-product div:odd').attr('class', 'odd');
+    $('#featured-product div:even').attr('class', 'even');
+
+    var data = $.map($('#featured-product input'), function(element){
+      return $(element).attr('value');
+    });
+
+    $('input[name=\'owlcarousel_p_module[featured]\']').attr('value', data.join());
+  });
+//--></script>
+
+<script type="text/javascript"><!--
+  $('#language a:first').tab('show');
+//-->
+</script>
+
+<script type="text/javascript"><!--
+$(function(){
+  function display_other_modules() {
+    if (~~$('input[name*=show_tabs]:checked').val()) {
+      $('#other_modules').show();
+    } else {
+      $('#other_modules').hide();
+    }
+  }
+
+  $('input[name*=show_tabs]').on('change', display_other_modules);
+
+  display_other_modules();
+});
+//--></script>
+
+<script type="text/javascript">
+  $('input[name=\'white_list\']').autocomplete({
+    'source': function(request, response) {
+      $.ajax({
+        url: 'index.php?route=catalog/product/autocomplete&user_token={{ user_token }}&filter_name=' + encodeURIComponent(request),
+        dataType: 'json',
+        success: function(json) {
+          response($.map(json, function(item) {
+            return {
+              label: item['name'],
+              value: item['product_id']
+            }
+          }));
+        }
+      });
+    },
+    'select': function(item) {
+      $('input[name=\'white_list\']').val('');
+
+      $('#product-white-list' + item['value']).remove();
+
+      $('#product-white-list').append('<div id="product-white-list' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="owlcarousel_p_module[white_list][]" value="' + item['value'] + '" /></div>');
+    }
+  });
+
+  $('#product-white-list').delegate('.fa-minus-circle', 'click', function() {
+    $(this).parent().remove();
+  });
+//--></script>
+<script type="text/javascript">
+  $('input[name=\'black_list\']').autocomplete({
+    'source': function(request, response) {
+      $.ajax({
+        url: 'index.php?route=catalog/product/autocomplete&user_token={{ user_token }}&filter_name=' + encodeURIComponent(request),
+        dataType: 'json',
+        success: function(json) {
+          response($.map(json, function(item) {
+            return {
+              label: item['name'],
+              value: item['product_id']
+            }
+          }));
+        }
+      });
+    },
+    'select': function(item) {
+      $('input[name=\'black_list\']').val('');
+
+      $('#product-black-list' + item['value']).remove();
+
+      $('#product-black-list').append('<div id="product-black-list' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="owlcarousel_p_module[black_list][]" value="' + item['value'] + '" /></div>');
+    }
+  });
+
+  $('#product-black-list').delegate('.fa-minus-circle', 'click', function() {
+    $(this).parent().remove();
+  });
+//--></script>
+
+<style type="text/css">
+.switch *,.switch:after,.switch:before{-webkit-box-sizing:border-box;box-sizing:border-box}.switch{height:30px;margin:3px auto;font-size:0;position:relative}.switch label{color:#000;opacity:.33;-webkit-transition:opacity .3s ease;transition:opacity .3s ease;cursor:pointer;display:inline-block;width:0;height:0;visibility:hidden;overflow:hidden}.switch label+input{margin-left:10px}.switch span{height:100%;border-radius:30px;padding:4px;overflow:hidden;-webkit-transition:.3s ease all;transition:.3s ease all;background:#fff;border:2px solid #e3e3e3;position:absolute;width:60px;left:0}.switch span:before{content:"";border-radius:50%;background:#fff;position:absolute;-webkit-transition:.3s ease all;transition:.3s ease all;height:30px;width:30px;top:-2px}.switch input{position:absolute;top:0;z-index:2;opacity:0;cursor:pointer;height:30px;width:60px;left:-10px;margin:0}.switch input~input:checked~span{background:#1e91cf}.switch input~input:checked~span:before{left:28px}.switch input:checked{z-index:1}.switch input:checked+label{opacity:1;cursor:default}.switch input:checked~span:before{border:2px solid #e3e3e3;left:-1px}.switch input:not(:checked)+label:hover{opacity:.5}
+</style>
+{{ footer }}

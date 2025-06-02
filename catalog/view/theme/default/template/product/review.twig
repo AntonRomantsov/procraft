@@ -1,0 +1,48 @@
+{% if reviews %}
+{% for review in reviews %}
+<table class="table review-table">
+  <tr>
+    <td>
+			<div class="review-short__user rating">
+				<div><strong>{{ review.author }}</strong></div>
+				{% for i in 1..5 %}
+				{% if review.rating < i %} <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span> {% else %} <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> {% endif %}
+				{% endfor %}
+			</div>
+		</td>
+    <td class="text-right">{{ review.date_added }}</td>
+  </tr>
+  <tr>
+    <td colspan="2">
+    	<p>{{ review.text }}</p>
+    	<div class="review-footer">
+    	  <a href="javascript:;" class="answer-link data-fancybox" data-fancybox data-src="#form-answer-review" onclick="$('#review-id').val('{{ review.id }}');"><img src="/image/answer-arrow-down.svg"> {{ set_answer }}</a>
+    	  <a href="#" class="to-target to-target-characteristic" data-anchor="feedback" data-id="1" onclick="$('a[href=\'#tab-review\']').trigger('click'); $('html, body').animate({ scrollTop: $('.product-nav').offset().top}, 'slow'); return false;">{{ count_answer }}: {{ review.answers }}</a>
+    	  <p id="warning-{{ review.id }}"></p>
+    	  <div class="likes">
+			    <span data-type="down" data-review_id="{{ review.id }}" data-value="{{ review.id }}" class="review-vote-negative"><i class="fa fa-thumbs-down" aria-hidden="true"></i> <span>{{ review.dislikes }}</span></span>
+			  <span data-type="up" data-review_id="{{ review.id }}" data-value="{{ review.id }}" class="review-vote-positive"><i class="fa fa-thumbs-up" aria-hidden="true"></i> <span>{{ review.likes }}</span></span>
+		</div>
+    	</div>
+    </td>
+  </tr>
+<!--   <tr class="feedback-panel">
+  	<div><img src="/catalog/view/theme/BurnEngine/image/mod/answer-arrow-down.svg"> Ответить</div>
+		<div class="buttons-wrapp">
+			<div class="answer-link" onclick="answer('5275');"><img src="/catalog/view/theme/BurnEngine/image/mod/answer-arrow-down.svg"> Ответить</div>
+						<a href="#" class="to-target to-target-characteristic" data-anchor="feedback" data-id="1"> 1 ответа</a>
+		</div>
+		<div class="likes">
+			<span data-type="down" data-review_id="5275"><i class="fa fa-thumbs-down" aria-hidden="true"></i> <span>0</span></span>
+			<span data-type="up" data-review_id="5275"><i class="fa fa-thumbs-up" aria-hidden="true"></i> <span>0</span></span>
+		</div>
+	</tr> -->
+</table>
+{% endfor %}
+<div class="row">
+  <div class="col-sm-6 text-left">{{ pagination }}</div>
+  {# <div class="col-sm-6 text-right">{{ results }}</div> #}
+</div>
+{% else %}
+<p class="text_no_reviews">{{ text_no_reviews }}</p>
+{% endif %}

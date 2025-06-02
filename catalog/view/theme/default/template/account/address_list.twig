@@ -1,0 +1,70 @@
+{{ header }}
+<main>
+  <section class="profile">
+    <div class="breadcrumbs__container" bis_skin_checked="1">
+    <ul class="breadcrumb">
+    {% for breadcrumb in breadcrumbs %}
+    <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+    {% endfor %}
+  </ul>
+    </div>
+    <div class="profile__container">
+      <div class="profile__wrapper">
+      {{ account }}
+        <div class="profile__main">
+        {{ account_discount }}
+        <div class="profile__block profile__block--line_mod">
+      <h2 class="profile__title">{{ text_address_add }}</h2>
+      <form class="profile__form" action="{{ action }}" method="post">
+        <div class="profile__form_row">
+          <div class="profile__form_column">
+            <label class="registration_input__label" for="city">{{ entry_city }}</label>
+            <input class="input--profile_mod" id="city" type="text" placeholder="{{ entry_city }}" name="address[city]" required />
+          </div>
+          <div class="profile__form_column">
+            <label class="registration_input__label" for="address">{{ text_address }}</label>
+            <input class="input--profile_mod" id="address" type="text" placeholder="{{ text_address }}" name="address[address_1]" required />
+          </div>
+        </div>
+        <button class="button profile__form_button" type="submit">{{ text_address_add }}</button>
+      </form>
+    </div>
+    <div class="profile__block">
+  <h2 class="profile__title">{{ text_address_book }}</h2>
+  <div class="profile__address_wrapper">
+{% for address in addresses %}
+    <label class="profile__address_item {% if address.default %}profile__address_item--active_mod{% endif %}" for="profileAddress{{ address.address_id }}">
+      <h3 class="profile__address_city">{{ address.city }}</h3>
+      <p class="profile__address_street">{{ address.address }}</p>
+      <span class="profile__address_decor"></span>
+      <div class="profile__address_inner">
+        <input id="profileAddress{{ address.address_id }}" type="checkbox" required style="display: none;" />
+{% if address.default %}<span class="profile__address_label profile__address_label--checkbox_mod">{{ text_default_address }}</span>{% endif %}
+        <div class="profile__address_buttons">
+          <a href="{{ address.update }}" class="profile__address_button">
+            <svg class="profile__address_button_icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M2.16667 13.7414H3.34517L11.1066 5.97999L9.92808 4.80148L2.16667 12.5629V13.7414ZM15.5 15.4081H0.5V11.8725L11.6958 0.676692C12.0213 0.351259 12.5489 0.351259 12.8743 0.676692L15.2314 3.03372C15.5568 3.35915 15.5568 3.88679 15.2314 4.21223L5.7022 13.7414H15.5V15.4081ZM11.1066 3.62298L12.2851 4.80148L13.4636 3.62298L12.2851 2.44446L11.1066 3.62298Z"
+              />
+            </svg>
+          </a>
+          <a href="{{ address.delete }}" class="profile__address_button">
+            <svg class="profile__address_button_icon" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M13.1667 3.99984H17.3333V5.6665H15.6667V16.4998C15.6667 16.9601 15.2936 17.3332 14.8333 17.3332H3.16667C2.70644 17.3332 2.33334 16.9601 2.33334 16.4998V5.6665H0.666672V3.99984H4.83334V1.49984C4.83334 1.0396 5.20644 0.666504 5.66667 0.666504H12.3333C12.7936 0.666504 13.1667 1.0396 13.1667 1.49984V3.99984ZM14 5.6665H4.00001V15.6665H14V5.6665ZM10.1785 10.6663L11.6517 12.1394L10.4732 13.3179L9 11.8448L7.52684 13.3179L6.34835 12.1394L7.82151 10.6663L6.34835 9.19317L7.52684 8.01467L9 9.48775L10.4732 8.01467L11.6517 9.19317L10.1785 10.6663ZM6.5 2.33317V3.99984H11.5V2.33317H6.5Z"
+              />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </label>
+{% endfor %}
+
+  </div>
+</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+{{ footer }}

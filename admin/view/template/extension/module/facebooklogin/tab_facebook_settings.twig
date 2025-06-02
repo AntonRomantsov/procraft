@@ -1,0 +1,310 @@
+<div id="tab-facebooklogin_{{ store['store_id'] }}">
+    <table class="table">
+        <input type="hidden" name="facebooklogin[module_id]" value="{{ (module_id is defined) ? module_id : '' }}" />
+        <tr>
+            <td class="col-xs-3">
+                <h5><strong>{{ entry_module_name }}</strong></h5>
+                <span class="help">{% if module_id is not defined %}<i class="fa fa-info-circle"></i>&nbsp;{{ entry_module_name_help }}{% endif %}</span>
+            </td>
+            <td class="col-xs-9">
+              <div class="col-xs-4">
+                    <input type="text" name="facebooklogin[name]" value="{{ facebooklogin['name'] is defined ? facebooklogin['name'] : '' }}" placeholder="{{ entry_module_name }}" id="input-name" class="form-control" />
+                    {% if error_name %}
+                    <div class="text-danger">{{ error_name }}</div>
+                    {% endif %}
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td class="col-xs-3">
+                <h5><strong>{{ entry_selector }}</strong></h5>
+                <span class="help"><i class="fa fa-info-circle"></i>&nbsp;{{ entry_selector_help }}</span>
+            </td>
+            <td class="col-xs-9">
+              <div class="col-xs-4">
+                    <input type="checkbox" name="facebooklogin[position_use_selector]" id="buttonPosCheckbox" {{ (facebooklogin['position_use_selector'] is defined) ? 'checked="checked"' : '' }}  data-textinput="#cssSelectorBox"/>
+                    <label for="buttonPosCheckbox">{{ text_load_in_selector }}</label><input type="text" class="form-control" id="cssSelectorBox" name="facebooklogin[position_selector]" value="{{ (facebooklogin['position_selector'] is not empty) ? facebooklogin['position_selector'] : '#content .login-content, #checkout .checkout-content' }}"/>
+              </div>
+            </td>
+        </tr>
+        <tr>
+            <td class="col-xs-3">
+                <h5><strong>{{ entry_status }}</strong></h5>
+                <span class="help"><i class="fa fa-info-circle"></i>&nbsp;{{ entry_status_help }}</span>
+            </td>
+            <td class="col-xs-9">
+              <div class="col-xs-4">
+                  <select name="facebooklogin[status]" id="input-status" class="form-control">
+                      <option value="1" {{ facebooklogin.status == '1' ? 'selected' }}>{{ text_enabled }}</option>
+                      <option value="0"  {{ facebooklogin.status != '1' ? 'selected' }}>{{ text_disabled }}</option>
+                  </select>
+              </div>
+            </td>
+        </tr>
+        <tr class="hideableRow">
+            <td class="col-xs-3">
+              <h5><span class="required">*</span> <strong>{{ entry_redirect }}</strong></h5>
+                <span class="help"><i class="fa fa-info-circle"></i>&nbsp;{{ entry_redirect_help }}</span>
+            </td>
+            <td class="col-xs-9">
+                <div class="col-xs-4">
+                    <strong>{{ entry_callback[store['store_id']] }}</strong>
+                    <br/><br/><i>{{ entry_callback_help }}</i>
+                </div>
+            </td>
+        </tr>
+        <tr class="hideableRow">
+            <td class="col-xs-3">
+                <h5><span class="required">*</span> <strong>{{ entry_api }}</strong></h5>
+             </td>
+            <td class="col-xs-9">
+                <div class="col-xs-4">
+                  <input class="form-control" type="text" name="facebooklogin[APIKey]" value="{{ facebooklogin['APIKey'] is not empty ? facebooklogin['APIKey'] : '' }}" />
+                </div>
+            </td>
+        </tr>
+        <tr class="hideableRow">
+            <td class="col-xs-3">
+                <h5><span class="required">*</span> <strong>{{ entry_secret }}</strong></h5>
+            </td>
+            <td class="col-xs-9">
+                <div class="col-xs-4">
+                  <input class="form-control" type="text" name="facebooklogin[APISecret]" value="{{ facebooklogin['APISecret'] is not empty ? facebooklogin['APISecret'] : '' }}" />
+                </div>
+            </td>
+        </tr>
+        <tr class="hideableRow">
+          <td class="col-xs-3"><h5><span class="required">*</span> <strong>{{ entry_use_oc_settings }}</strong></h5>
+            <span class="help"><i class="fa fa-info-circle"></i>&nbsp;{{ entry_use_oc_settings_help }}</span>
+          </td>
+        <td class="extraFields col-xs-9">
+              <div class="col-xs-4">
+                  <input type="checkbox" value="true" class="facebookloginUseDefaultCustomerGroups form-control" name="facebooklogin[UseDefaultCustomerGroups]"{{ facebooklogin['UseDefaultCustomerGroups'] is empty ? '' : 'checked="checked"' }}/>
+              </div>
+          </td>
+        </tr>
+        <tr class="hideableRow facebookloginCustomerGroupTR">
+          <td class="col-xs-3"><h5><span class="required">*</span> <strong>{{ entry_assign_to_cg }}</strong></h5>
+            <span class="help"><i class="fa fa-info-circle"></i>&nbsp;{{ entry_assign_to_cg_help }}</span>
+          </td>
+          <td class="col-xs-9">
+              <div class="col-xs-4">
+                  {% if customer_groups is not empty %}
+                  <select name="facebooklogin[CustomerGroup]" class="facebookloginCustomerGroup form-control">
+                      {% for cg in customer_groups %}
+                      <option value="{{ cg['customer_group_id'] }}"{{ ((facebooklogin['CustomerGroup'] is not empty) and (cg['customer_group_id'] == facebooklogin['CustomerGroup'])) ? ' selected="selected"' : '' }}>{{ cg['name'] }}</option>
+                      {% endfor %}
+                  </select>
+                  {% endif %}
+              </div>
+         </td>
+        </tr>
+        <tr class="hideableRow">
+          <td class="col-xs-3"><h5><strong>{{ entry_new_user_details }}</strong></h5>
+            <span class="help"><i class="fa fa-info-circle"></i>&nbsp;{{ entry_new_user_details_help }}</span>
+          </td>
+          <td class="extraFields col-xs-9">
+              <div class="col-xs-4">
+                  {% for detail in more_user_details %}
+                  <div>
+                      <input type="checkbox" id="facebooklogin{{ store['store_id'] }}_{{ detail['name'] }}" class="facebooklogin{{ detail['name'] }}" name="facebooklogin[{{ detail['name'] }}]"{{ facebooklogin[detail['name']] is empty ? (detail['default_checked'] ? 'checked="checked"' : '') : 'checked="checked"' }}/><label for="facebooklogin{{ store['store_id'] }}_{{ detail['name'] }}" style="margin-left:10px;">{{ detail['text'] }}</label>
+                  </div>
+                  {% endfor %}
+              </div>
+         </td>
+        </tr>
+        <tr class="hideableRow">
+          <td class="col-xs-3"><h5><strong>{{ entry_preview }}</strong></h5></td>
+          <td class="col-xs-9">
+          <div class="col-xs-4">
+                <div class="buttonPreview">
+                  <div id="facebookButtonWrapper">
+                      <div class="facebookButton">
+                          <div class="box box-fbkconnect">
+                            <div class="box-heading">{{ facebooklogin['WrapperTitle_'.firstLanguageCode] is defined ? facebooklogin['WrapperTitle_'.firstLanguageCode] : text_login_with_facebook }}</div>
+                            <div class="box-content">
+                              <a href="javascript:void(0)" class="{{ (facebooklogin['ButtonDesign'] is not empty) ? facebooklogin['ButtonDesign'] : 'fbkStandardBtn' }}"><span></span><div class="fbkTitle" style="display:inline;">{{ (facebooklogin['ButtonName_'.firstLanguageCode] is not empty) ? facebooklogin['ButtonName_'.firstLanguageCode] : '' }}</div></a>
+                            </div>
+                          </div>
+                      </div>
+                  </div>
+                </div>
+            </div>
+          </td>
+        </tr>
+        <tr class="hideableRow">
+          <td class="col-xs-3"><h5><span class="required">*</span> <strong>{{ entry_design }}</strong></h5></td>
+          <td class="col-xs-9">
+            <div class="col-xs-4">
+                  <select name="facebooklogin[ButtonDesign]" class="FacebookBtnDesign form-control">
+                      <option value="fbkStandardBtn" {{ (facebooklogin['ButtonDesign'] is defined and facebooklogin['ButtonDesign'] == 'fbkStandardBtn') ? 'selected="selected"' : '' }}>Standard UI</option>
+                      <option value="fbkMetroStyleBtn" {{ (facebooklogin['ButtonDesign'] is defined and facebooklogin['ButtonDesign'] == 'fbkMetroStyleBtn') ? 'selected="selected"' : '' }}>Metro UI</option>
+                      <option value="fbkRoundedBtn" {{ (facebooklogin['ButtonDesign'] is defined and facebooklogin['ButtonDesign'] == 'fbkRoundedBtn') ? 'selected="selected"' : '' }}>Rounded UI</option>
+                      <option value="" {{ (facebooklogin['ButtonDesign'] is empty or facebooklogin['ButtonDesign'] == '') ? 'selected="selected"' : '' }}>{{ entry_no_design }}</option>
+                  </select>
+              </div>
+         </td>
+        </tr>
+        <tr class="hideableRow">
+          <td class="col-xs-3"><h5><span class="required">*</span> <strong>{{ entry_wrap_into_widget }}</strong></h5></td>
+          <td class="col-xs-9">
+            <div class="col-xs-4">
+                  <select name="facebooklogin[WrapIntoWidget]" class="FacebookWrapIntoWidget form-control">
+                      <option value="No" {{ (facebooklogin['WrapIntoWidget'] is not empty and facebooklogin['WrapIntoWidget'] == 'No') ? 'selected="selected"' : '' }}>{{ entry_no }}</option>
+                      <option value="Yes" {{ (facebooklogin['WrapIntoWidget'] is not empty and facebooklogin['WrapIntoWidget'] == 'Yes') ? 'selected="selected"' : '' }}>{{ entry_yes }}</option>
+                  </select>
+              </div>
+          </td>
+        </tr>
+        <tr class="hideableRow fbkWrapperTitle" {{ (facebooklogin['WrapIntoWidget'] is not empty and facebooklogin['WrapIntoWidget'] == 'Yes') ? '' : 'style="display:none"' }}>
+          <td class="col-xs-3"><h5><span class="required">*</span> <strong>{{ entry_wrapper_title }}</strong></h5></td>
+          <td class="wrapperTitleTextboxes col-xs-9">
+              <div class="col-xs-4">
+                  <div class="input-group">
+                      {% for lang in languages %}<!-- TODO: related to TODO on 131 -->
+                          <span class="input-group-addon"><img src="{{ lang['flag_url'] }}" title="{{ lang['name'] }}" /></span>
+                          <input type="text" class="form-control" name="facebooklogin[WrapperTitle_{{ lang['code'] }}]" value='{{ (facebooklogin["WrapperTitle_#{lang.code}"] is not empty) ? facebooklogin["WrapperTitle_#{lang.code}"] : text_login }}'><br />
+                      {% endfor %}
+                  </div>
+              </div>
+          </td>
+        </tr>
+        <tr class="hideableRow">
+          <td class="col-xs-3"><h5><span class="required">*</span> <strong>{{ entry_button_name }}</strong></h5></td>
+          <td class="buttonNameTextboxes col-xs-9">
+              <div class="col-xs-4">
+                <div class="input-group">
+                      {% for lang in languages %}<!-- TODO: related to TODO on 131 -->
+                        <span class="input-group-addon"><img src="{{ lang['flag_url'] }}" title="{{ lang['name'] }}" /></span>
+                        <input type="text" class="form-control" name="facebooklogin[ButtonName_{{ lang['code'] }}]" value='{{ (facebooklogin["ButtonName_#{lang.code}"] is not empty) ? facebooklogin["ButtonName_#{lang.code}"] : text_login_with_facebook }}' /><br />
+                      {% endfor %}
+                </div>
+              </div>
+         </td>
+        </tr>
+        <tr class="hideableRow">
+          <td class="col-xs-3"><h5><strong>{{ entry_custom_css }}</strong></h5></td>
+          <td class="col-xs-9">
+              <div class="col-xs-4">
+                  <textarea class="form-control" name="facebooklogin[CustomCSS]" style="width:320px; height:70px;">{{ (facebooklogin['CustomCSS'] is not empty) ? facebooklogin['CustomCSS'] : '.facebookButton { margin: 0 0 20px 0; }' }}</textarea>
+              </div>
+          </td>
+        </tr>
+    </table>
+  <script type="text/javascript">
+
+    $(document).ready(function() {
+      $('#tab-facebooklogin_{{ store['store_id'] }} .buttonNameTextboxes input').each(function() {
+        $('#tab-facebooklogin_{{ store['store_id'] }} .buttonPreview div.fbkTitle').html($(this).val());
+      }).focus(function() {
+        $(this).trigger('keyup');
+      });
+    });
+    
+    $(document).ready(function() {
+      $('#tab-facebooklogin_{{ store['store_id'] }} .wrapperTitleTextboxes input').each(function() {
+        $('#tab-facebooklogin_{{ store['store_id'] }} .buttonPreview div.box-heading').html($(this).val());
+      }).focus(function() {
+        $(this).trigger('keyup'); 
+      });
+    });
+    
+    var inputEvents = function() {
+      $('#tab-facebooklogin_{{ store['store_id'] }} .FacebookBtnDesign').change(function() {
+          $('#tab-facebooklogin_{{ store['store_id'] }} .buttonPreview .box-content > a').removeClass().addClass($(this).val());
+        }).trigger('change');
+
+        $('#tab-facebooklogin_{{ store['store_id'] }} .wrapperTitleTextboxes input').keyup(function() {
+          $('#tab-facebooklogin_{{ store['store_id'] }} .buttonPreview div.box-heading').html($(this).val());
+        }).focus(function() {
+          $(this).trigger('keyup'); 
+        });
+
+        $('#tab-facebooklogin_{{ store['store_id'] }} .FacebookWrapIntoWidget').change(function() {
+          if ($(this).val() == 'Yes') {
+            $('#tab-facebooklogin_{{ store['store_id'] }} .buttonPreview').removeClass('noBoxWrapper');
+          } else {
+            $('#tab-facebooklogin_{{ store['store_id'] }} .buttonPreview').removeClass('noBoxWrapper').addClass('noBoxWrapper');
+          }
+        }).trigger('change');
+
+        $('#tab-facebooklogin_{{ store['store_id'] }} .buttonNameTextboxes input').keyup(function() {
+          $('#tab-facebooklogin_{{ store['store_id'] }} .buttonPreview div.fbkTitle').html($(this).val());
+        }).focus(function() {
+          $(this).trigger('keyup');
+        });
+
+        // END Preview Logic
+
+        $('#tab-facebooklogin_{{ store['store_id'] }} .FacebookWrapIntoWidget').change(function() {
+          if ($(this).val() == 'Yes') {
+            $('#tab-facebooklogin_{{ store['store_id'] }} .fbkWrapperTitle').show(300);
+          } else {
+            $('#tab-facebooklogin_{{ store['store_id'] }} .fbkWrapperTitle').hide(300);
+          }
+        }).trigger('change');
+
+        $('#tab-facebooklogin_{{ store['store_id'] }} .facebookloginUseDefaultCustomerGroups').change(function() {
+          if($(this).is(':checked')) $('#tab-facebooklogin_{{ store['store_id'] }} .facebookloginCustomerGroupTR').hide(300);
+          else $('#tab-facebooklogin_{{ store['store_id'] }} .facebookloginCustomerGroupTR').show(300);
+        }).trigger('change');
+
+        $('#tab-facebooklogin_{{ store['store_id'] }} select[name="facebooklogin[Enabled]"]').change(function() {
+          if ($(this).val() == 'Yes') {
+            $('#tab-facebooklogin_{{ store['store_id'] }} .hideableRow').show(300);
+            $('#tab-facebooklogin_{{ store['store_id'] }} .FacebookWrapIntoWidget').trigger('change');
+            $('#tab-facebooklogin_{{ store['store_id'] }} .facebookloginUseDefaultCustomerGroups').trigger('change');
+          } else {
+            $('#tab-facebooklogin_{{ store['store_id'] }} .hideableRow').hide(300);
+          }
+        }).trigger('change');
+
+        {% if has_customer_group %}
+        $('#tab-facebooklogin_{{ store['store_id'] }} .facebookloginCustomerGroup').on('change', function() {
+
+          var customer_group = [];
+
+          {% for customer_group in customer_groups %}
+          customer_group[{{ customer_group['customer_group_id'] }}] = [];
+          {% endfor %}
+
+          if (customer_group[$(this).val()]) {
+            if (customer_group[$(this).val()]['company_id_display'] == '1') {
+              $('#tab-facebooklogin_{{ store['store_id'] }} .facebookloginExtraCompanyId').prop('checked', true);
+            } else {
+              $('#tab-facebooklogin_{{ store['store_id'] }} .facebookloginExtraCompanyId').prop('checked', false);
+            }
+
+            if (customer_group[$(this).val()]['tax_id_display'] == '1') {
+              $('#tab-facebooklogin_{{ store['store_id'] }} .facebookloginExtraTaxId').prop('checked', true);
+            } else {
+              $('#tab-facebooklogin_{{ store['store_id'] }} .facebookloginExtraTaxId').prop('checked', false);
+            }
+          }
+        });
+        {% endif %}
+    }
+
+    if($('select[name="facebooklogin[status]"]').val() == '1') {
+      $('.hideableRow').show(200);
+      inputEvents();
+    }
+    else {
+      $('.hideableRow').hide(200);
+    }
+
+    $('select[name="facebooklogin[status]"]').on('change', function() {
+      if($(this).val() == '1') {
+       $('.hideableRow').show(200);
+       inputEvents();
+      }
+      else {
+        $('.hideableRow').hide(200);
+      }
+    });
+
+
+    </script>
+
+
+</div>

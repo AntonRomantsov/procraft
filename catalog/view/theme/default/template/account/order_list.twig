@@ -1,0 +1,119 @@
+{{ header }}
+
+<main>
+  <section class="profile">
+    <div class="breadcrumbs__container" bis_skin_checked="1">
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+          <li>
+            <a href="{{ breadcrumb.href }}">
+              {{ breadcrumb.text }}
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div class="profile__container">
+      <div class="profile__wrapper">
+        {{ account }}
+        <div class="profile__main">
+          {{ account_discount }}
+          <div class="profile__block profile__block--line_mod">
+            <h2 class="profile__title">
+              {{ heading_title }}
+            </h2>
+            {% if orders %}
+            <div class="profile__table_wrapper">
+            <div class="profile__table" style="width: 95%;">
+              <div class="profile__table_head">
+                <div class="profile__table_row profile__table_row--head">
+                  <div class="profile__table_cell">
+                    {{ column_date_added }}
+                  </div>
+                  <div class="profile__table_cell">
+                    {{ column_order_id }}
+                  </div>
+                  <div class="profile__table_cell">
+                    {{ column_total }}
+                  </div>
+                  <div class="profile__table_cell">
+                    {{ column_quantity }}
+                  </div>
+                  <div class="profile__table_cell profile__table_head_status">
+                    {{ column_status }}
+                  </div>
+                  <div class="profile__table_cell"></div>
+                </div>
+              </div>
+              <div class="profile__table_body">
+                {% for order in orders %}
+                  <div class="profile__table_row">
+                    <div class="profile__table_cell">
+                      <span class="profile__table_cell--mob">
+                        {{ column_date_added }}
+                      </span>
+                      <span class="profile__table_cell--mob_span">
+                        {{ order.date_added }}
+                      </span>
+                    </div>
+                    <div class="profile__table_cell">
+                      <span class="profile__table_cell--mob">
+                        {{ column_order_id }}
+                      </span>
+                      <span class="profile__table_cell--mob_span">
+                        {{ order.order_id }}
+                      </span>
+                    </div>
+                    <div class="profile__table_cell">
+                      <span class="profile__table_cell--mob">
+                        {{ column_total }}
+                      </span>
+                      <span class="profile__table_cell--mob_span">
+                        {{ order.total }}
+                      </span>
+                    </div>
+                    <div class="profile__table_cell">
+                      <span class="profile__table_cell--mob">
+                        {{ column_quantity }}
+                      </span>
+                      <span class="profile__table_cell--mob_span">
+                        {{ order.count_products }}
+                      </span>
+                    </div>
+                    <div class="profile__table_cell profile__table_body_status {% if order.status_id in cancelled_status %}profile__table_body_status--canceled{% elseif order.status_id in success_status %}profile__table_body_status--done{% else %}profile__table_body_status--processing{% endif %}">
+                      <span class="profile__table_cell--mob">
+                        {{ column_status }}
+                      </span>
+                      <span class="profile__table_cell--mob_span">
+                        <span class="profile__table_body_dot"></span>
+                        {{ order.status }}
+                      </span>
+                    </div>
+                    <div class="profile__table_cell">
+                      <a href="{{ order.view }}" class="profile__table_body_details">
+                        {{ text_order_detail }}
+                      </a>
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+          <div class="row">
+          <div class="col-sm-6 text-left">
+            {{ pagination }}
+          </div>
+          </div>
+          {% else %}
+          <p>
+            {{ text_empty }}
+          </p>
+        {% endif %}
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+{{ footer }}

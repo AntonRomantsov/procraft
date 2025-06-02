@@ -1,0 +1,205 @@
+{{ header }}
+<div class="container">
+    <ul class="breadcrumb box-shadow box-corner">
+        {% set cnt = breadcrumbs|length %} {% set i = 0 %} {% for key,breadcrumb in breadcrumbs %}
+            <li>
+                {% set i = i + 1 %} {% if ( i != cnt ) %}
+                    <a href="{{ breadcrumb['href'] }}">
+                        <span>{{ breadcrumb['text'] }}</span>
+                    </a>
+                {% else %}
+                    <a href="{{ breadcrumb['href'] }}">
+                        <span>{{ breadcrumb['text'] }}</span>
+                    </a>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+    <div class="row">
+        {{ column_left }}
+        {% if (column_left and column_right) %}
+            {% set class = 'col-sm-6' %}
+        {% elseif (column_left or column_right) %}
+            {% set class = 'col-sm-9' %}
+        {% else %}
+            {% set class = 'col-sm-12' %}
+        {% endif %}
+
+        <div id="content" class="blog-content {{ class }}">
+            {{ content_top }}
+            <div class="articles-top box-shadow box-corner">
+                <div class="hidden-md hidden-lg"></div>
+                <h2>{{ heading_title }}</h2>
+
+                {% if (thumb is not empty or description is not empty and not desc_position) %}
+                    {% if (thumb is not empty) %}
+                        <div class="col-sm-2">
+                            <img src="{{ thumb }}" alt="{{ heading_title }}" title="{{ heading_title }}"
+                                 class="img-thumbnail"/>
+                        </div>
+                    {% endif %}
+                    {% if (description is not empty) %}
+                        <div>
+                            <article>
+                                {{ description }}
+                            </article>
+                        </div>
+                    {% endif %}
+                    <script>
+                                                $('article').readmore({
+                                                        maxHeight: 160,
+                                                        moreLink: '<a class="moreLink" href="#"><span>{{ text_read_more }}</span></a>',
+                                                        lessLink: '<a class="moreLink" style=" background: none;" href="#"><span>{{ text_read_less }}</span></a>'
+                                                });
+                    </script>
+                {% endif %}
+                <div id="share" class="share-top"></div>
+                <script>
+                                        $("#share").jsSocials({
+                                                showLabel: true,
+                                                shareIn: "popup",
+                                                shares: ["facebook"]
+                                        });
+                </script>
+            </div>
+
+            {% if (articles) %}
+                <div class="row articles-content">
+                    {% for article in articles %}
+                        <div class="articles-layout article-list col-xs-12">
+                            <div class="article-thumb box-shadow box-corner">
+                                <div class="images">
+                                    <a href="{{ article['href'] }}"><img src="{{ article['thumb'] }}" alt="{{ article['name'] }}" title="{{ article['name'] }}" class=""/></a>
+                                </div>
+                                <div style="width: 100%">
+                                    <div class="caption">
+                                        {% if (blog_meta['date'] is not empty or blog_meta['author'] is not empty or blog_meta['comments'] is not empty or blog_meta['category'] is not empty) %}
+                                            <div class="entry-meta">
+                                                {% if (blog_meta['date'] is not empty) %}
+                                                    <span class="entry-date published">
+                                                        {{ article['date_modified'] }}
+                                                    </span>
+                                                {% endif %}
+                                                {% if (blog_meta['author'] is not empty) %}
+                                                    <span class="entry-author">
+                                                        {{ text_author }}
+                                                        <a href="{{ article['author']['href'] }}">{{ article['author']['name'] }}</a>
+                                                    </span>
+                                                {% endif %}
+                                                {% if (blog_meta['comments'] is not empty and article['total_comments']) %}
+                                                    <span class="entry-comments-link">
+                                                        <i class="fa fa-commenting" aria-hidden="true"></i>
+                                                        <a href="{{ article['href'] }}#comments">{{ article['total_comments'] }}</a>
+                                                    </span>
+                                                {% endif %}
+                                                {% if (blog_meta['category'] is not empty and article['category']) %}
+                                                    <span class="entry-category-link">
+                                                        <i class="fa fa-folder-open-o"></i>
+                                                        <a href="{{ article['category']['href'] }}" rel="category tag">{{ article['category']['name'] }}</a>
+                                                    </span>
+                                                {% endif %}
+                                            </div>
+                                        {% endif %}
+
+                                        <h4><a href="{{ article['href'] }}">{{ article['name'] }}</a></h4>
+
+                                        <div class="entry-meta">
+                                            {% if (article['date_modified']) %}
+                                                <span class="entry-date published">
+                                                    {{ article['date_modified'] }}
+                                                </span>
+                                            {% endif %}
+                                            {% if (article['author']) %}
+                                                <span class="entry-author">
+                                                    {{ text_author }}
+                                                    <a href="{{ article['author']['href'] }}">{{ article['author']['name'] }}</a>
+                                                </span>
+                                            {% endif %}
+                                        </div>
+
+                                        <p>{{ article['description'] }}</p>
+
+                                        <div class="caption-bottom">
+                                            <div class="_left">
+                                                <a class="button_more" href="{{ article['href'] }}">{{ text_more }}</a>
+                                            </div>
+                                            <div class="_right">
+                                                <div class="rating-container">
+                                                    <span class="rating">
+                                                        {% if (article['rating']) %}
+                                                            {% set i = 1 %}{% for i in i..5 %}
+                                                                {% if (article['rating'] < i) %}
+                                                                    <span class="fa fa-stack">
+                                                                        <i class="fa fa-star-o fa-stack-2x"></i>
+                                                                    </span>
+                                                                {% else %}
+                                                                    <span class="fa fa-stack">
+                                                                        <i class="fa fa-star fa-stack-2x"></i>
+                                                                        <i class="fa fa-star-o fa-stack-2x"></i>
+                                                                    </span>
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                        {% endif %}
+                                                    </span>
+                                                </div>
+                                                {% if (article['viewed']) %}
+                                                    <span class="entry-views">
+                                                        <i class="fa fa-eye"></i>
+                                                        {{ article['viewed'] }}
+                                                    </span>
+                                                {% endif %}
+                                                {% if (article['total_comments']) %}
+                                                    <span class="entry-comments-link">
+                                                        <i class="fa fa-commenting" aria-hidden="true"></i>
+                                                        {{ article['total_comments'] }}
+                                                    </span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="row paginator">
+                    <div class="col-sm-6 text-left">{{ pagination }}</div>
+                    <div class="col-sm-6 text-right">{{ results }}</div>
+                </div>
+            {% else %}
+                <div class="empty-box box-shadow box-corner">
+                    <p class="empty-title">{{ text_empty }}</p>
+                </div>
+            {% endif %}
+
+            {% if (thumb is not empty or description is not empty and desc_position) %}
+                {% if (thumb is not empty) %}
+                    <div class="col-sm-2">
+                        <img src="{{ thumb }}" alt="{{ heading_title }}" title="{{ heading_title }}" class="img-thumbnail"/>
+                    </div>
+                {% endif %}
+                {% if (description is not empty) %}
+                    <div class="articles-bottom">
+                        <article>
+                            {{ description }}
+                        </article>
+                    </div>
+                {% endif %}
+                <script>
+                                        $('article').readmore({
+                                                maxHeight: 160,
+                                                moreLink: '<a class="moreLink" href="#"><span>{{ text_read_more }}</span></a>',
+                                                lessLink: '<a class="moreLink" style=" background: none;" href="#"><span>{{ text_read_less }}</span></a>'
+                                        });
+                </script>
+            {% endif %}
+
+            {{ content_bottom }}
+        </div>
+
+        {{ column_right }}
+    </div>
+</div>
+
+{{ footer }}
+

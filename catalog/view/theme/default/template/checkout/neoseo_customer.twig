@@ -1,0 +1,52 @@
+{% if customer_groups|length > 1 %}
+    {% for type,name in customer_groups %}
+        <div class="field"  {% if neoseo_checkout_compact %}style="display: inline-block; margin-right: 1em;"{% endif %} >
+            <input type="radio" id="type_{{ type }}" {% if type == type_selected %} checked="checked" {% endif %} name="type" value="{{ type }}" />
+            <label for="type_{{ type }}">{{ name }}:</label>
+        </div>
+    {% endfor %}
+{% else %}
+    <input type="hidden" name="type" value="{% set keys = customer_groups|keys %} {{ keys[0] }}" />
+{% endif %}
+
+{% set i=0 %} {% for type,fields1 in fieldset %} {% set i = i + 1 %}
+    <div class="types type-{{ type }}" {% if ( i != 1 ) %} style="display:none" {% endif %} >
+        {{ fields1 }}
+    </div>
+{% endfor %}
+
+<script>
+    {% if customer_groups|length > 1 %}
+        function changeType(type){
+            $(".types").hide();
+            $(".types input").attr("disabled", true);
+            $(".types select").attr("disabled", true);
+            $(".types textarea").attr("disabled", true);
+
+            $(".type-" + type).show();
+            $(".type-" + type + " input").attr("disabled", false);
+            $(".type-" + type + " select").attr("disabled", false);
+            $(".type-" + type + " textarea").attr("disabled", false);
+            registerChanged();
+        }
+        $('[name=type]').click(function(e){
+            var type = $(this).val();
+            changeType(type);
+        });
+        window.email_required = ( $("[for^=email]:first").html().indexOf('required') > 0 );
+        $('[name=type]:checked').trigger('click');
+
+        $('[name=type]').on('ifChanged',function(){
+            var type = $(this).val();
+            changeType(type);
+        });
+
+    {% else %}
+        registerChanged();
+    {% endif %}
+
+    $('[name=register]').on('ifChanged',function(){
+        var type = $(this).val();
+        registerChanged();
+    });
+</script>

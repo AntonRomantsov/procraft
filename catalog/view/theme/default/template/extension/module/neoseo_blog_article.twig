@@ -1,0 +1,36 @@
+<div class="module">
+    {% if (heading_title is not empty) %}
+        <h3>{{ heading_title }}</h3>
+    {% endif %}
+    <div class="row article-block arbs">
+        {% for article in articles %}
+
+            <div class="product-layout col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                <div class="article-thumb box-shadow box-corner">
+                    <div class="image">
+                        <a href="{{ article['href'] }}"><img src="{{ article['thumb'] }}" alt="{{ article['name'] }}" title="{{ article['name'] }}" class="img-responsive"/></a>
+                    </div>
+                    <div class="caption">
+                        <h4><a href="{{ article['href'] }}">{{ article['name'] }}</a></h4>
+                        <div class="entry-meta">
+                            <span class="entry-date published">
+                                <i class="fa fa-calendar"></i> {{ article['date_modified'] }}
+                            </span>
+                            <span class="entry-author">
+                                <i class="fa fa-user"></i>
+                                <a href="{{ article['author']['href'] }}">{{ article['author']['name'] }}</a>
+                            </span>
+                        </span><span class="entry-views">
+                        <i class="fa fa-eye"></i> {{ text_viewed }} {{ article['viewed'] }}
+                    </span>
+                    <span class="entry-comments-link">
+                        <i class="fa fa-comment-o"></i> {{ text_comments }} {{ article['total_comments'] }}
+                    </span>
+                </div>
+                <p class="descripts">{{ article['description'] }}</p>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+</div>
+</div>

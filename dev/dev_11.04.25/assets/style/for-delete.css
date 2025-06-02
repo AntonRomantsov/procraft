@@ -1,0 +1,35 @@
+.all_links {
+  position: absolute;
+  top: 60px;
+  left: 10px;
+
+  display: flex;
+  align-items: flex-start;
+
+  z-index: 1001;
+
+  transform: translateX(calc((100% - 66px + 10px) * -1));
+
+  transition: transform 0.3s;
+}
+
+.all_links:focus-within {
+  transform: translateX(0);
+}
+
+.all_links__list {
+  flex: 0 1 calc(100% - 66px);
+  display: flex;
+  flex-direction: column;
+  padding: 4px;
+
+  background-color: gray;
+
+  font-size: 14px;
+}
+
+.all_links__button {
+  flex: 0 0 66px;
+
+  cursor: pointer;
+}

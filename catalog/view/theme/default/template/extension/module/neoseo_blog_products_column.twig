@@ -1,0 +1,33 @@
+<div class="side-module box-shadow box-corner">
+    <div class="related-product-container">
+        {% if (heading_title is not empty) %}
+            <h3>{{ heading_title }}</h3>
+        {% endif %}
+        <div class="row">
+            {% if (related_products is not empty) %}
+                {% for product in related_products %}
+                    <div class="product-layout related-products-column col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                        <div class="product-thumb transition">
+                            <div class="image"><a href="{{ product['href'] }}"><img src="{{ product['thumb'] }}" alt="{{ product['name'] }}" title="{{ product['name'] }}" class="img-responsive" /></a></div>
+                            <div class="caption">
+                                <h4><a href="{{ product['href'] }}">{{ product['name'] }}</a></h4>
+                                    {% if (product['price']) %}
+                                    <p class="price">
+                                        {% if (not product['special']) %}
+                                            {{ product['price'] }}
+                                        {% else %}
+                                            <span class="price-new">{{ product['special'] }}</span> <span class="price-old">{{ product['price'] }}</span>
+                                        {% endif %}
+                                        {% if (product['tax']) %}
+                                            <span class="price-tax">{{ text_tax }} {{ product['tax'] }}</span>
+                                        {% endif %}
+                                    </p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+</div>

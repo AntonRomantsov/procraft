@@ -1,0 +1,302 @@
+{{ header }}
+<div class="container">
+    <ul class="breadcrumb box-shadow box-corner">
+        {% set cnt = breadcrumbs|length %} {% set i = 0 %} {% for key,breadcrumb in breadcrumbs %}
+            <li>
+                {% set i = i + 1 %} {% if ( i != cnt ) %}
+                    <a href="{{ breadcrumb['href'] }}">
+                        <span>{{ breadcrumb['text'] }}</span>
+                    </a>
+                {% else %}
+                    <a href="{{ breadcrumb['href'] }}">
+                        <span>{{ breadcrumb['text'] }}</span>
+                    </a>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+    <div class="row">
+        {{ column_left }}
+
+        {% if (column_left and column_right) %}
+            {% set class = 'col-sm-6' %}
+        {% elseif (column_left or column_right) %}
+            {% set class = 'col-sm-9' %}
+        {% else %}
+            {% set class = 'col-sm-12' %}
+        {% endif %}
+
+        <div id="content" class="blog-content {{ class }}">
+            {{ content_top }}
+            <div class="article-post box-shadow box-corner">
+			<p><i class="fa fa-calendar"></i>  {{ date_modified | date('d.m.Y') }}</p> 
+                <h2>{{ heading_title }}</h2>
+                <div class="entry-meta">
+                    <div class="entry-meta_top">
+                        {% if (date_modified) %}
+                            <span class="entry-date published">
+                                {{ date_modified }}
+                            </span>
+                        {% endif %}
+                        {% if (author) %}
+                            <span class="entry-author">
+                                {{ text_author }}
+                                <a href="{{ author['href'] }}">
+                                    {{ author['name'] }}
+                                </a>
+                            </span>
+                        {% endif %}
+                    </div>
+                    <div class="entry-meta_bottom">
+                        {% if (viewed) %}
+                            <span class="entry-views">
+                                <i class="fa fa-eye"></i>
+                                {{ viewed }}
+                            </span>
+                        {% endif %}
+                        {% if (total_comments) %}
+                            <a href="javascript:void(0)" id='show_blog_comments'  class="entry-comments-link">
+                                <i class="fa fa-commenting" aria-hidden="true"></i>
+                                {{ total_comments }}
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div id="share" class="share-top"></div>
+                <script>
+                                        $("#share").jsSocials({
+                                                showLabel: true,
+                                                shareIn: "popup",
+                                                shares: ["facebook"]
+                                        });
+                </script>
+
+                <div class="clearfix">
+                    <div class="aticle-body">
+                        <div class="article-description">
+                            {{ description }}
+                        </div>
+                        {% if (images is defined) %}
+                            {% if (gallery_heading is not empty) %}
+                                <h3>{{ gallery_heading }}</h3>
+                            {% endif %}
+                            <div class="popup-gallery">
+                                {% for img in images %}
+                                    <a href="{{ img['image'] }}">
+                                        <img src="{{ img['thumb'] }}" alt="" class="img-thumbnail">
+                                    </a>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                {% if (related_products is not empty) %}
+                    <h3>{{ text_related_products }}</h3>
+                    <div class="row product-block">
+                        {% for product in related_products %}
+                            <div class="product-layout product-grid col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                <div class="product-thumb clearfix">
+                                    <div class="image">
+                                        <a href="{{ product['href'] }}">
+                                            {% if (product['thumb1']) %}
+                                                <img class="hoverable" src="{{ product['thumb'] }}" alt="{{ product['name'] }}" title="{{ product['name'] }}" class="img-responsive" over="{{ product['thumb1'] }}" out="{{ product['thumb'] }}" />
+                                            {% else %}
+                                                <img src="{{ product['thumb'] }}" alt="{{ product['name'] }}" title="{{ product['name'] }}" class="img-responsive"/>
+                                            {% endif %}
+                                        </a>
+                                    </div>
+                                    <div>
+                                        <div class="rating-container">
+                                            <span class="rating">
+                                                {% if (article['rating']) %}
+                                                    {% set i = 1 %}{% for i in i..5 %}
+                                                        {% if (article['rating'] < i) %}
+                                                            <span class="fa fa-stack">
+                                                                <i class="fa fa-star-o fa-stack-2x"></i>
+                                                            </span>
+                                                        {% else %}
+                                                            <span class="fa fa-stack">
+                                                                <i class="fa fa-star fa-stack-2x"></i>
+                                                                <i class="fa fa-star-o fa-stack-2x"></i>
+                                                            </span>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                {% endif %}
+                                            </span>
+                                        </div>
+                                        <div class="button-group">
+                                            <button class="wishlist-button" type="button" data-toggle="tooltip" title="{{ button_wishlist }}" onclick="wishlist.add('{{ product['product_id'] }}');"><i class="fa fa-heart"></i></button>
+                                            <button class="compare-button" type="button" data-toggle="tooltip" title="{{ button_compare }}" onclick="compare.add('{{ product['product_id'] }}');"><i class="fa fa-exchange"></i></button>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="caption">
+                                            <h4>
+                                                <a href="{{ product['href'] }}">
+                                                    {{ product['name'] }}
+                                                </a>
+                                            </h4>
+                                            <h5 class="text-center stock-status-text-{{ product['stock_status_id'] }}" {% if (colors_status[product['stock_status_id']] is defined) %} {{ "style=\"color: " ~ colors_status[product['stock_status_id']]['font_color'] ~ ";\"" }} {% endif %}>
+                                                <b>{{ product['stock_status'] }}</b>
+                                            </h5>
+                                        </div>
+
+                                        {% if (product['price']) %}
+                                            <div class="price-and-cart-add">
+                                                <div class="price-container">
+                                                    <p class="price">
+                                                        {% if (not product['special']) %}
+                                                            {{ product['price'] }}
+                                                        {% else %}
+                                                            <span class="price-old">
+                                                                {{ product['price'] }}
+                                                            </span>
+                                                            <span class="price-new">
+                                                                {{ product['special'] }}
+                                                            </span>
+                                                        {% endif %}
+                                                        {% if (product['tax']) %}
+                                                            <span class="price-tax">
+                                                                {{ text_tax }} {{ product['tax'] }}
+                                                            </span>
+                                                        {% endif %}
+                                                    </p>
+                                                </div>
+                                                <div class="input-group input-quantity-group" data-min-quantity="{{ product['minimum'] }}">
+                                                    <span class="input-group-btn">
+                                                        <button type="button" class="btn btn-default" data-type="minus" data-field="input-quantity">
+                                                            <span class="glyphicon glyphicon-minus"></span>
+                                                        </button>
+                                                    </span>
+                                                    <input type="text" name="quantity" value="{{ product['minimum'] }}" size="2" class="form-control quantity">
+                                                    <span class="input-group-btn">
+                                                        <button type="button" class="btn btn-default" data-type="plus" data-field="input-quantity">
+                                                            <span class="glyphicon glyphicon-plus"></span>
+                                                        </button>
+                                                    </span>
+                                                </div>
+                                                <div class="button-group-cart">
+                                                    <button class="cart-add-button" type="button" onclick="cart.add('{{ product['product_id'] }}', '{{ product['minimum'] }}');">
+                                                        <i class="fa fa-shopping-cart"></i> <span class="hidden-xs hidden-sm hidden-md">{{ button_cart }}</span>
+                                                    </button>
+                                                    <a class="buy-one-click" href="#">Купить в 1 клик</a>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="description">{{ product['description'] }}</div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            {% if (comments_block is not empty) %}
+                {{ comments_block }}
+            {% endif %}
+
+            {{ content_bottom }}
+
+            <div class="module">
+                {% if (related_articles is not empty) %}
+                    <div id="related_articles" class="blog-content">
+                        <h3>{{ text_related_articles }}</h3>
+                        <div class="row article-block ab-info">
+                            {% for article in related_articles %}
+                                <div class="article-layout col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                    <div class="news box-shadow box-corner article-layout">
+
+                                        <div class="image">
+                                            <a href="{{ article['href'] }}"><img src="{{ article['thumb'] }}" alt="{{ article['name'] }}" title="{{ article['name'] }}" class="img-responsive"/></a>
+                                        </div>
+
+                                        <div class="caption">
+                                            <div class="entry-meta">
+                                                <span class="entry-date published">
+                                                    {{ article['date_modified'] }}
+                                                </span>
+                                                <div class="rating-container">
+                                                    <span class="rating">
+                                                        {% if (article['rating']) %}
+                                                            {% set i = 1 %}{% for i in i..5 %}
+                                                                {% if (article['rating'] < i) %}
+                                                                    <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
+                                                                    {% else %}
+                                                                    <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span>
+                                                                        {% endif %}
+                                                                    {% endfor %}
+                                                                {% endif %}
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                            <h4><a href="{{ article['href'] }}">{{ article['name'] }}</a></h4>
+
+                                            <p class="descripts">{{ article['description'] }}</p>
+                                            <div class="post-info">
+                                                <span class="entry-views">
+                                                    <i class="fa fa-eye"></i>
+                                                    {{ article['viewed'] }}
+                                                </span>
+                                                <span class="entry-comments-link">
+                                                    <i class="fa fa-commenting" aria-hidden="true"></i>
+                                                    {{ article['total_comments'] }}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        {{ column_right }}
+    </div>
+</div>
+
+<script>
+	$(document).ready(function () {
+		$('#show_blog_comments').click(function () {
+			var top = $('#comments-header').offset().top;
+			$('html,body').animate({scrollTop: top}, 2000);
+		});
+
+		$('.article-image a').magnificPopup({
+			type:'image',
+			callbacks: {
+				resize: changeImgSize,
+				imageLoadComplete: changeImgSize,
+				change: changeImgSize
+			}
+		});
+		$('.popup-gallery').magnificPopup({
+			delegate: 'a',
+			type: 'image',
+			tLoading: 'Loading image #%curr%...',
+			mainClass: 'mfp-img-mobile',
+			gallery: {
+				enabled: true,
+				navigateByImgClick: true
+			},
+			image: {
+				tError: '<a href="%url%">The image #%curr%</a> could not be loaded.'
+			},
+			callbacks: {
+				resize: changeImgSize,
+				imageLoadComplete :changeImgSize,
+				change: changeImgSize
+			}
+		});
+	});
+	function changeImgSize() {
+		var img = this.content.find('img');
+		img.css('max-height', window.innerHeight);
+		img.css('width', 'auto');
+		img.css('max-width', 'auto');
+	}
+</script>
+{{ footer }}

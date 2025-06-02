@@ -1,0 +1,63 @@
+{% if (comments) %}
+    {% for comment in comments %}
+        <div id="{{ comment['comment_id'] }}" class="comment">
+            <div class="comment-body" >
+                <div class="comment-top">
+                    <div class="comment-meta">
+                        <div class="comment-author"><b>{{ comment['author'] }}</b></div>
+                        <div class="comment-date">{{ comment['date_added'] }}</div>
+                    </div>
+                    <div class="comment-rating">
+                        {% set i = 1 %}{% for i in i..5 %}
+                            {% if (comment['rating'] < i) %}
+                                <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
+                                {% else %}
+                                <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span>
+                                    {% endif %}
+                                {% endfor %}
+                    </div>
+                </div>
+                <div class="comment-middle">
+                    <div class="comment-quot">&rdquo;</div>
+                    <div class="comment-content">{{ comment['comment'] }}</div>
+                </div>
+                <div class="comment-bottom">
+                    <a href="#" class="comment-reply-link btn btn-sm btn-default pull-left" onclick="return replyComment({{ comment['comment_id'] }});">{{ text_reply_comment }}</a>
+                </div>
+            </div>
+            {% if (comment['comment_reply']) %}
+                <div class="comment-children">
+                    {% for comment_reply in comment['comment_reply'] %}
+                        <div id="{{ comment_reply['comment_id'] }}" class="comment">
+                            <div class="comment-body">
+                                <div class="comment-left">
+                                    <div class="comment-meta">
+                                        <div class="comment-author"><b>{{ comment_reply['author'] }}</b></div>
+                                        <div class="comment-date">{{ comment_reply['date_added'] }}</div>
+                                    </div>
+                                </div>
+                                <div class="comment-right">
+                                    <div class="comment-content">{{ comment_reply['comment'] }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    {% endfor %}
+    <br/>
+    <div class="row paginator">
+        <div class="col-sm-6 text-left">{{ pagination }}</div>
+        <div class="col-sm-6 text-right">{{ results }}</div>
+    </div>
+    {% if (page > 1 ) %}
+        <script>
+                        $('html, body').animate({
+                                scrollTop: $('#comments-header').offset().top
+                        }, 2000);
+        </script>
+    {% endif %}
+{% else %}
+    <h5>{{ text_no_comments }}</h5>
+{% endif %}

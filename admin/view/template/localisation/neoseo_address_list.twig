@@ -1,0 +1,151 @@
+{{ header }}{{ column_left }}
+<div id="content">
+    <div class="page-header">
+        <div class="container-fluid">
+            <div class="pull-right">
+                <a href="{{ refresh }}" data-toggle="tooltip" title="{{ button_refresh }}" class="btn btn-default"><i class="fa fa-refresh"></i></a>
+                <a href="{{ add }}" data-toggle="tooltip" title="{{ button_add }}" class="btn btn-primary"><i class="fa fa-plus"></i></a>
+                <button type="button" data-toggle="tooltip" title="{{ button_delete }}" class="btn btn-danger" onclick="confirm('{{ text_confirm }}') ? $('#form-country').submit() : false;"><i class="fa fa-trash-o"></i></button>
+                <button type="button" data-toggle="tooltip" title="{{ button_delete_all }}" class="btn btn-danger" onclick="confirm('{{ text_confirm_all }}') ? location.replace('{{ delete_all }}') : false;"><i class="fa fa-trash-o"></i></button>
+            </div>
+            <img width="36" height="36" style="float:left;margin-right: 10px;" src="view/image/neoseo.png" alt="">
+            <h1>{{ heading_title }}</h1>
+            <ul class="breadcrumb">
+                {% for breadcrumb in breadcrumbs %}
+                    <li><a href="{{ breadcrumb['href'] }}">{{ breadcrumb['text'] }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="container-fluid">
+        {% if error_warning %}
+            <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+            </div>
+        {% endif %}
+        {% if success %}
+            <div class="alert alert-success"><i class="fa fa-check-circle"></i> {{ success }}
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+            </div>
+        {% endif %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-list"></i> {{ text_list }}</h3>
+            </div>
+            <div class="panel-body">
+                <div class="well">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label class="control-label" for="input-zone">{{ column_zone }}</label>
+                                <input type="text" name="filter[zone]" value="{{ filter['zone'] is defined ? filter['zone']: '' }}" placeholder="{{ entry_zone }}" id="input-zone" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label class="control-label" for="input-city">{{ column_city }}</label>
+                                <input type="text" name="filter[city]" value="{{ filter['city'] is defined ? filter['city']:'' }}" placeholder="{{ entry_city }}" id="input-city" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label class="control-label" for="input-name">{{ column_name }}</label>
+                                <input type="text" name="filter[name]" value="{{ filter['name'] is defined ? filter['name']:'' }}" placeholder="{{ entry_name }}" id="input-name" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label class="control-label" for="input-shipping_method">{{ column_shipping_method }}</label>
+                                <select name="filter[shipping_method]" id="input-shipping_method" class="form-control">
+                                    <option value=""></option> {% for method in shipping_methods %}
+                                        <option value="{{ method['code'] }}"{{ filter['shipping_method'] is defined and filter['shipping_method'] == method['code'] ? ' selected="selected"' : '' }}>{{ method['name'] }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-search"></i> {{ button_filter }}</button>
+                        </div>
+                    </div>
+                </div>
+                <form action="{{ delete }}" method="post" enctype="multipart/form-data" id="form-country">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                            <tr>
+                                <td style="width: 1px;" class="text-center"><input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" /></td>
+                                <td class="text-left">{% if (sort == 'name') %}
+                                        <a href="{{ sort_name }}" class="{{ order|lower }}">{{ column_name }}</a>
+                                    {% else %}
+                                        <a href="{{ sort_name }}">{{ column_name }}</a>
+                                    {% endif %}</td>
+                                <td class="text-left">{% if (sort == 'zone') %}
+                                        <a href="{{ sort_zone }}" class="{{ order|lower }}">{{ column_zone }}</a>
+                                    {% else %}
+                                        <a href="{{ sort_zone }}">{{ column_zone }}</a>
+                                    {% endif %}</td>
+                                <td class="text-left">{% if (sort == 'city') %}
+                                        <a href="{{ sort_city }}" class="{{ order|lower }}">{{ column_city }}</a>
+                                    {% else %}
+                                        <a href="{{ sort_city }}">{{ column_city }}</a>
+                                    {% endif %}</td>
+                                <td class="text-left">{% if (sort == 'shipping_method') %}
+                                        <a href="{{ sort_shipping_method }}" class="{{ order|lower }}">{{ column_shipping_method }}</a>
+                                    {% else %}
+                                        <a href="{{ sort_shipping_method }}">{{ column_shipping_method }}</a>
+                                    {% endif %}</td>
+                                <td class="text-right">{{ column_action }}</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% if addresses %}
+                                {% for address in addresses %}
+                                    <tr>
+                                        <td class="text-center">{% if selected in address.address_id %}
+                                                <input type="checkbox" name="selected[]" value="{{ address['address_id'] }}" checked="checked" />
+                                            {% else %}
+                                                <input type="checkbox" name="selected[]" value="{{ address['address_id'] }}" />
+                                            {% endif %}
+                                        </td>
+                                        <td class="text-left">{{ address['name'] }}</td>
+                                        <td class="text-left">{{ address['zone'] }}</td>
+                                        <td class="text-left">{{ address['city'] }}</td>
+                                        <td class="text-left">
+                                            {% for metod in shipping_methods %}
+                                                {% if metod['code'] == address['shipping_method'] %}
+                                                    {{ metod['name'] }}
+                                                {% endif %}
+                                            {% endfor %}
+                                        </td>
+                                        <td class="text-right"><a href="{{ address['edit'] }}" data-toggle="tooltip" title="{{ button_edit }}" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
+                                    </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td class="text-center" colspan="6">{{ text_no_results }}</td>
+                                </tr>
+                            {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
+                <div class="row">
+                    <div class="col-sm-6 text-left">{{ pagination }}</div>
+                    <div class="col-sm-6 text-right">{{ results }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function (e) {
+        $('#button-filter').on('click', function() {
+            var url = 'index.php?route=localisation/neoseo_address&user_token={{ user_token }}';
+
+            $('.panel-body #input-name,#input-zone,#input-city,#input-shipping_method').each(function(e) {
+                if($(this).val())
+                    url += '&'+$(this).attr('name')+'='+encodeURIComponent($(this).val());
+            });
+            location = url;
+        });
+    });
+</script>
+{{ footer }}

@@ -1,0 +1,31 @@
+<aside class="side-module box-shadow box-corner">
+    {% if (title) %}
+        <div class="blog-category">
+            <div class="blog-category-button hidden-md hidden-lg" data-toggle="collapse" data-target="#category-list">
+                <h3>{{ title }}</h3>
+                <i class="fa fa-bars"></i>
+            </div>
+
+            <h3 class="hidden-sm hidden-xs">{{ title }}</h3>
+
+        {% endif %}
+        <div id="category-list" class="list-group">
+            {% for category in categories %}
+                {% if (category['category_id'] == blog_category_id or category['category_id'] == parent_id) %}
+                    <a href="{{ category['href'] }}" class="list-group-item item-category active">{{ category['name'] }}</a>
+                    {% if (category['children']) %}
+                        {% for child in category['children'] %}
+                            {% if (child['category_id'] == blog_category_id) %}
+                                <a href="{{ child['href'] }}" class="list-group-item active"><i class="fa fa-caret-right"></i>{{ child['name'] }}</a>
+                                {% else %}
+                                <a href="{{ child['href'] }}" class="list-group-item"><i class="fa fa-caret-right"></i>{{ child['name'] }}</a>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    {% else %}
+                    <a href="{{ category['href'] }}" class="list-group-item  item-category">{{ category['name'] }}</a>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</aside>

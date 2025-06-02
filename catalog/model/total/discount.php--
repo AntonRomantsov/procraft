@@ -1,0 +1,47 @@
+<?php
+class ModelTotalDiscount extends Model {
+	public function getTotal(&$total_data, &$total, &$taxes) {
+		$this->load->language('total/wholesale');
+
+		if ($this->customer->isLogged()) {
+			$sub_total = $this->cart->getSubTotal();
+
+			$this->load->model('account/customer');
+
+			$customer_order_total = $this->model_account_customer->getOrderTotals($this->customer->getId());
+
+			$customer_order_total += $sub_total;
+
+			$discounts = $this->config->get('config_discount');
+			$discounts = explode('|', $discounts);
+			$new_discounts = array();
+			foreach ($discounts as $discount) {
+				$tmp = explode(':', $discount);
+				$new_discounts[$tmp[0]] = $tmp[1];
+			}
+
+			$new_discounts = array_reverse($new_discounts, true);
+
+			foreach ($new_discounts as $discount_percent => $new_discount) {
+				if ((float)$customer_order_total >= $new_discount) {
+					$customer_percent = $discount_percent;
+					break;
+				}
+			}
+
+			if ($customer_percent) {
+
+				$discount = -1 * ($sub_total / 100) * $customer_percent;
+
+				$total_data[] = array(
+					'code'       => 'discount',
+					'title'      => $this->language->get('text_discount') . ' ' . $customer_percent . '%',
+					'value'      => $discount,
+					'sort_order' => $this->config->get('discount_sort_order')
+				);
+
+				$total += $discount;
+			}
+		}
+	}
+}

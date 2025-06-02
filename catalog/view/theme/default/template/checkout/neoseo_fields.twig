@@ -1,0 +1,210 @@
+{% if group is not defined %}
+    {% set group='' %}
+{% endif %}
+
+{% for field_array_id,field in fields %}
+    {% set field_id = field['name'] ~ group %}
+    {% set type  = field['type'] %}
+    {% set name = field['name'] %}
+    {% set only_register = field['only_register'] is defined and field['only_register'] ? 'true' : 'false' %}
+    {% set value = field['value'] is defined ? field['value'] : field['default'] %}
+    {% set default = field['default'] %}
+    {% set label = field['label'] %}
+    {% if field['label'] is iterable %}
+        {% set label = field['label'][language_id] %}
+    {% endif %}
+
+    {% set required = '' %}
+    {% if field['required'] %}
+        {% set required = ' required' %}
+    {% endif %}
+    {% set error_style = errors is defined and errors[name] is defined ? ' has-error' : "" %}
+    {% set error_name = errors is defined and errors[name] is defined ? '<span class="help-block">' ~ errors[name] ~ '</span>' : "" %}
+
+    {% if not field['display'] %}
+        <input type="hidden" name="{{ name }}" value="{{ value }}"/>
+    {% elseif type == "input" %}
+        <div class="row field form-group{{ error_style }}{{ required }}">
+            <div class="col-sm-4">
+                <label for="{{ field_id }}" class="control-label">{{ label }}:</label>
+            </div>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" id="{{ field_id }}" data-register="{{ only_register }}"
+                       name="{{ name }}" value="{{ value }}" class="large-field"/> {{ error_name }}
+            </div>
+            {% if field['name'] == 'telephone' and use_international_phone_mask == 1 %}
+                <script>
+                    $(document).ready(function () {
+                        $("#{{ field_id }}").intlTelInput({
+                            autoHideDialCode: true,
+                            nationalMode: false,
+                            autoFormat: true,
+                            preferredCountries: ['ua', 'ru'],
+                            customPlaceholder: function (selectedCountryPlaceholder, selectedCountryData) {
+                                selectedCountryPlaceholder = selectedCountryPlaceholder.replace(/[0-9]/g, "X");
+                                var l = selectedCountryData['dialCode'].length;
+                                return '+' + selectedCountryData['dialCode'] + ' ' + selectedCountryPlaceholder.substring(l + 2);
+                            },
+                            initialCountry: "ua"
+                        });
+                    });
+                </script>
+                {% elseif field['mask'] %}
+                <script>$("#{{ field_id }}").mask("{{ field['mask'] }}");</script>
+            {% endif %}
+        </div>
+    {% elseif type == "password" %}
+        <div class="row field form-group{{ error_style }}{{ required }}">
+            <div class="col-sm-4">
+                <label for="{{ field_id }}" class="control-label">{{ label }}:</label>
+            </div>
+            <div class="col-sm-8">
+                <input type="password" class="form-control" id="{{ field_id }}" data-register="{{ only_register }}"
+                       name="{{ name }}" value="{{ value }}" class="large-field"/> {{ error_name }}
+            </div>
+        </div>
+    {% elseif type == "checkbox" %}
+        <div class="row field form-group{{ error_style }}{{ required }}">
+            <div style="padding-left:35px" class="col-sm-offset-4 col-sm-8 checkbox checkbox-primary checkbox-inline">
+                <input type="checkbox" id="{{ field_id }}" data-register="{{ only_register }}"
+                       name="{{ name }}" {% if ( value ) %} {{ 'checked="checked"' }}{% endif %} /> {{ error_name }}
+                <label for="{{ field_id }}" class="control-label">{{ label }}</label>
+            </div>
+        </div>
+    {% elseif type == "radio" %}
+        {% set vals = default|split(';') %}
+        {% if vals|length > 1 %}
+            <div class="row field form-group{{ error_style }}{{ required }}">
+                <div class="col-sm-4">
+                    <h3>{{ label }}</h3>
+                </div>
+                <div class="col-sm-8">
+                    {% set ix = 0 %}
+                    {% for val in vals %}
+                        <div class="radio radio-primary">
+                            <input type="radio" id="{{ field_id~'_'~i~ix }}" name="{{ name }}"
+                                   value="{{ label }}: {{ val }}"/> {{ error_name }}
+                            <label for="{{ field_id~'_'~i~ix }}" class="control-label">{{ val }}</label>
+                        </div>
+                        {% set ix = ix + 1 %}
+                    {% endfor %}
+                </div>
+            </div>
+        {% else %}
+            <div class="row field form-group{{ error_style }}{{ required }}">
+                <div class="col-sm-offset-4 col-sm-8 radio radio-primary radio-inline">
+                    <input type="radio" id="{{ field_id~'_'~field_array_id }}"
+                           data-register="{{ only_register }}" name="{{ name }}"
+                           value="{{ value }}"/> {{ error_name }}
+                    <label for="{{ field_id~'_'~field_array_id }}" class="control-label">{{ label }}:</label>
+                </div>
+            </div>
+        {% endif %}
+    {% elseif type == "textarea" %}
+        <div class="row field form-group{{ error_style }}{{ required }}">
+            <div class="col-sm-4">
+                <label for="{{ field_id }}" class="control-label">{{ label }}:</label>
+            </div>
+            <div class="col-sm-8">
+                <textarea id="{{ field_id }}" data-register="{{ only_register }}" name="{{ name }}"
+                          class="form-control">{{ value }}</textarea> {{ error_name }}
+            </div>
+        </div>
+    {% elseif type == "select" %}
+        <div class="row field form-group{{ error_style }}{{ required }}">
+            <div class="col-sm-4">
+                <label for="{{ field_id }}" class="control-label">{{ label }}:</label>
+            </div>
+            <div class="col-sm-8">
+                <select id="{{ field_id }}" data-register="{{ only_register }}" name="{{ name }}" class="form-control">
+                    {% for code,name in field['values'] %}
+                        <option
+                            value="{{ code }}" {% if ( code == value ) %} selected="selected" {% endif %}>{{ name }}</option>
+                    {% endfor %}
+                </select>
+                {{ error_name }}
+            </div>
+        </div>
+    {% elseif type == "html" %}
+        <div class="field text-block">
+            {{ value }}
+        </div>
+    {% elseif type == "file" %}
+        <div class="row field form-group{{ error_style }}{{ required }}">
+            <div class="col-sm-4">
+                <label for="{{ field_id }}" class="control-label">{{ label }}:</label>
+            </div>
+            <div class="col-sm-8">
+                <div class="button-uploading" style="width:144px; height:40px; position:relative;">
+                    <input type="file" id="input_images"
+                           style="display:block; cursor:pointer; opacity:0; filter: alpha(opacity=0); position:absolute; width:144px; height:40px; left:0; top:0;"
+                           name="filename" multiple="multiple"/>
+                    <a href="" class="btn btn-primary select-files">{{ text_files_upload }}</a>
+                </div>
+                <ul id="ul-photo-preview" style="display:block; margin-left:0px; padding-left:0px;">
+                    {% if value %}
+                        {% for key,file_val in value %}
+                            <li style="background-image:url(/image/neoseo_checkout/file.png); border:none;">{{ file_val['mask_name'] is defined ? file_val['mask_name'] : file_val['name'] }}
+                                <a href="" onclick="del_photo(this, {{ key+1 }});return false;"></a></li>
+                        {% endfor %}
+                    {% endif %}
+
+                </ul>
+            </div>
+        </div>
+
+        <script>
+            $(document).ready(function () {
+                files_array = [];
+                $('#input_images').unbind('change');
+                $('#input_images').change(function (event) {
+                    read_file($(this)[0].files);
+                });
+            });
+
+            function read_file(file) {
+                //$('.error_files').remove();
+                for (var i = 0; i < file.length; i++) {
+                    console.log(file[i].type.indexOf('/spreadsheetml.sheet/'));
+                    if (file[i].type.indexOf('image') !== -1) {
+                        files_array[files_array.length] = file[i];
+                        var reader = new FileReader();
+                        reader.onload = function (event) {
+                            var contents = event.target.result;
+                            $('#ul-photo-preview').append('<li style="background-image:url(' + contents + ');"><a href="" onclick="del_photo(this,' + files_array.length + '); return false;"></a></li>');
+                        };
+                        reader.readAsDataURL(file[i]);
+                    } else if (file[i].type.indexOf('text/plain') !== -1) {
+                        files_array[files_array.length] = file[i];
+                        $('#ul-photo-preview').append('<li style="background-image:url(/image/neoseo_checkout/txt.png); border:none;"><a href="" onclick="del_photo(this,' + files_array.length + '); return false;"></a></li>');
+                    } else if (file[i].type.indexOf('rtf') !== -1 || file[i].type.indexOf('msword') !== -1) {
+                        files_array[files_array.length] = file[i];
+                        if (file[i].type.indexOf('openxmlformats-officedocument') !== -1)
+                            $('#ul-photo-preview').append('<li style="background-image:url(/image/neoseo_checkout/xls.ico); border:none;"><a href="" onclick="del_photo(this,' + files_array.length + '); return false;"></a></li>');
+                        else
+                            $('#ul-photo-preview').append('<li style="background-image:url(/image/neoseo_checkout/doc.ico); border:none;"><a href="" onclick="del_photo(this,' + files_array.length + '); return false;"></a></li>');
+                    } else if (file[i].type.indexOf('openxmlformats-officedocument') !== -1) {
+                        files_array[files_array.length] = file[i];
+                        $('#ul-photo-preview').append('<li style="background-image:url(/image/neoseo_checkout/xls.ico); border:none;"><a href="" onclick="del_photo(this,' + files_array.length + '); return false;"></a></li>');
+                    } else {
+                        files_array[files_array.length] = file[i];
+                        $('#ul-photo-preview').append('<li style="background-image:url(/image/neoseo_checkout/file.png); border:none;"><a href="" onclick="del_photo(this,' + files_array.length + '); return false;"></a></li>');
+
+                        //$('.button-uploading').after('<span class="error_files" style="color:#f00"><?php echo $error_upload_file;?><span>');
+                    }
+                }
+            }
+
+            function del_photo(obj, index) {
+                var obj;
+                $(obj).parent('li').remove();
+                delete(files_array[index - 1]);
+            }
+        </script>
+    {% endif %}
+{% endfor %}
+
+
+
+
+

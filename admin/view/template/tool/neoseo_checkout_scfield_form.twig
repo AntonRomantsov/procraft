@@ -1,0 +1,90 @@
+<div id="tab-scfields">
+
+    {% if customer_groups|length > 1 %}
+        {% set i = 0 %} {% for type,name in customer_groups %} {% set i = i + 1 %}
+        <div class="field radiobox custom-radiobox" >
+            <input type="radio" id="type-{{ type }}" {% if ( type == customData['type'] ) %} checked="checked" {% endif %} name="type" value="{{ type }}" class="large-field" />
+            <label for="type-{{ type }}">{{ name }}:</label>
+        </div>
+    {% endfor %}
+    {% else %}
+        <input type="hidden" name="type" value="{% set keys = customer_groups|keys %} {{ keys[0] }}" />
+    {% endif %}
+
+    {% for type,fields in customData['fields'] %}
+
+        <div class="types type-{{ type }}">
+
+            <table class="form">
+
+                {% for field in fields %}
+                    {% set type = field['type'] %}
+                    {% set name = field['name'] %}
+                    {% set value = field['value'] is defined ? field['value'] : field['default'] %}
+                    {% set label = field['label'] %}
+                    {% if field['label'] is iterable %}
+                        {% set label = field['label'][language_id] %}
+                    {% endif %}
+                    {% set error_style = errors is defined and errors[name] is defined ? 'style="border:1px solid #f00; background:#F8ACAC;"' : "" %}
+                    {% set error_name = errors is defined and errors[name] is defined ? '<br><span class="error">' ~ errors[name] ~ '</span>' : "" %}
+
+                    {% if  field['display'] is defined %}
+
+                        {% if ( type == "input") %}
+                            <tr>
+                                <td>{{ label }}</td>
+                                <td><input id="scfield-{{ name }}" type="text" name="{{ name }}" value="{{ value }}" {{ error_style }} /> {{ error_name }}</td>
+                            </tr>
+                        {% elseif ( type == "password") %}
+                            <tr>
+                                <td>{{ label }}</td>
+                                <td><input id="scfield-{{ name }}" type="password" id="guest_{{ name }}" name="{{ name }}" value="{{ value }}" {{ error_style }} /> {{ error_name }}</td>
+                            </tr>
+                        {% elseif ( type == "checkbox") %}
+                            <tr>
+                                <td>{{ label }}</td>
+                                <td><input id="scfield-{{ name }}" type="checkbox" id="guest_{{ name }}" name="{{ name }}" value="{{ value }}" {{ error_style }} /> {{ error_name }}</td>
+                            </tr>
+                        {% elseif ( type == "radio") %}
+                            <tr>
+                                <td>{{ label }}</td>
+                                <td><input id="scfield-{{ name }}" type="radio" id="guest_{{ name }}" name="{{ name }}" value="{{ value }}" {{ error_style }} /> {{ error_name }}</td>
+                            </tr>
+                        {% elseif ( type == "textarea") %}
+                            <tr>
+                                <td>{{ label }}</td>
+                                <td><textarea id="scfield-{{ name }}" name="{{ name }}" {{ error_style }} > {{ value }} </textarea> {{ error_name }}</td>
+                            </tr>
+                        {% endif %}
+
+                    {% endif %}
+                {% endfor %}
+            </table>
+        </div>
+    {% endfor %}
+
+    <script>
+        {% if customer_groups|length > 1 %}
+        $('[name=type]').click(function(e){
+            var type = $(this).val();
+            $(".types").hide();
+            $(".types input").attr("disabled", true);
+            $(".types select").attr("disabled", true);
+            $(".types textarea").attr("disabled", true);
+
+            $(".type-" + type).show();
+            $(".type-" + type + " input").attr("disabled", false);
+            $(".type-" + type + " select").attr("disabled", false);
+            $(".type-" + type + " textarea").attr("disabled", false);
+        });
+        $('#type-{{ customData["type"] }}').click();
+        {% endif %}
+
+        $(document).ready(function(){
+            {% for field in fields %} {% if ( field['display'] and field['mask'] ) %}
+            $("#scfield-{{ field['name'] }}").mask("{{ field['mask'] }}");
+            {% endif %} {% endfor %}
+        });
+    </script>
+</div>
+

@@ -1,0 +1,24 @@
+.issm-facebook:before {
+	font-family: 'iSenseLabs-Social-Icons' !important;
+  	content: "\e900";
+}
+.issm-google:before {
+	font-family: 'iSenseLabs-Social-Icons' !important;
+  	content: "\e901";
+}
+.issm-instagram:before {
+	font-family: 'iSenseLabs-Social-Icons' !important;
+  	content: "\e902";
+}
+.issm-linkedin:before {
+	font-family: 'iSenseLabs-Social-Icons' !important;
+  	content: "\e903";
+}
+.issm-twitter:before {
+	font-family: 'iSenseLabs-Social-Icons' !important;
+  	content: "\e904";
+}
+a.fbkBootstrapBtn span:before {
+	font-family: 'iSenseLabs-Social-Icons' !important;
+    content: "\e900";
+}

@@ -1,0 +1,116 @@
+{% if products or vouchers %}
+    {% for product in products %}
+        <div class="row" style="margin-bottom:10px;">
+            <div class="col-sm-3">
+                {% if product['thumb'] %}
+                    <a href="{{ product['href'] }}"><img src="{{ product['thumb'] }}" alt="{{ product['name'] }}"
+                                                         title="{{ product['name'] }}"/></a>
+                    {% endif %}
+            </div>
+            <div class="col-sm-9">
+                <a class="name-link" href="{{ product['href'] }}">
+                    {% if not product['stock'] %}
+                        <span class="text-danger">***</span>
+                    {% endif %}
+                    {{ product['name'] }}
+                </a>
+                <div class="description">
+                    {% for option in product['option'] %}
+                        - {{ option['name'] }}: {{ option['value'] }} <br/>
+                    {% endfor %}
+                </div>
+                {{ product['quantity'] }} {{ text_unit }} {{ product['price'] }}<br>
+                <div class="btn-group btn-group-xs" role="group">
+                    <input type="hidden" name="quantity[{{ product['key'] }}]" value="{{ product['quantity'] }}">
+                    <a class="plus btn btn-xs"><i class="glyphicon glyphicon-plus"></i></a>
+                    <a class="trash btn btn-xs" href="{{ product['key'] }}"><i
+                            class="glyphicon glyphicon-trash"></i></a>
+                    <a class="minus btn btn-xs"><i class="glyphicon glyphicon-minus"></i></a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    {% if vouchers|length > 0 %}
+        <hr>
+        {% for voucher in vouchers %}
+            <div class="row vouchers">
+                <div class="col-sm-7">{{ voucher['description'] }}</div>
+                <div class="col-sm-5 text-right">{{ voucher['amount'] }}</div>
+            </div>
+        {% endfor %}
+    {% endif %}
+    <hr>
+    {% for total in totals %}
+        {% if total['value'] != '' %}
+            <div class="row totals">
+                <div class="col-sm-7">{{ total['title'] }}</div>
+                <div class="col-sm-5 text-right">{{ total['text'] }}</div>
+            </div>
+        {% endif %}
+    {% endfor %}
+{% endif %}
+
+<div class="form-group"></div>
+<div class="panel-group">
+    {% if coupon_status %}
+        <div class="panel panel-default">
+            <div class="panel-heading confirm-order-list">
+                <h4 class="panel-title confirm-order-title"><a href="#collapse-coupon" class="accordion-toggle"
+                                                               data-toggle="collapse"
+                                                               data-parent="#accordion">{{ entry_coupon }} <i
+                            class="fa fa-caret-down"></i></a></h4>
+            </div>
+            <div id="collapse-coupon" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <div class="input-group">
+                        <input type="text" name="coupon" value="" placeholder="{{ text_use_coupon }}" id="input-coupon"
+                               class="form-control"/>
+                        <span class="input-group-btn">
+                            <input type="button" value="{{ button_coupon }}" id="button-coupon"
+                                   data-loading-text="{{ text_loading }}" class="btn btn-primary"/>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    {% if voucher_status %}
+        <div class="panel panel-default">
+            <div class="panel-heading confirm-order-list">
+                <h4 class="panel-title confirm-order-title"><a href="#collapse-voucher" class="accordion-toggle"
+                                                               data-toggle="collapse"
+                                                               data-parent="#accordion">{{ entry_voucher }} <i
+                            class="fa fa-caret-down"></i></a></h4>
+            </div>
+            <div id="collapse-voucher" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <div class="input-group">
+                        <input type="text" name="voucher" value="" placeholder="{{ text_use_voucher }}"
+                               id="input-voucher" class="form-control"/>
+                        <span class="input-group-btn">
+                            <input type="button" value="{{ button_voucher }}" id="button-voucher"
+                                   data-loading-text="{{ text_loading }}" class="btn btn-primary"/>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    {% if reward_status %}
+        <div class="panel panel-default">
+            <div class="panel-heading confirm-order-list">
+                <h4 class="panel-title confirm-order-title"><a href="#collapse-reward" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion">{{ entry_reward }} <i class="fa fa-caret-down"></i></a></h4>
+            </div>
+            <div id="collapse-reward" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <div class="input-group">
+                        <input type="text" name="reward" value="" placeholder="{{ text_use_reward }}" id="input-reward" class="form-control" />
+                        <span class="input-group-btn">
+                            <input type="button" value="{{ button_reward }}" id="button-reward" data-loading-text="{{ text_loading }}"  class="btn btn-primary" />
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</div>

@@ -1,0 +1,52 @@
+<div class="module">
+    {% if (heading_title is not empty) %}
+        <h3>{{ heading_title }}</h3>
+    {% endif %}
+    <div class="row article-block arbful" style="margin-bottom:25px;">
+        {% for article in articles %}
+            <div class="article-layout col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                <div class="news box-shadow box-corner article-layout">
+
+                    <div class="image">
+                        <a href="{{ article['href'] }}"><img src="{{ article['thumb'] }}" alt="{{ article['name'] }}" title="{{ article['name'] }}" class="img-responsive"/></a>
+                    </div>
+
+                    <div class="caption">
+                        <div class="entry-meta">
+                            <span class="entry-date published">
+                                {{ article['date_modified'] }}
+                            </span>
+                            <div class="rating-container">
+                                <span class="rating">
+                                    {% if (article['rating']) %}
+                                        {% set i = 1 %}{% for i in i..5 %}
+                                            {% if (article['rating'] < i) %}
+                                                <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
+                                                {% else %}
+                                                <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            {% endif %}
+                                </span>
+                            </div>
+                        </div>
+
+                        <h4><a href="{{ article['href'] }}">{{ article['name'] }}</a></h4>
+
+                        <p class="descripts">{{ article['description'] }}</p>
+                        <div class="post-info">
+                            <span class="entry-views">
+                                <i class="fa fa-eye"></i>
+                                {{ article['viewed'] }}
+                            </span>
+                            <span class="entry-comments-link">
+                                <i class="fa fa-commenting" aria-hidden="true"></i>
+                                {{ article['total_comments'] }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>

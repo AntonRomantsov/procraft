@@ -1,0 +1,964 @@
+{# {{ header }}
+  {{ content_full }}
+  <div id="common-home" class="container">
+  <div class="row">{{ column_left }}
+  {% if column_left and column_right %}
+  {% set class = 'col-sm-6' %}
+  {% elseif column_left or column_right %}
+  {% set class = 'col-sm-9' %}
+  {% else %}
+  {% set class = 'col-sm-12' %}
+  {% endif %}
+  <div id="content" class="{{ class }}">{{ content_top }}{{ content_bottom }}</div>
+  {{ column_right }}</div>
+  </div>
+{{ footer }} #}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-M7JJKH9');</script>
+    <!-- End Google Tag Manager -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-663321007"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-159129339-1');
+  </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>
+      {{ title }}
+    </title>
+    <base href="{{ base }}" />
+    {% if description %}
+      <meta name="description" content="{{ description }}" />
+    {% endif %}
+    {% if keywords %}
+      <meta name="keywords" content="{{ keywords }}" />
+    {% endif %}
+    <link rel="alternate" href="{{ uri }}" hreflang="{{ hreflang }}">
+    <link rel="icon" type="image/x-icon" href="{{ favicon }}">
+    <script src="/catalog/view/javascript/jquery/jquery-2.1.1.min.js" type="text/javascript"></script>
+    <link href="/catalog/view/javascript/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen" />
+    <script src="/catalog/view/javascript/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <link href="/catalog/view/javascript/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:400,400i,300,700" rel="stylesheet" type="text/css" />
+    <link href="/catalog/view/theme/default/fonts/Myriad Pro/stylesheet.css" rel="stylesheet" type="text/css" />
+    <link href="/catalog/view/javascript/jquery/fancybox/jquery.fancybox.min.css" rel="stylesheet">
+    <link href="https://procraft.ua/catalog/view/javascript/cart_popup/magnific-popup.css" rel="stylesheet">
+    <link href="/catalog/view/theme/default/stylesheet/cart_popup/stylesheet.css" rel="stylesheet">
+    <link rel="stylesheet" href="catalog/view/theme/default/stylesheet/style/main.css" />
+    <link href="/catalog/view/theme/default/stylesheet/stylesheet.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha512-SfTiTlX6kk+qitfevl/7LibUOeJWlt9rbyDn92a1DqWOw9vWG2MFoays0sgObmWazO5BQPiFucnnEAjpAB+/Sw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    {% for style in styles %}
+      <link href="/{{ style.href }}" type="text/css" rel="{{ style.rel }}" media="{{ style.media }}" />
+    {% endfor %}
+    <link href="/catalog/view/theme/default/stylesheet/main.css" rel="stylesheet">
+    <link rel="stylesheet" href="catalog/view/theme/default/stylesheet/style/main.css" />
+    <link href="/catalog/view/theme/default/stylesheet/media.css" rel="stylesheet">
+    {% for script in scripts %}
+      <script src="{{ script }}" type="text/javascript"></script>
+    {% endfor %}
+    <script src="catalog/view/javascript/cart_popup/jquery.magnific-popup.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="catalog/view/javascript/cart_popup/cart_popup.js"></script>
+    <script src="/catalog/view/javascript/common.js" type="text/javascript"></script>
+    {% for link in links %}
+      <link href="{{ link.href }}" rel="{{ link.rel }}" />
+    {% endfor %}
+    <!-- XD stickers start -->
+    {% if xdstickers is not empty %}
+      <style type='text/css'>
+					{{ xdstickers_inline_styles }}
+					
+						
+							.{{ xdsticker.id }} {
+								background-color:{{ xdsticker.bg }};
+								color:{{ xdsticker.color }};
+							}
+						
+					
+					</style> {% for xdsticker in xdstickers %} {% if xdsticker.status == '1' %} {% endif %} {% endfor %}
+    {% endif %}
+    <!-- XD stickers end -->
+    {% for analytic in analytics %}
+      {{ analytic }}
+    {% endfor %}
+  </head>
+  <body id="body" class="body">
+    <header class="header">
+      <div class="header-top mobile-none">
+        <div class="container">
+          <div class="header-top__flex">
+            <button type="button" class="btn btn-primary open_mob_menu visible-sm visible-xs" data-toggle="modal" data-target="#modal-mob-menu">
+              <i class="fa fa-bars"></i>
+            </button>
+            <div class="header-top__logo logo">
+              {% if logo %}
+                <a href="{{ home }}">
+                  <img src="{{ logo }}" title="{{ name }}" alt="{{ name }}" class="img-responsive" />
+                </a>
+              {% else %}
+                <a href="{{ home }}">
+                  {{ name }}
+                </a>
+              {% endif %}
+            </div>
+            <nav class="header-top__nav nav-top">
+              <ul class="nav-top__list list-unstyled">
+                <li class="nav-top__item">
+                  <a href="{{ link_special }}" class="nav-top__link">
+                    {{ text_special }}
+                  </a>
+                </li>
+                <li class="nav-top__item">
+                  <a href="{{ link_news }}" class="nav-top__link">
+                    {{ text_news }}
+                  </a>
+                </li>
+                <li class="nav-top__item">
+                  <a href="{{ link_bestseller }}" class="nav-top__link">
+                    {{ text_bestseller }}
+                  </a>
+                </li>
+                <li class="nav-top__item dropdown">
+                  <a href="#" class="nav-top__link" data-toggle="dropdown">
+                    {{ text_buyer }}
+                    <i class="fa fa-angle-down"></i>
+                  </a>
+                  <ul class="nav-top__dropdown dropdown-menu list-unstyled">
+                    <!-- <li><a href="{{ link_register }}">{{ text_register_instr }}</a></li> -->
+                    <li>
+                      <a href="{{ link_store }}">
+                        {{ text_store }}
+                      </a>
+                    </li>
+                    <li>
+                      <a href="{{ link_services }}">
+                        {{ text_services }}
+                      </a>
+                    </li>
+                    <li>
+                      <a href="{{ link_delivery }}">
+                        {{ text_delivery }}
+                      </a>
+                    </li>
+                    <li>
+                      <a href="{{ link_black_list }}">
+                        {{ text_black_list }}
+                      </a>
+                    </li>
+                  <!-- <li><a href="{{ link_partner }}">{{ text_partner }}</a></li>-->
+                  </ul>
+                </li>
+              {# <li class="nav-top__item">
+                <a href="{{ link_about }}" class="nav-top__link">О Procraft</a>
+                </li>
+                <li class="nav-top__item">
+                <a href="{{ link_blog }}" class="nav-top__link">Блог</a>
+              </li> #}
+              </ul>
+            </nav>
+            <div class="header-top__phone">
+              <a class="binct-phone-number-1" href="tel:{{ telephone }}">
+                {{ telephone }}
+              </a>
+              <i class="fa fa-angle-down" style="color: white;" id="modal-header-open"></i>
+              <div id="contact-info-header" class="tb_wt tb_wt_block_group hover-block-show tbMobileShow display-block tb_equal_columns hoveredshow" style="display:none;">
+                <div class="row tb_gut_xs_0 tb_gut_sm_0 tb_gut_md_0 tb_gut_lg_0">
+                  <div class="col col-xs-12 col-sm-2 col-md-12 col-lg-12 col-align-center col-valign-top">
+                    <div id="Html_MBFt06W6" class="tb_wt tb_wt_html tbMobileShow hover-block-show display-block hoveredshow">
+                      <div class="panel-body tb_text_wrap">
+                        <div id="number-phone">
+                          <ul class="more-info-text">
+                            <li class="item-phone">
+                              <a class="binct-phone-number-1" href="javascript:void(0);" data-binct-original="2">
+                                <span>
+                                  0
+                                </span>
+                                <span style="opacity: 0.6; margin-left: 3px;">
+                                  8
+                                </span>
+                                <span style="opacity: 0.5;">
+                                  0
+                                </span>
+                                <span style="opacity: 0.4;">
+                                  0
+                                </span>
+                                <span style="margin-left: 5px;">
+                                  <u>
+                                    {{ text_show }}
+                                  </u>
+                                </span>
+                              </a>
+                            </li>
+                            <li class="cool">
+                              {{ text_call_receiving }}
+                              :
+                            </li>
+                            <li>
+                              {{ text_schedule1 }}
+                            </li>
+                            <li>
+                              {{ text_schedule2 }}
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col col-xs-12 col-sm-2 col-md-12 col-lg-12 col-align-center col-valign-top">
+                    <div id="OpenCart_VQeh6bJ0" class="tb_wt tb_wt_open_cart tbMobileShow header-form hover-block-show display-block tb_module_jform hoveredshow">
+                      <div class="jform-wrap row tb_gut_xs_0">
+                        <div class="col  col-xs-12 tbMobileShow">
+                          <div class="form-title">
+                            <span></span>
+                          </div>
+                          <!-- <div data-success="Чекайте зв язку з менеджером." id="jfrom-1"> -->
+                          <form method="post" enctype="multipart/form-data" class="form-horizontal">
+                            <input type="hidden" name="jform_id" value="7">
+                            <input type="hidden" name="current_url" value="{{ uri }}">
+                            <div class="row tb_gut_xs_0">
+                              <div class="col col-xs-12 input-effect tbMobileShow">
+                                <div class="form-group">
+                                  <input type="text" class="effect-17 form-control" name="field855" id="field-855" placeholder="Ваш телефон*" required>
+                                  <label class="control-label" for="field-855"></label>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="row tb_gut_xs_0">
+                              <div class="col col-xs-12 tbMobileShow">
+                                <div class="button-wrap">
+                                  <a class="btn btn-primary" id="jfrom-submit-1" onclick="sendCallback();">
+                                    {{ text_callback }}
+                                  </a>
+                                </div>
+                              </div>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                    <script type="text/javascript">function formsubmit(id){$.ajax({url:'index.php?route=module/jform/formsubmit',type:'post',data:new FormData($('#jfrom-'+id+' form')[0]),dataType:'json',cache:false,contentType:false,processData:false,complete:function(){$('#jfrom-submit-'+id).button('reset');},success:function(json){$('#jfrom-'+id).find('.alert, .text-danger').remove();$('#jfrom-'+id).find("input[type=text], textarea").val("");$('#jfrom-'+id).find("input[type=checkbox]").attr("checked",false);go($('#jfrom-'+id).attr('data-success'),50);if($('#jfrom-'+id).parents('.popap-form').length||$('#jfrom-'+id).parents('.mfp-content').length){$('.close, .mfp-close').trigger('click'); }},error:function(xhr,ajaxOptions,thrownError){alert(thrownError+"\r\n"+xhr.statusText+"\r\n"+xhr.responseText); }});}function validate(id){$.ajax({url:'index.php?route=module/jform/validate',type:'post',data:new FormData($('#jfrom-'+id+' form')[0]),dataType:'json',cache:false,contentType:false,processData:false,success:function(json){$('.alert, .text-danger').remove();if(json['error']||json['field_id']){$('#field-'+json['field_id']).before('<div class="text-danger">'+json['error']+'</div>');}else if(json['error_captcha']){$('#input-captcha-'+id).after('<div class="text-danger">Error: '+json['error_captcha']+'</div>');}else{formsubmit(id); }},error:function(xhr,ajaxOptions,thrownError){alert(thrownError+"\r\n"+xhr.statusText+"\r\n"+xhr.responseText); }});}</script>
+                    <script type="text/javascript">$('button[id^=\'button-upload\']').on('click',function(){var node=this;id=$('input[name=\'jform_id\']').val();$('#form-upload-1').remove();$('body').prepend('<form enctype="multipart/form-data" id="form-upload-1" style="display: none;"><input type="file" name="file" /></form>');$('#form-upload-1 input[name=\'file\']').trigger('click');if(typeof timer!='undefined'){clearInterval(timer);}timer=setInterval(function(){if($('#form-upload-1 input[name=\'file\']').val()!=''){clearInterval(timer);$.ajax({url:'index.php?route=module/jform/upload&jform_id='+id,type:'post',dataType:'json',data:new FormData($('#form-upload-1')[0]),cache:false,contentType:false,processData:false,beforeSend:function(){$(node).button('loading');},complete:function(){$(node).button('reset');},success:function(json){$('.text-danger').remove();if(json['error']){$(node).parent().find('input').after('<div class="text-danger">'+json['error']+'</div>');}if(json['success']){alert(json['success']);$(node).parent().find('input').attr('value',json['code']); }},error:function(xhr,ajaxOptions,thrownError){alert(thrownError+"\r\n"+xhr.statusText+"\r\n"+xhr.responseText); }}); }},500);});</script>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+            <div>
+              <div class="header-top__lang">
+                {{ language }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="header-second">
+        <div class="header__container">
+          <div class="header__wrapper">
+            <div class="header__main-menu">
+              <a href="{{ catalog }}" type="button" class="main-menu__button main-menu__button-js">
+                <span class="main-menu__button-deco">
+                  <svg>
+                    <use href="catalog/view/theme/default/image/icons.svg#catalog"></use>
+                  </svg>
+                </span>
+                Каталог товарів
+              </a>
+              <button class="header__burger-button">
+                <a id="burger" class="header__burger">
+                  <div></div>
+                </a>
+              </button>
+            </div>
+
+            <div class="header__search">
+              <div id="search" class="header__search-wrapper">
+                <input class="header__search-input" type="text" name="search" value="" placeholder="Шукати" autocomplete="off" />
+                <span class="header__search-icon">
+                  <svg>
+                    <use href="catalog/view/theme/default/image/icons.svg#search"></use>
+                  </svg>
+                </span>
+              </div>
+            </div>
+
+            <div class="header__actions-row">
+              <div class="header-actions__item header-actions__cart">
+                {{ cart }}
+              </div>
+              <div class="header-actions__item header-actions__wishlist header-wishlist">
+                <a href="{{ wishlist }}" id="wishlist-total" class="header-wishlist__link header-actions__link">
+                  <svg class="svg-icon">
+                    <use xlink:href="/image/sprite.svg#heart"></use>
+                  </svg>
+                  <span>
+                    {{ text_wishlist }}
+                  </span>
+                </a>
+              </div>
+              <div class="header-actions__item header-actions__user header-user">
+                {% if logged %}
+                  <a href="{{ account }}" class="header-user__link">
+                    <svg class="svg-icon">
+                      <use xlink:href="/image/sprite.svg#user"></use>
+                    </svg><!-- {{ login_name }} <span>({{ customer_percent }}%)</span>--></a>
+                {% else %}
+                  <a data-fancybox data-touch="false" href="#user-login" class="header-user__link">
+                    <svg class="svg-icon">
+                      <use xlink:href="/image/sprite.svg#user"></use>
+                    </svg>
+                  </a>
+                {% endif %}
+                <div class="fancybox-hidden profile_login active" style="display: none;" id="user-login">
+                  <div class="profile_login__content">
+                    {# <button class="profile_login__close">
+                      <div class="profile_login__close__wrapper"></div>
+                    </button> #}
+                    <h2 class="profile_login__title">
+                      {{ text_login }}
+                    </h2>
+                    <div class="alert alert-danger alert-dismissible" style="display: none;">
+                      <i class="fa fa-exclamation-circle"></i>
+                    </div>
+                    <div class="profile_login__body">
+                      <form action="{{ action }}" method="post" enctype="multipart/form-data" id="login-form">
+                        <div class="profile_login__wrapper">
+                          <label class="profile_login__label" for="profileLogin">
+                            E-MAIL
+                          </label>
+                          <input class="input--profile_mod" id="profileLogin" type="email" placeholder="Логін" name="email" required />
+                        </div>
+                        <div class="profile_login__wrapper">
+                          <div class="profile_login__row">
+                            <label class="profile_login__label" for="passwordLogin">
+                              Пароль
+                            </label>
+                            <a data-fancybox data-touch="false" href="#forgotten-password" class="profile_login__forgot">
+                              {{ text_forgotten }}
+                            </a>
+                          </div>
+                          <input class="input--profile_mod" id="passwordLogin" type="password" placeholder="Пароль" name="password" required />
+                        </div>
+                        <button class="button profile_login__button" type="button">
+                          <p>
+                            {{ text_sing_in }}
+                          </p>
+                        </button>
+                      </form>
+                      <div class="profile_login__or">
+                        <span class="profile_login__or_deco"></span>
+                        <span class="profile_login__or_text">
+                          {{ text_or }}
+                        </span>
+                        <span class="profile_login__or_deco"></span>
+                      </div>
+                      <div class="profile_login__buttons">
+                        <button class="button profile_login__button_bottom">
+                          <img src="image/profile/facebook.svg" alt="" />
+                          <p>
+                            Facebook
+                          </p>
+                        </button>
+                        <button class="button profile_login__button_bottom">
+                          <img src="image/profile/google.svg" alt="" />
+                          <p>
+                            Google
+                          </p>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="profile_login__footer">
+                      <p>
+                        {{ text_yet_guest }}
+                      </p>
+                      <a class="profile_login__footer_register" href="{{ register }}">
+                        {{ text_register }}
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div class="profile_login active" id="forgotten-password" style="display: none;">
+                  <div class="profile_login__content">
+                    {# <button class="profile_login__close">
+                      <div class="profile_login__close__wrapper"></div>
+                    </button> #}
+                    <h2 class="profile_login__title profile_login__title--resset_mod">
+                      {{ text_forgotten }}
+                    </h2>
+                    <p class="profile_login__description">
+                      {{ text_password_instruction }}
+                    </p>
+                    <div class="profile_login__body">
+                      <form action="{{ action_forgotten }}" method="post">
+                        <div class="profile_login__wrapper">
+                          <label class="profile_login__label" for="resetLogin">
+                            E-MAIL
+                          </label>
+                          <input class="input--profile_mod" id="resetLogin" type="email" name="email" placeholder="Логін" required />
+                        </div>
+                        <div class="profile_login__button_row">
+                          <button class="button profile_login__button profile_login__button--pink_mod" type="submit">
+                            <p>
+                              {{ button_back }}
+                            </p>
+                          </button>
+                          <button class="button profile_login__button" type="submit">
+                            <p>
+                              {{ button_continue }}
+                            </p>
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                {# <div class="fancybox-hidden" style="display: none;">
+                  <div id="user-login" class="popup">
+                  <div class="popup-box">
+                  <div class="popup-title text-center h3">{{ text_login }}</div>
+                  <div class="popup-content">
+                  <form action="index.php?route=account/login" method="post" enctype="multipart/form-data">
+                  <div class="form-group">
+                  <label for="input-email" class="control-label">E-Mail</label>
+                  <input type="text" name="email" value="" placeholder="E-Mail" id="input-email" class="form-control">
+                  </div>
+                  <div class="form-group">
+                  <label for="input-password" class="control-label">Пароль</label>
+                  <input type="password" name="password" value="" placeholder="Пароль" id="input-password" class="form-control">
+                  </div>
+                  <a style="display:block;margin-bottom:30px;" href="{{ forgotten_link }}">{{ text_forgotten }}</a>
+                  <div class="form-group">
+                  <input type="submit" value="{{ text_sing_in }}" class="btn btn-primary">
+                  </div>
+                  <div class="google-login"></div>
+                  <div class="facebook-login"></div>
+                  </form>
+                  <p class="register-text-tag text-center">Нет учетной записи? <a href="{{ register }}">{{ text_register }}</a></p>
+                  </div>
+                  </div>
+                  </div>
+                </div> #}
+                </div>
+              </div>
+
+              <nav id="mainMenu" class="main-menu mob-menu">
+                <div class="main-menu__drop">
+                  <div class="main-menu__row">
+                    <a href="#" class="main-menu__row-logo">
+                      <img src="catalog/view/theme/default/image//header/logo.svg" alt="Logo" />
+                    </a>
+                    <div class="main-menu__row-languages">
+                      <button class="main-menu__row-button main-menu__row-button--active main-menu__row-ua">
+                        УКР
+                      </button>
+                      <span>
+                        |
+                      </span>
+                      <button class="main-menu__row-button main-menu__row-ru">
+                        РУС
+                      </button>
+                    </div>
+                  </div>
+                  <button type="button" class="main-menu__button-drop">
+                    <span class="main-menu__button-drop-deco">
+                      <svg>
+                        <use href="catalog/view/theme/default/image/icons.svg#fire"></use>
+                      </svg>
+                    </span>
+                    Каталог товарів
+                  </button>
+
+                  <button id="closeButton" class="main-menu__button-close">
+                    <span class="main-menu__button-close_icon">
+                      <svg>
+                        <use href="catalog/view/theme/default/image/icons.svg#close"></use>
+                      </svg>
+                    </span>
+                  </button>
+                  <ul class="main-menu__list">
+                    {% for category in categories %}
+                      {% if category.children %}
+                        <li class="main-menu__list-item">
+                          <a href="{{ category.href }}" class="main-menu__link">
+                            <svg class="main-menu__link-icon">
+                              <use href="/image/sprite-category.svg#{{ category.category_id }}"></use>
+                            </svg>
+                            {{ category.name }}
+                          </a>
+                          <div class="main-nav__dropdown main-nav-dropdown">
+                            <div class="main-nav-dropdown__wrapper">
+                              <ul class="main-nav-dropdown__list">
+                                {% if category.category_id == 73 %}
+                                  <li class="main-nav-dropdown__item">
+                                    <a class="main-nav-dropdown__link" href="{{ href_acum }}">
+                                      <img src="/image/acum.jpg" alt="" style="width: 70px; height: 70px;">
+                                      <p>
+                                        {{ text_acum }}
+                                      </p>
+                                    </a>
+                                  </li>
+                                {% endif %}
+                                {% for child in category.children %}
+                                  <li class="main-nav-dropdown__item">
+                                    <a class="main-nav-dropdown__link" href="{{ child.href }}">
+                                      <img src="{{ child.image }}" alt="Product" />
+                                      <p>
+                                        {{ child.name }}
+                                      </p>
+                                    </a>
+                                  </li>
+                                {% endfor %}
+                              </ul>
+                            </div>
+                          </div>
+                        </li>
+                      {% else %}
+                        <li class="main-menu__list-item">
+                          <a class="main-menu__link" href="{{ category.href }}">
+                            <svg class="main-menu__link-icon">
+                              <use xlink:href="/image/sprite-category.svg#{{ category.category_id }}"></use>
+                            </svg>
+                            {{ category.name }}
+                          </a>
+                        </li>
+                      {% endif %}
+                    {% endfor %}
+                  </ul>
+
+                  <ul class="main-menu__list--secondary desctop-none">
+                    <li class="main-menu__list-item">
+                      <a href="{{ link_special }}" class="main-menu__link">
+                        <svg class="main-menu__link-icon">
+                          <use href="catalog/view/theme/default/image/icons.svg#promotion"></use>
+                        </svg>
+                        {{ text_special }}
+                      </a>
+                    </li>
+                    <li class="main-menu__list-item">
+                      <a href="{{ link_bestseller }}" class="main-menu__link">
+                        <svg class="main-menu__link-icon">
+                          <use href="catalog/view/theme/default/image/icons.svg#bestseller"></use>
+                        </svg>
+                        {{ text_bestseller }}
+                      </a>
+                    </li>
+                    <li class="main-menu__list-item">
+                      <a href="{{ link_news }}" class="main-menu__link">
+                        <svg class="main-menu__link-icon" width="22" height="21" viewBox="0 0 22 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M8.74712 1.2573C9.47552 0.528902 10.5044 0.185956 11.5241 0.331635L17.3738 1.1673C18.8138 1.37301 19.9451 2.50438 20.1508 3.94431L20.9865 9.79404C21.1322 10.8138 20.7892 11.8427 20.0608 12.5711L12.0255 20.6063C11.635 20.9969 11.0019 20.9969 10.6113 20.6063L0.711843 10.7069C0.321313 10.3163 0.321313 9.68317 0.711843 9.29257L8.74712 1.2573ZM12.7327 8.58547C13.5137 9.36657 14.78 9.36657 15.5611 8.58547C16.3421 7.80445 16.3421 6.53812 15.5611 5.75707C14.78 4.97603 13.5137 4.97603 12.7327 5.75707C11.9516 6.53812 11.9516 7.80445 12.7327 8.58547Z" fill="#ed6e00" />
+                        </svg>
+                        {{ text_news }}
+                      </a>
+                    </li>
+                    <li class="main-menu__list-item">
+                      <a href="javascript:void(0)" class="main-menu__link buyer-link" onclick="openSubMenu();">
+                        <svg class="main-menu__link-icon" width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M0.833496 20.1666C0.833496 16.1165 4.11674 12.8333 8.16683 12.8333C12.2169 12.8333 15.5002 16.1165 15.5002 20.1666H0.833496ZM8.16683 11.9166C5.12808 11.9166 2.66683 9.45538 2.66683 6.41663C2.66683 3.37788 5.12808 0.916626 8.16683 0.916626C11.2056 0.916626 13.6668 3.37788 13.6668 6.41663C13.6668 9.45538 11.2056 11.9166 8.16683 11.9166ZM14.9161 13.9637C17.7443 14.6865 19.8707 17.1632 20.0685 20.1666H17.3335C17.3335 17.7743 16.417 15.596 14.9161 13.9637ZM13.0619 11.8771C14.5586 10.5345 15.5002 8.58552 15.5002 6.41663C15.5002 5.1174 15.1623 3.89709 14.5697 2.83876C16.6692 3.25777 18.2502 5.11006 18.2502 7.33329C18.2502 9.86558 16.1991 11.9166 13.6668 11.9166C13.4618 11.9166 13.2598 11.9032 13.0619 11.8771Z" fill="#ed6e00" />
+                        </svg>
+                        {{ text_buyer }}
+                      </a>
+                      <div class="main-nav--secondary__dropdown secondary-menu__dropdown">
+                        <div class="secondary-menu__wrapper">
+                          <ul class="secondary-menu__list-list">
+                            <li class="secondary-menu__item">
+                              <a class="secondary-menu__link" href="{{ link_store }}">
+                                {{ text_store }}
+                              </a>
+                            </li>
+                            <li class="secondary-menu__item">
+                              <a class="secondary-menu__link" href="{{ link_services }}">
+                                {{ text_services }}
+                              </a>
+                            </li>
+                            <li class="secondary-menu__item">
+                              <a class="secondary-menu__link" href="{{ link_delivery }}">
+                                {{ text_delivery }}
+                              </a>
+                            </li>
+                            <li class="secondary-menu__item">
+                              <a class="secondary-menu__link" href="{{ link_black_list }}">
+                                {{ text_black_list }}
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                  <ul class="main-nav__contact">
+                    <li class="main-menu__list-item main-nav__contact-item">
+                      <a class="main-menu__link" href="callto:+380800333900" class="main-menu__link main-nav__contact-link">
+                        <svg class="main-menu__link-icon" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M18 13.42V16.9561C18 17.4811 17.5941 17.9167 17.0705 17.9537C16.6331 17.9846 16.2763 18 16 18C7.1634 18 0 10.8366 0 2C0 1.72371 0.01545 1.36687 0.04635 0.9295C0.08337 0.40588 0.51894 0 1.04386 0H4.5801C4.83678 0 5.05176 0.19442 5.07753 0.4498C5.10067 0.67907 5.12218 0.86314 5.14207 1.00202C5.34435 2.41472 5.75753 3.75936 6.3487 5.00303C6.44359 5.20265 6.38171 5.44159 6.20185 5.57006L4.04355 7.1118C5.35752 10.1811 7.8189 12.6425 10.8882 13.9565L12.4271 11.8019C12.5572 11.6199 12.799 11.5573 13.001 11.6532C14.2446 12.2439 15.5891 12.6566 17.0016 12.8584C17.1396 12.8782 17.3225 12.8995 17.5502 12.9225C17.8056 12.9483 18 13.1633 18 13.42Z" fill="#ed6e00" />
+                        </svg>
+                        0 800 333 900
+                      </a>
+                    </li>
+                    <li class="main-menu__list-item main-nav__contact-item">
+                      <a href="mailto:info@procraft.ua" class="main-menu__link main-nav__contact-link">
+                        <svg class="main-menu__link-icon" width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M1 0H19C19.5523 0 20 0.44772 20 1V17C20 17.5523 19.5523 18 19 18H1C0.44772 18 0 17.5523 0 17V1C0 0.44772 0.44772 0 1 0ZM10.0606 8.6829L3.64722 3.2377L2.35278 4.7623L10.0731 11.3171L17.6544 4.75616L16.3456 3.24384L10.0606 8.6829Z" fill="#ed6e00" />
+                        </svg>
+                        info@procraft.ua
+                      </a>
+                    </li>
+                  </ul>
+
+                </div>
+                <div class="main-menu__drop">
+                  <ul class="main-menu-gift">
+                    <li class="main-menu__list-item main-nav__contact-item">
+                      <a href="{{ link_special }}" class="main-menu__link main-nav__contact-link">
+                        <svg class="main-menu__link-icon">
+                          <use href="catalog/view/theme/default/image/icons.svg#promotion"></use>
+                        </svg>
+                        {{ text_special }}
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main class="main" id="main">
+        <section class="hero">
+          <div class="hero__container">
+            <div class="hero__wrapper">
+              <aside class="hero__sidebar">
+                <nav class="main-menu2">
+                  <div class="main-menu__drop">
+                    <div class="main-menu__row">
+                      <a href="#" class="main-menu__row-logo">
+                        <img src="catalog/view/theme/default/image//header/logo.svg" alt="Logo" />
+                      </a>
+                      <div class="main-menu__row-languages">
+                        <button class="main-menu__row-button main-menu__row-button--active main-menu__row-ua">
+                          УКР
+                        </button>
+                        <span>
+                          |
+                        </span>
+                        <button class="main-menu__row-button main-menu__row-ru">
+                          РУС
+                        </button>
+                      </div>
+                    </div>
+                    <button type="button" class="main-menu__button-drop">
+                      <span class="main-menu__button-drop-deco">
+                        <svg>
+                          <use href="catalog/view/theme/default/image/icons.svg#fire"></use>
+                        </svg>
+                      </span>
+                      Каталог товарів
+                    </button>
+
+                    <button id="closeButton" class="main-menu__button-close">
+                      <span class="main-menu__button-close_icon">
+                        <svg>
+                          <use href="catalog/view/theme/default/image/icons.svg#close"></use>
+                        </svg>
+                      </span>
+                    </button>
+                    <ul class="main-menu__list">
+                      {% for category in categories %}
+                        {% if category.children %}
+                          <li class="main-menu__list-item">
+                            <a href="{{ category.href }}" class="main-menu__link">
+                              <svg class="main-menu__link-icon">
+                                <use href="/image/sprite-category.svg#{{ category.category_id }}"></use>
+                              </svg>
+                              {{ category.name }}
+                            </a>
+                            <div class="main-nav__dropdown main-nav-dropdown">
+                              <div class="main-nav-dropdown__wrapper">
+                                <ul class="main-nav-dropdown__list">
+                                  {% if category.category_id == 73 %}
+                                    <li class="main-nav-dropdown__item">
+                                      <a class="main-nav-dropdown__link" href="{{ href_acum }}">
+                                        <img src="/image/acum.jpg" alt="" style="width: 70px; height: 70px;">
+                                        <p>
+                                          {{ text_acum }}
+                                        </p>
+                                      </a>
+                                    </li>
+                                  {% endif %}
+                                  {% for child in category.children %}
+                                    <li class="main-nav-dropdown__item">
+                                      <a class="main-nav-dropdown__link" href="{{ child.href }}">
+                                        <img src="{{ child.image }}" alt="Product" />
+                                        <p>
+                                          {{ child.name }}
+                                        </p>
+                                      </a>
+                                    </li>
+                                  {% endfor %}
+                                </ul>
+                              </div>
+                            </div>
+                          </li>
+                        {% else %}
+                          <li class="main-menu__list-item">
+                            <a class="main-menu__link" href="{{ category.href }}">
+                              <svg class="main-menu__link-icon">
+                                <use xlink:href="/image/sprite-category.svg#{{ category.category_id }}"></use>
+                              </svg>
+                              {{ category.name }}
+                            </a>
+                          </li>
+                        {% endif %}
+                      {% endfor %}
+                    </ul>
+
+                    <ul class="main-menu__list--secondary desctop-none">
+                      <li class="main-menu__list-item">
+                        <a href="{{ link_special }}" class="main-menu__link">
+                          <svg class="main-menu__link-icon">
+                            <use href="catalog/view/theme/default/image/icons.svg#promotion"></use>
+                          </svg>
+                          {{ text_special }}
+                        </a>
+                      </li>
+                      <li class="main-menu__list-item">
+                        <a href="{{ link_bestseller }}" class="main-menu__link">
+                          <svg class="main-menu__link-icon">
+                            <use href="catalog/view/theme/default/image/icons.svg#bestseller"></use>
+                          </svg>
+                          {{ text_bestseller }}
+                        </a>
+                      </li>
+                      <li class="main-menu__list-item">
+                        <a href="{{ link_news }}" class="main-menu__link">
+                          <svg class="main-menu__link-icon" width="22" height="21" viewBox="0 0 22 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M8.74712 1.2573C9.47552 0.528902 10.5044 0.185956 11.5241 0.331635L17.3738 1.1673C18.8138 1.37301 19.9451 2.50438 20.1508 3.94431L20.9865 9.79404C21.1322 10.8138 20.7892 11.8427 20.0608 12.5711L12.0255 20.6063C11.635 20.9969 11.0019 20.9969 10.6113 20.6063L0.711843 10.7069C0.321313 10.3163 0.321313 9.68317 0.711843 9.29257L8.74712 1.2573ZM12.7327 8.58547C13.5137 9.36657 14.78 9.36657 15.5611 8.58547C16.3421 7.80445 16.3421 6.53812 15.5611 5.75707C14.78 4.97603 13.5137 4.97603 12.7327 5.75707C11.9516 6.53812 11.9516 7.80445 12.7327 8.58547Z" fill="#ed6e00" />
+                          </svg>
+                          {{ text_news }}
+                        </a>
+                      </li>
+                      <li class="main-menu__list-item">
+                        <a href="javascript:void(0)" class="main-menu__link buyer-link" onclick="openSubMenu();">
+                          <svg class="main-menu__link-icon" width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M0.833496 20.1666C0.833496 16.1165 4.11674 12.8333 8.16683 12.8333C12.2169 12.8333 15.5002 16.1165 15.5002 20.1666H0.833496ZM8.16683 11.9166C5.12808 11.9166 2.66683 9.45538 2.66683 6.41663C2.66683 3.37788 5.12808 0.916626 8.16683 0.916626C11.2056 0.916626 13.6668 3.37788 13.6668 6.41663C13.6668 9.45538 11.2056 11.9166 8.16683 11.9166ZM14.9161 13.9637C17.7443 14.6865 19.8707 17.1632 20.0685 20.1666H17.3335C17.3335 17.7743 16.417 15.596 14.9161 13.9637ZM13.0619 11.8771C14.5586 10.5345 15.5002 8.58552 15.5002 6.41663C15.5002 5.1174 15.1623 3.89709 14.5697 2.83876C16.6692 3.25777 18.2502 5.11006 18.2502 7.33329C18.2502 9.86558 16.1991 11.9166 13.6668 11.9166C13.4618 11.9166 13.2598 11.9032 13.0619 11.8771Z" fill="#ed6e00" />
+                          </svg>
+                          {{ text_buyer }}
+                        </a>
+                        <div class="main-nav--secondary__dropdown secondary-menu__dropdown">
+                          <div class="secondary-menu__wrapper">
+                            <ul class="secondary-menu__list-list">
+                              <li class="secondary-menu__item">
+                                <a class="secondary-menu__link" href="{{ link_store }}">
+                                  {{ text_store }}
+                                </a>
+                              </li>
+                              <li class="secondary-menu__item">
+                                <a class="secondary-menu__link" href="{{ link_services }}">
+                                  {{ text_services }}
+                                </a>
+                              </li>
+                              <li class="secondary-menu__item">
+                                <a class="secondary-menu__link" href="{{ link_delivery }}">
+                                  {{ text_delivery }}
+                                </a>
+                              </li>
+                              <li class="secondary-menu__item">
+                                <a class="secondary-menu__link" href="{{ link_black_list }}">
+                                  {{ text_black_list }}
+                                </a>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                    <ul class="main-nav__contact">
+                      <li class="main-menu__list-item main-nav__contact-item">
+                        <a class="main-menu__link" href="callto:+380800333900" class="main-menu__link main-nav__contact-link">
+                          <svg class="main-menu__link-icon" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M18 13.42V16.9561C18 17.4811 17.5941 17.9167 17.0705 17.9537C16.6331 17.9846 16.2763 18 16 18C7.1634 18 0 10.8366 0 2C0 1.72371 0.01545 1.36687 0.04635 0.9295C0.08337 0.40588 0.51894 0 1.04386 0H4.5801C4.83678 0 5.05176 0.19442 5.07753 0.4498C5.10067 0.67907 5.12218 0.86314 5.14207 1.00202C5.34435 2.41472 5.75753 3.75936 6.3487 5.00303C6.44359 5.20265 6.38171 5.44159 6.20185 5.57006L4.04355 7.1118C5.35752 10.1811 7.8189 12.6425 10.8882 13.9565L12.4271 11.8019C12.5572 11.6199 12.799 11.5573 13.001 11.6532C14.2446 12.2439 15.5891 12.6566 17.0016 12.8584C17.1396 12.8782 17.3225 12.8995 17.5502 12.9225C17.8056 12.9483 18 13.1633 18 13.42Z" fill="#ed6e00" />
+                          </svg>
+                          0 800 333 900
+                        </a>
+                      </li>
+                      <li class="main-menu__list-item main-nav__contact-item">
+                        <a href="mailto:info@procraft.ua" class="main-menu__link main-nav__contact-link">
+                          <svg class="main-menu__link-icon" width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1 0H19C19.5523 0 20 0.44772 20 1V17C20 17.5523 19.5523 18 19 18H1C0.44772 18 0 17.5523 0 17V1C0 0.44772 0.44772 0 1 0ZM10.0606 8.6829L3.64722 3.2377L2.35278 4.7623L10.0731 11.3171L17.6544 4.75616L16.3456 3.24384L10.0606 8.6829Z" fill="#ed6e00" />
+                          </svg>
+                          info@procraft.ua
+                        </a>
+                      </li>
+                    </ul>
+
+                  </div>
+                  <div class="main-menu__drop">
+                    <ul class="main-menu-gift">
+                      <li class="main-menu__list-item main-nav__contact-item">
+                        <a href="{{ link_special }}" class="main-menu__link main-nav__contact-link">
+                          <svg class="main-menu__link-icon">
+                            <use href="catalog/view/theme/default/image/icons.svg#promotion"></use>
+                          </svg>
+                          {{ text_special }}
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </nav>
+              </aside>
+              <div class="hero__content">
+                {{ content_full }}
+                <div class="hero__bottom-row">
+                  <a href="{{ link_special }}" class="hero__bottom-item">
+                    <img class="hero__bottom-icon" src="catalog/view/theme/default/image//hero/icon-1.svg" alt="Icon" />
+                    <p>
+                      {{ text_special }}
+                    </p>
+                  </a>
+                  <a href="{{ link_bestseller }}" class="hero__bottom-item">
+                    <img class="hero__bottom-icon" src="catalog/view/theme/default/image//hero/icon-2.svg" alt="Icon" />
+                    <p>
+                      {{ text_bestseller }}
+                    </p>
+                  </a>
+                  <a href="{{ link_news }}" class="hero__bottom-item">
+                    <img class="hero__bottom-icon" src="catalog/view/theme/default/image//hero/icon-3.svg" alt="Icon" />
+                    <p>
+                      {{ text_news }}
+                    </p>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        {{ content_top }}
+
+        {{ content_bottom }}
+      </main>
+      <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+      <script src="catalog/view/theme/default/javascript/script.js"></script>
+      <script>
+    function openSubMenu(){
+      if($('.main-nav--secondary__dropdown').hasClass('secondary-menu__dropdown--active')){
+        $('.main-nav--secondary__dropdown').removeClass('secondary-menu__dropdown--active');
+        $('.buyer-link').removeClass('buyer-link-open');
+      }else{
+        $('.main-nav--secondary__dropdown').addClass('secondary-menu__dropdown--active');
+        $('.buyer-link').addClass('buyer-link-open');
+      }
+    }
+
+    $('#modal-header-open').click(function(){
+      $('#contact-info-header').toggle();
+	  });
+
+    let elem = document.querySelector('.hero__content');
+    let coords = elem.getBoundingClientRect();
+
+    $('.main-nav-dropdown').css('left', coords.left - 50 + 'px');
+    $('.main-nav-dropdown').css('width', coords.width + +10 + 'px');
+</script>
+
+      <script>
+$('.profile_login__button').click(function(){
+  $.ajax({
+    url: '{{ action }}',
+    type: 'post',
+    data: $('#login-form').serialize(),
+    success: function(json){
+      var res = JSON.parse(json);
+      if(res['error']){
+        $('.alert-danger').show();
+        $('.alert-danger').text(error);
+      }else if(res['success']){
+        location = res['success'];
+      }
+    }
+  });
+});
+
+let elem3 = document.querySelector('.main-menu__button');
+let coords2 = elem3.getBoundingClientRect();
+$('.main-menu2').css('left', coords2.left + 'px');
+
+
+    window.addEventListener("scroll", function () {
+      if(window.innerWidth > 1024){
+        if (window.pageYOffset > 600) {
+          $('.main-menu__button').mouseenter(() => {
+          if (window.pageYOffset > 600) { 
+            body.classList.add("menu-open");
+            $('.main-menu2').css('position', 'fixed');
+            $('.main-menu2').css('top', '144px');
+            $('.main-menu2').css('z-index', '1000');
+            let elem2 = document.querySelector('.header__main-menu');
+            let coords = elem2.getBoundingClientRect();
+            $('.main-nav__dropdown').addClass('scroll-dropdown');
+            $('.main-menu2').css('left', coords.left + 'px');
+          }
+        });
+         $('.main-menu__button').mouseleave(event => {
+          if(event.relatedTarget.getAttribute('class') != 'header__wrapper'){
+            body.classList.remove("menu-open");
+            $('.main-menu2').css('position', 'absolute');
+            $('.main-nav__dropdown').removeClass('scroll-dropdown');
+          }
+          $('.main-menu2').mouseleave(() => {
+            body.classList.remove("menu-open");
+            $('.main-menu2').css('position', 'absolute');
+            $('.main-nav__dropdown').removeClass('scroll-dropdown');
+          });
+        });
+      
+        $('.header__search').mouseenter(() => {
+          body.classList.remove("menu-open");
+          $('.main-menu2').css('position', 'absolute');
+          $('.main-nav__dropdown').removeClass('scroll-dropdown');
+         });
+      
+        $('.header__actions-row').mouseenter(() => {
+          body.classList.remove("menu-open");
+          $('.main-menu2').css('position', 'absolute');
+          $('.main-nav__dropdown').removeClass('scroll-dropdown');
+        }); 
+        
+      } else {
+        body.classList.remove("menu-open");
+        $('.main-menu2').css('position', 'absolute');
+        $('.main-nav__dropdown').removeClass('scroll-dropdown');
+        $('.main-menu__button').mouseenter(() => {
+
+        });
+      }
+      if (window.pageYOffset <= 600) {
+        $('.main-menu2').css('position', 'absolute');
+        $('.main-nav__dropdown').removeClass('scroll-dropdown');
+        $('.main-menu__button').mouseenter(() => {
+        });
+      }
+      }
+    });
+
+  $('.main-menu__link').click(function(){
+    if(localStorage.getItem('link') != $(this).attr('href')){
+      localStorage.setItem('link', $(this).attr('href'));
+    }else{
+      localStorage.removeItem('link')
+      location = $(this).attr('href');
+    }
+    
+  });
+</script>
+
+      {{ footer }}
+      

@@ -1,0 +1,1216 @@
+{{ header }}
+<style type="text/css">
+.bmstore,.key,.storename{word-break:break-all}#togglck,#togglcs,.adw-action{float:right}.img-thumbnail{max-width:50px!important}.bmstore{max-height:130px;overflow-y:auto;min-width:150px;background-color:#f5f5f5}#bmstores{padding-bottom:5px}.bmgray{color:#bbb}.errima{margin-bottom:0!important}.storename{padding:0 5px;background-color:#fff;border:1px solid #ddd;border-radius:3px}td .storename:not(:first-child){margin-top:10px}.key{margin-left:20px}.key>img{margin-right:10px}td>a{outline:0!important}.well .form-group{margin-bottom:10px!important;padding-top:0!important;padding-bottom:0!important}.catcol:last-child{display:inline-block;float:right}.viewcol_header{color:#fff;background-color:#3ea9e3}.viewcol{display:block;padding:3px 0 0 5px;clear:both;font-weight:400;line-height:1.42857;color:#333;white-space:nowrap;outline:0;outline-offset:0;cursor:pointer}.custom-checkbox{position:absolute;z-index:-1;opacity:0}.custom-checkbox+label{display:inline-flex;align-items:center;user-select:none}.custom-checkbox+label::before{content:'';display:inline-block;width:1.4em;height:1.4em;flex-shrink:0;flex-grow:0;border:1px solid #adb5bd;border-radius:.25em;margin-right:.5em;background-repeat:no-repeat;background-position:center center;background-size:50% 50%}.custom-checkbox:not(:disabled):not(:checked)+label:hover::before{border-color:#b3d7ff}.custom-checkbox:not(:disabled):active+label::before{background-color:#b3d7ff;border-color:#b3d7ff}.custom-checkbox:checked+label::before{border-color:#1e91cf;background-color:#1e91cf;background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23fff' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z'/%3e%3c/svg%3e")}.custom-checkbox:disabled+label::before{background-color:#e9ecef}.viewcol label{font-weight:400;margin-right:15px}.btn-adw-sm,.btn-group-adw-sm>.btn{padding:4px 8px;font-size:11px;line-height:1.5;border-radius:2px}.adw-action{display:block;width:-moz-max-content;width:-webkit-max-content;width:-o-max-content}.ckbtn,.ckpro{width:100%;padding:2px}
+</style>
+{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+		<span style="padding-right:20px;">
+		<a href="{{ stng }}" target="_blank" data-toggle="tooltip" title="{{ text_settings }}" class="btn btn-default"><i class="fa fa-cogs"></i></a>
+		<div class="btn-group">
+		<button type="button" onclick="clearx();" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-eye"></i></button>
+		<ul class="dropdown-menu dropdown-menu-right catmanview">
+		<li class="dropdown-header viewcol_header">{{ text_viewcol }}</li>
+		{% for key, col in viewcols %}
+		<li class="viewcol">
+			<div>
+			<input class="custom-checkbox" type="checkbox" id="catmanview_{{ key }}" value="{{ key }}"/>
+			<label for="catmanview_{{ key }}"> {{ col }}</label>
+			</div>
+		</li>
+		{% endfor %}
+		</ul>
+		</div>
+		</span>
+		<span style="padding-right:5px;">
+		<button type="button" id="enable_cat" data-toggle="tooltip" title="{{ button_enable_cat }}" class="btn btn-success" onclick="$('#form-category').attr('action', '{{ enable_cat }}'); $('#form-category').submit();"><i class="fa fa-plus"></i></button>
+		<button type="button" id="disable_cat" data-toggle="tooltip" title="{{ button_disable_cat }}" class="btn btn-danger" onclick="$('#form-category').attr('action', '{{ disable_cat }}'); $('#form-category').submit();"><i class="fa fa-minus"></i></button>
+		</span>
+		<span style="padding-right:10px;">
+	{% if enable_all %}
+		<a href="{{ enable_all }}" data-toggle="tooltip" title="{{ button_enable_all }}" class="btn btn-success" data-confirm="{{ button_enable_all }}"><i class="fa fa-check fa"></i></a>
+		<a href="{{ disable_all }}" data-toggle="tooltip" title="{{ button_disable_all }}" class="btn btn-danger" data-confirm="{{ button_disable_all }}"><i class="fa fa-power-off fa"></i></a>
+	{% endif %}
+		</span>
+		<a href="{{ add }}" data-toggle="tooltip" title="{{ button_add }}" class="btn btn-primary"><i class="fa fa-plus"></i></a> <a href="{{ repair }}" data-toggle="tooltip" title="{{ button_rebuild }}" class="btn btn-default"><i class="fa fa-refresh"></i></a>
+		<button type="button" id="button-delete" form="form-category" formaction="{{ delete }}" data-toggle="tooltip" title="{{ button_delete }}" class="btn btn-danger"><i class="fa fa-trash-o"></i></button>
+      </div>
+      <h1>Category Manager 1.35</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if error_warning %}
+    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    {% if success %}
+    <div class="alert alert-success"><i class="fa fa-check-circle"></i> {{ success }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+{% if config and (config.warning is not defined)%}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-list"></i> {{ text_list }}</h3>
+      </div>
+      <div class="panel-body">
+
+        <div class="well">
+          <div class="row">
+            <div class="col-sm-3">
+				<div class="form-group">
+				<label class="control-label" for="input-id">ID</label>
+				<input type="text" name="filter_id" value="{{ filter_id }}" placeholder="ID" id="input-id" class="form-control" />
+				</div>
+			</div>
+			<div class="col-sm-3">
+			<div class="form-group">
+				<label class="control-label" for="input-image">{{ entry_img }}</label>
+				<select name="filter_image" id="input-image" class="form-control">
+				<option value="*"></option>
+				{% if filter_image == 1 %}
+				<option value="1" selected="selected">{{ text_yes }}</option>
+				{% else %}
+				<option value="1">{{ text_yes }}</option>
+				{% endif %}
+				{% if filter_image == 2 %}
+				<option value="2" selected="selected">{{ text_no }}</option>
+				{% else %}
+				<option value="2">{{ text_no }}</option>
+				{% endif %}
+				</select>
+			</div>
+            </div>
+			<div class="col-sm-3">
+			<div class="form-group">
+				<label class="control-label" for="input-top">{{ entry_top }}</label>
+				<select name="filter_top" id="input-top" class="form-control">
+				<option value="*"></option>
+				{% if filter_top == 1 %}
+				<option value="1" selected="selected">{{ text_yes }}</option>
+				{% else %}
+				<option value="1">{{ text_yes }}</option>
+				{% endif %}
+				{% if filter_top == 2 %}
+				<option value="2" selected="selected">{{ text_no }}</option>
+				{% else %}
+				<option value="2">{{ text_no }}</option>
+				{% endif %}
+				</select>
+			</div>
+			</div>
+			<div class="col-sm-3">
+			<div class="form-group">
+				<label class="control-label" for="input-status">{{ entry_status }}</label>
+				<select name="filter_status" id="input-status" class="form-control">
+				<option value="*"></option>
+				{% if filter_status == 1 %}
+				<option value="1" selected="selected">{{ text_enabled }}</option>
+				{% else %}
+				<option value="1">{{ text_enabled }}</option>
+				{% endif %}
+				{% if filter_status == 2 %}
+				<option value="2" selected="selected">{{ text_disabled }}</option>
+				{% else %}
+				<option value="2">{{ text_disabled }}</option>
+				{% endif %}
+				</select>
+			</div>
+			</div>
+			<div class="col-sm-3">
+			<div class="form-group">
+				<label class="control-label" for="input-cat">{{ entry_name }}</label>
+				<input type="text" name="filter_cat" value="{{ filter_cat }}" placeholder="{{ entry_name }}" id="input-cat" class="form-control" />
+			</div>
+			</div>
+			<div class="col-sm-3">
+			<div class="form-group">
+				<label class="control-label" for="input-subcat">{{ entry_subcat }}</label>
+				<select name="filter_subcat" id="input-subcat" class="form-control">
+				<option value="*"></option>
+				{% for cat in subcat %}
+				{% if cat.category_id == filter_subcat %}
+				<option value="{{ cat.category_id }}" selected="selected">{{ cat.name }}</option>
+				{% else %}
+				<option value="{{ cat.category_id }}">{{ cat.name }}</option>
+				{% endif %}
+				{% endfor %}
+				</select>
+			</div>
+			</div>
+			<div class="col-sm-3">
+			<div class="form-group">
+				<label class="control-label" for="input-store">{{ entry_store }}</label>
+				<select name="filter_store" id="input-store" class="form-control">
+				<option value="*"></option>
+
+				{% if filter_store == '**' %}
+				<option value="**" selected="selected">{{ text_undefined }}</option>
+				{% else %}
+				<option value="**">{{ text_undefined }}</option>
+				{% endif %}
+
+				{% if filter_store == '0' %}
+				<option value="0" selected="selected">{{ text_default }}</option>
+				{% else %}
+				<option value="0">{{ text_default }}</option>
+				{% endif %}
+
+				{% for store in stores %}
+				{% if store.store_id == filter_store %}
+				<option value="{{ store.store_id }}" selected="selected">{{ store.name }}</option>
+				{% else %}
+				<option value="{{ store.store_id }}">{{ store.name }}</option>
+				{% endif %}
+				{% endfor %}
+				</select>
+			</div>
+			</div>
+			<div class="col-sm-3">
+			<div class="form-group">
+				<label class="control-label" for="input-seo">{{ entry_keyword }}</label>
+				<select name="filter_seo" id="input-seo" class="form-control">
+				<option value="*"></option>
+				{% if filter_seo == 1 %}
+				<option value="1" selected="selected">{{ text_yes }}</option>
+				{% else %}
+				<option value="1">{{ text_yes }}</option>
+				{% endif %}
+				{% if filter_seo == 2 %}
+				<option value="2" selected="selected">{{ text_no }}</option>
+				{% else %}
+				<option value="2">{{ text_no }}</option>
+				{% endif %}
+				</select>
+			</div>
+			</div>
+			<div class="col-sm-3">
+			<div class="form-group">
+				<label class="control-label" for="input-date-added">{{ text_date_add }}</label>
+				<div class="input-group">
+					<span class="input-group-addon">{{ text_date_beg }}</span>
+					<input type="text" name="filter_dad" class="form-control date" data-date-format="YYYY-MM-DD" id="input-date-added" value="{{ filter_dad }}">
+					<span class="input-group-addon">{{ text_date_end }}</span>
+					<input type="text" name="filter_dade" class="form-control date" data-date-format="YYYY-MM-DD" id="input-date-added-end" value="{{ filter_dade }}">
+				</div>
+			</div>
+			</div>
+
+			<div class="col-sm-3">
+			<div class="form-group">
+				<label class="control-label" for="input-date-modified">{{ text_date_mod }}</label>
+				<div class="input-group">
+					<span class="input-group-addon">{{ text_date_beg }}</span>
+					<input type="text" name="filter_dam" class="form-control date" data-date-format="YYYY-MM-DD" id="input-date-modified" value="{{ filter_dam }}">
+					<span class="input-group-addon">{{ text_date_end }}</span>
+					<input type="text" name="filter_dame" class="form-control date" data-date-format="YYYY-MM-DD" id="input-date-modified-end" value="{{ filter_dame }}">
+				</div>
+			</div>
+			</div>
+			<div class="col-sm-3">
+			<div class="form-group">
+				<label class="control-label" for="input-lang">{{ txt_lang }}</label>
+				<select name="filter_lang" id="input-lang" class="form-control">
+				<option value="*"></option>
+				{% for lang in languages %}
+				{% if lang.language_id == filter_lang %}
+				<option value="{{ lang.language_id }}" selected="selected">{{ lang.name }}</option>
+				{% else %}
+				<option value="{{ lang.language_id }}">{{ lang.name }}</option>
+				{% endif %}
+				{% endfor %}
+				</select>
+			</div>
+			</div>
+			<div class="col-sm-3">
+			<div class="form-group">
+				<label class="control-label" for="input-product">{{ txt_product }}</label>
+				<select name="filter_product" id="input-product" class="form-control">
+				<option value="*"></option>
+				{% if filter_product == 1 %}
+				<option value="1" selected="selected">{{ text_yes }}</option>
+				{% else %}
+				<option value="1">{{ text_yes }}</option>
+				{% endif %}
+				{% if filter_product == 2 %}
+				<option value="2" selected="selected">{{ text_no }}</option>
+				{% else %}
+				<option value="2">{{ text_no }}</option>
+				{% endif %}
+				</select>
+			</div>
+			</div>
+			<div class="col-sm-3">
+			<div class="form-group">
+				<label class="control-label" for="input-child">{{ txt_subcat }}</label>
+				<select name="filter_child" id="input-child" class="form-control">
+				<option value="*"></option>
+				{% if filter_child == 1 %}
+				<option value="1" selected="selected">{{ text_yes }}</option>
+				{% else %}
+				<option value="1">{{ text_yes }}</option>
+				{% endif %}
+				{% if filter_child == 2 %}
+				<option value="2" selected="selected">{{ text_no }}</option>
+				{% else %}
+				<option value="2">{{ text_no }}</option>
+				{% endif %}
+				</select>
+			</div>
+			</div>
+			{% if noindex %}
+			<div class="col-sm-3">
+			<div class="form-group">
+				<label class="control-label" for="input-noindex">{{ entry_noindex }}</label>
+				<select name="filter_noindex" id="input-noindex" class="form-control">
+				<option value="*"></option>
+				{% if filter_noindex == 1 %}
+				<option value="1" selected="selected">{{ text_enabled }}</option>
+				{% else %}
+				<option value="1">{{ text_enabled }}</option>
+				{% endif %}
+				{% if filter_noindex == 2 %}
+				<option value="2" selected="selected">{{ text_disabled }}</option>
+				{% else %}
+				<option value="2">{{ text_disabled }}</option>
+				{% endif %}
+				</select>
+			</div>
+			</div>
+			{% endif %}
+			<div class="col-sm-3">
+			<div class="form-group">
+				<div class="pull-right">
+					<button type="button" id="button-clear" class="btn btn-info"><i class="fa fa-eraser"></i> {{ txt_clear }}</button>
+					<button type="button" id="button-filter" class="btn btn-primary"><i class="fa fa-search"></i>  {{ txt_filter }}</button>
+				</div>
+			</div>
+			</div>
+
+          </div>
+        </div>
+		<div class="row" style="padding-bottom:10px;">
+			<div class="col-sm-6 text-left">{{ pagination }}</div>
+			<div class="col-sm-6 text-right">{{ results }}</div>
+		</div>
+
+		<form action="{{ delete }}" method="post" enctype="multipart/form-data" id="form-category">
+		<div class="table-responsive">
+			<table class="table table-bordered table-hover">
+			<thead>
+				<tr>
+				<td style="width: 1px;" class="text-center"><input type="checkbox" name="allsel" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" /></td>
+
+			<td class="text-left hide_id">
+				{% if sort == 'category_id' %}
+				<a href="{{ sort_id }}" class="{{ order|lower }}">ID</a>
+				{% else %}
+				<a href="{{ sort_id }}">ID</a>
+				{% endif %}
+			</td>
+			<td class="text-center hide_image">{{ entry_img }}</td>
+			<td class="text-left hide_name">
+				{% if sort == 'name' %}
+					<a href="{{ sort_name }}" class="{{ order|lower }}">{{ column_name }}</a>
+					{% else %}
+					<a href="{{ sort_name }}">{{ column_name }}</a>
+				{% endif %}
+			</td>
+				<td class="text-left hide_seourl" style="min-width: 200px;">{{ entry_keyword }}
+				{% if hideck %}
+					<button type="button" id="togglck" data-toggle="tooltip" title="{{ showhide }}" class="btn btn-xs btn-primary"><i class="fa fa-caret-down"></i></button>
+				{% endif %}
+				</td>
+				<td class="text-left hide_store" style="min-width: 150px;">{{ entry_store }}
+				{% if hidecs %}
+					<button type="button" id="togglcs" data-toggle="tooltip" title="{{ showhide }}" class="btn btn-xs btn-primary"><i class="fa fa-caret-down"></i></button>
+				{% endif %}
+				</td>
+			<td class="left hide_date_added">
+				{% if sort == 'date_added' %}
+					<a href="{{ sort_dadd }}" class="{{ order|lower }}">{{ text_date_add }}</a>
+					{% else %}
+					<a href="{{ sort_dadd }}">{{ text_date_add }}</a>
+				{% endif %}
+			</td>
+			<td class="left hide_date_modified">
+				{% if sort == 'date_modified' %}
+					<a href="{{ sort_dmod }}" class="{{ order|lower }}">{{ text_date_mod }}</a>
+					{% else %}
+					<a href="{{ sort_dmod }}">{{ text_date_mod }}</a>
+				{% endif %}
+			</td>
+			<td class="text-center hide_product"><span data-toggle="tooltip" title="{{ help_product }}">{{ txt_product }}</td>
+			<td class="text-right hide_order">
+				{% if sort == 'sort_order' %}
+					<a href="{{ sort_sort_order }}" class="{{ order|lower }}">{{ column_sort_order }}</a>
+					{% else %}
+					<a href="{{ sort_sort_order }}">{{ column_sort_order }}</a>
+				{% endif %}
+			</td>
+			{% if noindex %}
+			<td class="text-left hide_noindex">{{ entry_noindex }}</td>
+			{% endif %}
+			<td class="text-left hide_top">{{ entry_top }}</td>
+			<td class="text-left hide_status">{{ entry_status }}</td>
+			<td style="width: 110px;" class="text-right">{{ column_action }}</td>
+				</tr>
+			</thead>
+			<tbody>
+				{% if categories %}
+				{% for category in categories %}
+			<tr>
+				<td class="text-center">
+					{% if category.category_id in selected %}
+					<input type="checkbox" name="selected[]" value="{{ category.category_id }}" checked="checked" />
+					{% else %}
+					<input type="checkbox" name="selected[]" value="{{ category.category_id }}" />
+					{% endif %}
+				</td>
+
+				<td class="text-left hide_id">{{ category.category_id }}</td>
+				<td class="text-center hide_image"><a href="" id="thumb-image{{ category.category_id }}" data-toggle="imagebm">
+					<img src="{{ category.image }}" id="{{ category.category_id }}" alt="{{ category.name }}" class="img-thumbnail" /></a>
+					<input type="hidden" name="image{{ category.category_id }}" value="" id="input-image{{ category.category_id }}" />
+				</td>
+
+				<td class="text-left hide_name">				
+					{{ category.cpname }}<a href="javascript:void(0);" data-toggle="name" >{{ category.clname }}</a>
+					<input type="hidden" name="name" id="{{ category.category_id }}" value="{{ category.clname }}" />
+				</td>
+
+				<td class="text-left hide_seourl">
+
+				{% if hideck %}
+					<span class="btn btn-info ckbtn" data-toggle="collapse" data-target="#hide-ck{{ category.category_id }}">{{ showhide }}</span>
+					<div id="hide-ck{{ category.category_id }}" class="collapse">
+				{% endif %}
+
+				{% for store in stor %}
+					<div class="storename">{{ store.name }}</div>
+					{% for language in languages %}
+{% if category.keyword[store.store_id][language.language_id] !='' %}
+<div class="key">
+					<img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" />
+					<a href="javascript:void(0);" data-toggle="name" >{{ category.keyword[store.store_id][language.language_id] }}</a>
+					<input type="hidden" name="keyword" data-lang="{{ language.language_id }}" data-store="{{ store.store_id }}" id="{{ category.category_id }}" value="{{ category.keyword[store.store_id][language.language_id] }}" />
+					<br>
+</div>
+{% else %}
+<div class="key">
+					<img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" />
+					<a href="javascript:void(0);" data-toggle="name" ><i class="fa fa-pencil fa-lg bmgray"></i></a>
+					<input type="hidden" name="keyword" data-lang="{{ language.language_id }}" data-store="{{ store.store_id }}" id="{{ category.category_id }}" value="" />
+					<br>
+</div>
+{% endif %}
+
+					{% endfor %}
+				{% endfor %}
+
+				{% if hideck %}
+					</div>
+				{% endif %}
+				</td>
+				<td class="text-left hide_store">
+				{% if hidecs %}
+					<span class="btn btn-info ckbtn" data-toggle="collapse" data-target="#hide-cs{{ category.category_id }}">{{ showhide }}</span>
+					<div id="hide-cs{{ category.category_id }}" class="collapse">
+				{% endif %}
+
+<div class="key">
+				{% if category.stores is empty %}
+					<a href="javascript:void(0);" data-toggle="name" ><i class="fa fa-pencil fa-lg bmgray"></i></a>
+					<input type="hidden" name="store" id="{{ category.category_id }}" value="" />
+				{% else %}
+					{% if 0 in category.stores %}
+					<i style="color:#5BC0DE" class="fa fa-home fa-lg"></i> <a href="javascript:void(0);" data-toggle="name" >{{ text_default }}</a>
+						<input type="hidden" name="store" id="{{ category.category_id }}" value="0" />
+					</br>
+					{% endif %}
+					{% for store in stores %}
+					{% if store.store_id in category.stores %}
+					<i style="color:#5BC0DE" class="fa fa-home fa-lg"></i> <a href="javascript:void(0);" data-toggle="name" >{{ store.name }}</a>
+						<input type="hidden" name="store" id="{{ category.category_id }}" value="{{ store.store_id }}" />
+					</br>
+					{% endif %}
+					{% endfor %}
+				{% endif %}
+</div>
+
+				{% if hidecs %}
+					</div>
+				{% endif %}
+				</td>
+
+				<td class="left hide_date_added">{{ category.date_add }}</td>
+				<td class="left hide_date_modified">{{ category.date_mod }}</td>
+				<td class="text-right hide_product">
+					{% if category.products > 0 %}
+					{{ category.products }}
+					{% else %}
+					<span class="label label-warning" style="font-size: 90%;">{{ category.products }}</span>
+					{% endif %}
+				</td>
+				<td class="text-right hide_order">
+					<a href="javascript:void(0);" data-toggle="name" >{{ category.sort_order }}</a>
+					<input type="hidden" name="sort_order" id="{{ category.category_id }}" value="{{ category.sort_order }}" />
+				</td>
+{% if noindex %}
+				<td class="text-left hide_noindex">
+					<a href="" data-toggle="noindex">
+					{% if category.noindex > 0 %}
+					<span class="btn btn-success btn-xs">{{ text_enabled }}</span>
+					{% else %}
+					<span class="btn btn-warning btn-xs">{{ text_disabled }}</span>
+					{% endif %}
+					</a>
+					<input type="hidden" name="noindex" id="{{ category.category_id }}" value="{{ category.noindex }}" />
+				</td>
+{% endif %}
+				<td class="text-left hide_top">
+					<a href="" data-toggle="top">
+					{% if category.top > 0 %}
+					<span class="btn btn-info btn-xs">{{ text_yes }}</span>
+					{% else %}
+					<span class="btn btn-default btn-xs">{{ text_no }}</span>
+					{% endif %}
+					</a>
+					<input type="hidden" name="top" id="{{ category.category_id }}" value="{{ category.top }}" />
+				</td>
+				<td class="text-left hide_status">
+					<a href="" data-toggle="sta">
+					{% if category.status > 0 %}
+					<span class="btn btn-success btn-xs">{{ text_enabled }}</span>
+					{% else %}
+					<span class="btn btn-warning btn-xs">{{ text_disabled }}</span>
+					{% endif %}
+					</a>
+					<input type="hidden" name="sta" id="{{ category.category_id }}" value="{{ category.status }}" />
+				</td>
+				<td class="text-right">
+				<div class="adw-action">
+					<a href="{{ category.copy }}" data-toggle="tooltip" title="{{ txt_copy }}" class="btn btn-success btn-adw-sm"><i class="fa fa-copy"></i></a>
+					<a href="{{ category.copycat }}" data-toggle="tooltip" title="{{ txt_copycat }}" class="btn btn-warning btn-adw-sm"><i class="fa fa-copy"></i></a>
+					<a href="{{ category.view }}" target="_blank" data-toggle="tooltip" title="{{ button_view }}" class="btn btn-info btn-adw-sm"><i class="fa fa-eye"></i></a>
+					<a href="{{ category.edit }}" data-toggle="tooltip" title="{{ button_edit }}" class="btn btn-primary btn-adw-sm"><i class="fa fa-pencil"></i></a>
+				</div>
+				</td>
+			</tr>
+				{% endfor %}
+				{% else %}
+				<tr>
+					<td class="text-center" colspan="{{ colspan }}">{{ text_no_results }}</td>
+				</tr>
+				{% endif %}
+			</tbody>
+			</table>
+		</div>
+		</form>
+		<div class="row">
+			<div class="col-sm-6 text-left">{{ pagination }}</div>
+			<div class="col-sm-6 text-right">{{ results }}</div>
+		</div>
+      </div>
+	</div>
+	{% endif %}
+  </div>
+<script src="view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+<link href="view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.css" type="text/css" rel="stylesheet" media="screen" />
+<script type="text/javascript"><!--
+$(document).ready(function(){
+var catcol = '{{ cat_col }}';
+	$('.well').find('.form-group').parent().each(function () {
+		$(this).removeClass();
+		$(this).addClass('col-sm-'+ catcol +' catcol');
+	});
+
+{% for key, col in viewcols %}
+var localValue = localStorage.getItem('catmanview_{{ key }}');
+if (localValue =='1') {
+	$("#catmanview_{{ key }}").attr('checked',true);
+	$('.hide_{{ key }}').show();
+}
+if (localValue =='0') {
+	$("#catmanview_{{ key }}").attr('checked',false);
+	$('.hide_{{ key }}').hide();
+}
+if (localValue !='1' && localValue !='0') {
+	localStorage.setItem('catmanview_{{ key }}', '1');
+	$("#catmanview_{{ key }}").attr('checked',true);
+	$('.hide_{{ key }}').show();
+}
+{% endfor %}
+	showhide();
+});
+
+function showhide() {
+var localValue = localStorage.getItem('catman_hideck');
+	$('[id^="hide-ck"]').each(function () {
+		if (localValue =='1') {
+			$(this).removeClass();
+			$(this).removeAttr('style');
+			$(this).addClass('collapse in');
+		} else {
+			$(this).removeClass();
+			$(this).addClass('collapse');
+		}
+	});
+var localValue = localStorage.getItem('catman_hidecs');
+	$('[id^="hide-cs"]').each(function () {
+		if (localValue =='1') {
+			$(this).removeClass();
+			$(this).removeAttr('style');
+			$(this).addClass('collapse in');
+		} else {
+			$(this).removeClass();
+			$(this).addClass('collapse');
+		}
+	});
+}
+
+$('#togglck').on('click', function() {
+clearx();
+var localValue = localStorage.getItem('catman_hideck');
+	$('[id^="hide-ck"]').each(function () {
+		if (localValue =='1') {
+			$(this).removeClass();
+			$(this).addClass('collapse');
+			localStorage.setItem('catman_hideck', '0');
+		} else {
+			$(this).removeClass();
+			$(this).removeAttr('style');
+			$(this).addClass('collapse in');
+			localStorage.setItem('catman_hideck', '1');
+		}
+	});
+});
+
+$('#togglcs').on('click', function(e) {
+clearx();
+var localValue = localStorage.getItem('catman_hidecs');
+	$('[id^="hide-cs"]').each(function () {
+		if (localValue =='1') {
+			$(this).removeClass();
+			$(this).addClass('collapse');
+			localStorage.setItem('catman_hidecs', '0');
+		} else {
+			$(this).removeClass();
+			$(this).removeAttr('style');
+			$(this).addClass('collapse in');
+			localStorage.setItem('catman_hidecs', '1');
+		}
+	});
+});
+
+$('.catmanview').on('click', function(e) {
+	e.stopPropagation();
+	clearx();
+});
+
+{% for key, col in viewcols %}
+$("input#catmanview_{{ key }}").change(function(){
+	if (this.checked==true) {
+		$('.hide_{{ key }}').show();
+		localStorage.setItem('catmanview_{{ key }}', '1');
+	} else {
+		$('.hide_{{ key }}').hide();
+		localStorage.setItem('catmanview_{{ key }}', '0');
+	}
+	return;
+});
+{% endfor %}
+
+function clearx() {
+	$('.popover').remove();
+	$('.tooltip').remove();
+	$('a[data-toggle=\'imagebm\'],a[data-toggle=\'name\'],a[data-toggle=\'top\'],a[data-toggle=\'sta\'],a[data-toggle=\'noindex\']').popover('destroy');
+}
+
+$('#button-delete').on('click', function(e) {
+	$('#form-category').attr('action', this.getAttribute('formAction'));
+		if (!$('#dataConfirmModald').length) {
+			$('body').append('<div id="dataConfirmModald" class="modal" role="dialog" aria-labelledby="dataConfirmLabel" aria-hidden="true"><div class="modal-dialog"><div class="modal-content"><div class="modal-body"></div><div class="modal-footer"><a class="btn btn-danger" id="dataConfirmOKd">{{ text_yes }}</a><button class="btn btn-default" data-dismiss="modal" aria-hidden="true">{{ text_no }}</button></div></div></div></div>');
+		}
+		$('#dataConfirmModald').find('.modal-body').text('{{ button_delete_cat }}');
+		$('#dataConfirmOKd').on('click', function(e) {
+			$('#form-category').attr('target', '_self').submit();
+		});
+		$('#dataConfirmModald').modal({show:true});
+});
+
+$('input[name^=\'selected\'], input[name=\'allsel\']').on('change', function() {
+	$('#enable_cat, #disable_cat, #button-delete').prop('disabled', true);
+	var selected = $('input[name^=\'selected\']:checked');
+	if (selected.length) {
+		$('#enable_cat, #disable_cat, #button-delete').prop('disabled', false);
+	}
+});
+
+$('#enable_cat, #disable_cat, #button-delete').prop('disabled', true);
+$('input[name^=\'selected\']:first').trigger('change');
+
+$(document).ready(function() {
+	$('a[data-confirm]').click(function(ev) {
+	$('.popover').remove();
+	$('.tooltip').remove();
+		var href = $(this).attr('href');
+		if (!$('#dataConfirmModal').length) {
+			$('body').append('<div id="dataConfirmModal" class="modal" role="dialog" aria-labelledby="dataConfirmLabel" aria-hidden="true"><div class="modal-dialog"><div class="modal-content"><div class="modal-body"></div><div class="modal-footer"><a class="btn btn-danger" id="dataConfirmOK">{{ text_yes }}</a><button class="btn btn-default" data-dismiss="modal" aria-hidden="true">{{ text_no }}</button></div></div></div></div>');
+		} 
+		$('#dataConfirmModal').find('.modal-body').text($(this).attr('data-confirm')+' ?');
+		$('#dataConfirmOK').attr('href', href);
+		$('#dataConfirmModal').modal({show:true});
+		return false;
+	});
+});
+
+function getshops(shops) {
+cont  = '<div id="bmstores">{{ entry_store }} <cnt class="bmstores_cnt"><cnt></div>';
+cont += '<div class="bmstore">';
+cont += '	<div class="checkbox">';
+if (shops.indexOf('0') != -1) {
+cont += '			<input class="custom-checkbox" id="store_0" type="checkbox" name="stores" value="0" checked="checked" /><label for="store_0"> {{ text_default }}</label>';
+} else {
+cont += '			<input class="custom-checkbox" id="store_0" type="checkbox" name="stores" value="0" /><label for="store_0"> {{ text_default }}</label>';
+}
+cont += '	</div>';
+
+var stor = '';
+	{% for store in stores %}
+	stor = '{{ store.store_id }}';
+cont += '	<div class="checkbox">';
+	if (shops.indexOf(stor) != -1) {
+cont += '			<input type="checkbox" class="custom-checkbox" id="store_{{ store.store_id }}" name="stores" value="{{ store.store_id }}" checked="checked" /><label for="store_{{ store.store_id }}"> {{ store.name|e("js") }}</label>';
+	} else {
+cont += '			<input type="checkbox" class="custom-checkbox" id="store_{{ store.store_id }}" name="stores" value="{{ store.store_id }}" /><label for="store_{{ store.store_id }}"> {{ store.name|e("js") }}</label>';
+	}
+cont += '	</div>';
+	{% endfor %}
+cont += '</div>';
+cont += '<div style="margin:5px 0"><a href="javascript:void(0);" onclick="$(this).parent().parent().find(\':checkbox\').prop(\'checked\', true);adw_qss(); return false;">{{ text_select_all }}</a> / <a href="javascript:void(0);" onclick="$(this).parent().parent().find(\':checkbox\').prop(\'checked\', false);adw_qss(); return false;">{{ text_unselect_all }}</a></div>';
+cont +='<div class="row input-group input-sm" id="forname"><span class="input-group-btn"><button id="button-stores" class="btn btn-primary btn-sm" type="button"> <i class="fa fa-check"></i></button></span><span class="input-group-btn"><button id="button-scancel" type="button" class="btn btn-default btn-sm"><i class="fa fa-times"></i></button></span></div>';
+return cont;
+}
+
+function adw_qss() {
+	var adwstore = 'bmstores';
+	var inputs = $('[name="stores"]');
+	var cnt = che = 0;
+	inputs.each(function(idx) {
+		if ($(this).prop('checked') == true) {
+			che += 1;
+		}
+		cnt = idx+1;
+	});
+	$('.'+ adwstore +'_cnt').remove();
+	$('#'+ adwstore).append(' <cnt class="'+ adwstore +'_cnt"> ' + che + ' / ' + cnt + '</cnt>');
+}
+
+	$(document).on('click', 'a[data-toggle=\'name\']', function(e) {
+		var $element = $(this);
+		var $popover = $element.data('bs.popover');
+		var $bmtext = $element.parent().find('input').val();
+		var bmtexe = $bmtext.replace(/"/g, '&quot;');
+		var mid = $element.parent().find('input').attr('id');
+		var bmtype = $element.parent().find('input').attr('name');
+
+		if (bmtype == 'keyword') {
+			var klang = $element.parent().find('input').data('lang');
+			var kstor = $element.parent().find('input').data('store');
+			var seo = '&store=' + kstor + '&lang=' + klang;
+		} else {
+			var seo = '&store=""&lang=""';
+		}
+
+		var shops = [];
+			$('input[name*=\'store\'][id="' + mid + '"]').each(function () {
+					shops.push($(this).val());
+			});
+
+		e.preventDefault();
+		$('.popover').remove();
+		$('a[data-toggle=\'imagebm\'],a[data-toggle=\'name\'],a[data-toggle=\'top\'],a[data-toggle=\'sta\']').popover('destroy');
+
+		if ($popover) {
+			return;
+		}
+
+		$element.popover({
+			html: true,
+			placement: 'bottom',
+			trigger: 'manual',
+			animation: false,
+			content: function() {
+				if (bmtype == 'store') {
+					return getshops(shops);
+				} else {
+				return '<div class="row"><div class="input-group input-sm" id="forname"><input id="ssort" autocomplete="off" type="text" class="form-control input-sm" value="' + bmtexe + '"><span class="input-group-btn"><button id="button-schange" class="btn btn-primary btn-sm" type="button"> <i class="fa fa-check"></i></button></span><span class="input-group-btn"><button id="button-scancel" type="button" class="btn btn-default btn-sm"><i class="fa fa-times"></i></button></span></div></div>';
+				}
+			}
+		});
+
+		$element.popover('show');
+if (bmtype == 'store') {
+	adw_qss();
+$('input[id^="store_"]').on('change', function() {
+	adw_qss();
+});
+}
+		$('#forname .btn').css('outline', 'none')
+
+		if (bmtype != 'store') {
+		var input = document.querySelector("#ssort");
+			input.focus();
+			input.selectionStart= input.value.length;
+		}
+
+		$('#button-stores').on('click', function() {
+			var setstore = [];
+			var nosetstore = [];
+			$('input[name=\'stores\']').each(function () {
+				if (this.checked) {
+					setstore.push($(this).val());
+				} else {
+					nosetstore.push($(this).val());
+				}
+			});
+
+			var text = JSON.parse("[" + setstore + "]");
+				$.ajax({
+				url: 'index.php?route=catalog/category/bmchangedata&user_token=' + getURLVar('user_token') + '&mid=' + mid + '&type=' + bmtype + '&text=' + encodeURIComponent(text) + seo,
+				dataType: 'json',
+
+				success: function(json) {
+				$('#serror').remove();
+				$('.adw-warn').remove();
+
+				if (json['error']) {
+					if (json['error']['warning']) { err = json['error']['warning']; }
+					$('#forname').append('<div id="serror" class="alert alert-danger" style="display: table-caption;">' + err + '</div>');
+				}
+
+				if (json['success']) {
+
+			var tmp = $element.parent().closest("td");
+			tmp.empty();
+
+	var ches ='';
+
+{% if hidecs %}
+	ches += '<span class="btn btn-info ckbtn" data-toggle="collapse" data-target="#hide-cs' + mid + '">{{ showhide }}</span>';
+	ches += '<div id="hide-cs' + mid + '" class="collapse in">';
+{% endif %}
+
+	ches +='<div class="key">';
+	if (setstore.length == 0) {
+		ches +='<a href="javascript:void(0);" data-toggle="name" ><i class="fa fa-pencil fa-lg bmgray"></i></a>';
+		ches +='<input type="hidden" name="store" id="' + mid + '" value="" />';
+	} else {
+	if (setstore.indexOf('0') != -1) {
+		ches += '			<i style="color:#5BC0DE" class="fa fa-home fa-lg"></i> <a href="javascript:void(0);" data-toggle="name" >{{ text_default }}</a>';
+		ches += '			<input type="hidden" name="store" id="' + mid + '" value="0" />';
+		ches += '			</br>';
+	}
+	{% for store in stores %}
+	var stor = '{{ store.store_id }}';
+	if (setstore.indexOf(stor) != -1 && stor !='0') {
+		ches += '			<i style="color:#5BC0DE" class="fa fa-home fa-lg"></i> <a href="javascript:void(0);" data-toggle="name" >{{ store.name|e("js") }}</a>';
+		ches += '			<input type="hidden" name="store" id="' + mid + '" value="'+ stor +'" />';
+		ches += '			</br>';
+	}
+	{% endfor %}
+	}
+	ches += '</div>';
+
+{% if hidecs %}
+	ches += '</div>';
+{% endif %}
+
+		tmp.append(ches);
+				$element.popover('destroy');
+				}
+
+				},
+			error: function(xhr, ajaxOptions, thrownError) {
+				alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+			}
+			});
+		});
+
+		$('#button-schange').on('click', function() {
+
+			var text = ($element.parent().find('input').val());
+			text = text.replace(/(^\s+)|(\s{2,})|(\s+$)/g, '');
+
+			$.ajax({
+				url: 'index.php?route=catalog/category/bmchangedata&user_token=' + getURLVar('user_token') + '&mid=' + mid + '&type=' + bmtype + '&text=' + encodeURIComponent(text) + seo,
+				dataType: 'json',
+
+				success: function(json) {
+				$('#serror').remove();
+				$('.adw-warn').remove();
+
+				if (json['error']) {
+					if (json['error']['name']) { err = json['error']['name']; }
+					if (json['error']['keyword']) { err = json['error']['keyword']; }
+					if (json['error']['warning']) { err = json['error']['warning']; }
+					$('#forname').append('<div id="serror" class="alert alert-danger" style="display: table-caption;">' + err + '</div>');
+				}
+
+				if (json['success']) {
+				$element.text('');
+				text !='' ? $element.text(text) : $element.append('<i class="fa fa-pencil fa-lg bmgray"></i>');
+				$element.parent().find('input').val(text);
+
+				$element.popover('destroy');
+
+				}
+
+				},
+			error: function(xhr, ajaxOptions, thrownError) {
+				alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+			}
+			});
+
+		});
+
+		$('#button-scancel').on('click', function() {
+			$element.popover('destroy');
+		});
+	});
+
+	$(document).on('click', 'a[data-toggle=\'imagebm\']', function(e) {
+
+		var $element = $(this);
+		var $popover = $element.data('bs.popover');
+		e.preventDefault();
+
+		$('.popover').remove();
+		$('a[data-toggle=\'imagebm\'],a[data-toggle=\'name\'],a[data-toggle=\'top\'],a[data-toggle=\'sta\']').popover('destroy');
+
+		if ($popover) {
+			return;
+		}
+
+					$.ajax({
+						url: 'index.php?route=catalog/category/bmche&user_token=' + getURLVar('user_token'),
+						dataType: 'json',
+						success: function(json) {
+						if (json['error']) {
+
+						$element.popover({
+							html: true,
+							placement: 'right',
+							trigger: 'manual',
+							animation: false,
+							content: function() {
+							return '<div class="row errima alert alert-danger">' + json['error']['warning'] + '</div>';
+							}
+						});
+							$element.popover('show');
+						} else {
+
+		$element.popover({
+			html: true,
+			placement: 'right',
+			trigger: 'manual',
+			content: function() {
+				return '<div ><div id="forname"><button type="button" id="button-image" class="btn btn-primary"><i class="fa fa-pencil"></i></button> <button type="button" id="button-clr" class="btn btn-danger"><i class="fa fa-trash-o"></i></button></div></div>';
+			}
+		});
+
+		$element.popover('show');
+
+		$('#button-image').on('click', function() {
+			var $button = $(this);
+			var $icon   = $button.find('> i');
+
+			$('#modal-image').remove();
+
+			$.ajax({
+				url: 'index.php?route=common/filemanager&user_token=' + getURLVar('user_token') + '&target=' + $element.parent().find('input').attr('id') + '&thumb=' + $element.attr('id'),
+				dataType: 'html',
+				beforeSend: function() {
+					$button.prop('disabled', true);
+					if ($icon.length) {
+						$icon.attr('class', 'fa fa-circle-o-notch fa-spin');
+					}
+				},
+				complete: function() {
+					$button.prop('disabled', false);
+					if ($icon.length) {
+						$icon.attr('class', 'fa fa-pencil');
+					}
+				},
+				success: function(html) {
+					$('body').append('<div id="modal-image" class="modal">' + html + '</div>');
+					$('#modal-image').modal('show');
+
+									$('#modal-image').delegate('a.thumbnail', 'click', function(e) {
+										e.preventDefault();
+
+					var mid = $element.find('img').attr('id');
+					var ipath = $element.parent().find('input').attr('value');
+
+					$.ajax({
+						url: 'index.php?route=catalog/category/bmchangeimage&user_token=' + getURLVar('user_token') + '&mid=' + mid + '&type=image' + '&ipath=' + ipath,
+						dataType: 'json',
+						success: function(json) {
+						if (json['error']) {
+							$('#forname').before('<div id="serror" class="alert alert-danger" style="display: table-caption;">' + json['error']['warning'] + '</div>');
+						}
+						if (json['success']) {
+						}
+						},
+					error: function(xhr, ajaxOptions, thrownError) {
+					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+					}
+					});
+
+										$('#modal-image').modal('hide');
+									});
+
+				}
+			});
+
+			$element.popover('destroy');
+
+		});
+
+		$('#button-clr').on('click', function() {
+
+			var mid = $element.find('img').attr('id');
+			var ipath = $element.find('img').attr('src');
+
+			$.ajax({
+				url: 'index.php?route=catalog/category/bmdeleteimage&user_token=' + getURLVar('user_token') + '&mid=' + mid + '&type=image',
+				dataType: 'json',
+				success: function(json) {
+
+				if (json['error']) {
+					$('#forname').append('<div id="serror" class="row alert alert-danger">' + json['error']['warning'] + '</div>');
+				}
+
+				if (json['success']) {
+					$element.find('img').attr('src', '{{ placeholder }}');
+					$element.popover('destroy');
+				}
+
+				},
+			error: function(xhr, ajaxOptions, thrownError) {
+				alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+			}
+			});
+
+		});
+
+						}
+
+						},
+					error: function(xhr, ajaxOptions, thrownError) {
+					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+					}
+					});
+
+});
+
+function filter() {
+	url = 'index.php?route=catalog/category&user_token={{ user_token }}';
+	url += '&filter_cm=1';
+
+	var filter_id = $('input[name=\'filter_id\']').val();
+	
+	if (filter_id) {
+		url += '&filter_id=' + encodeURIComponent(filter_id);
+	}
+
+{% if noindex %}
+	var filter_noindex = $('select[name=\'filter_noindex\']').val();
+	
+	if (filter_noindex !='*') {
+		url += '&filter_noindex=' + encodeURIComponent(filter_noindex);
+	}
+{% endif %}
+
+	var filter_product = $('select[name=\'filter_product\']').val();
+
+	if (filter_product !='*') {
+		url += '&filter_product=' + encodeURIComponent(filter_product);
+	}
+
+	var filter_child = $('select[name=\'filter_child\']').val();
+
+	if (filter_child !='*') {
+		url += '&filter_child=' + encodeURIComponent(filter_child);
+	}
+
+	var filter_status = $('select[name=\'filter_status\']').val();
+	
+	if (filter_status !='*') {
+		url += '&filter_status=' + encodeURIComponent(filter_status);
+	}
+
+	var filter_top = $('select[name=\'filter_top\']').val();
+	
+	if (filter_top !='*') {
+		url += '&filter_top=' + encodeURIComponent(filter_top);
+	}
+
+	var filter_cat = $('input[name=\'filter_cat\']').val();
+	
+	if (filter_cat) {
+		url += '&filter_cat=' + encodeURIComponent(filter_cat);
+	}
+
+	var filter_subcat = $('select[name=\'filter_subcat\']').val();
+	
+	if (filter_subcat != '*') {
+		url += '&filter_subcat=' + encodeURIComponent(filter_subcat);
+	}
+
+	var filter_store = $('select[name=\'filter_store\']').val();
+	
+	if (filter_store != '*') {
+		url += '&filter_store=' + encodeURIComponent(filter_store);
+	}
+
+	var filter_seo = $('select[name=\'filter_seo\']').val();
+	
+	if (filter_seo != '*') {
+		url += '&filter_seo=' + encodeURIComponent(filter_seo);
+	}
+
+	var filter_dad = $('input[name=\'filter_dad\']').val();
+	
+	if (filter_dad) {
+		url += '&filter_dad=' + encodeURIComponent(filter_dad);
+	}
+
+	var filter_dade = $('input[name=\'filter_dade\']').val();
+	
+	if (filter_dade) {
+		url += '&filter_dade=' + encodeURIComponent(filter_dade);
+	}
+
+	var filter_dam = $('input[name=\'filter_dam\']').val();
+	
+	if (filter_dam) {
+		url += '&filter_dam=' + encodeURIComponent(filter_dam);
+	}
+
+	var filter_dame = $('input[name=\'filter_dame\']').val();
+	
+	if (filter_dame) {
+		url += '&filter_dame=' + encodeURIComponent(filter_dame);
+	}
+
+	var filter_lang = $('select[name=\'filter_lang\']').val();
+
+	if (filter_lang !='*') {
+		url += '&filter_lang=' + encodeURIComponent(filter_lang);
+	}
+
+	var filter_image = $('select[name=\'filter_image\']').val();
+	
+	if (filter_image !='*') {
+		url += '&filter_image=' + encodeURIComponent(filter_image);
+	}
+
+	location = url;
+}
+
+function clear_filter() {
+	$('select[class=\'form-control\']').val('*');
+	$('input[class=\'form-control\']').val('');
+	$('input[class=\'form-control date\']').val('');
+	filter();
+	return false;
+}
+
+$('input[class=\'form-control\']').keydown(function(e) {
+	if (e.keyCode == 13) {
+		filter();
+	}
+});
+
+$('#button-filter').on('click', function() {
+		filter();
+});
+
+$('#button-clear').on('click', function() {
+		clear_filter();
+});
+
+$(document).on('click', 'a[data-toggle=\'top\'],a[data-toggle=\'sta\'],a[data-toggle=\'noindex\']', function(e) {
+	var sta = $(this);
+	var text = sta.parent().find('input');
+	var span = sta.parent().find('span');
+	var mid = text.attr('id');
+	var type = text.attr('name');
+	var top = (text.val())<1 ? 1 : 0;
+
+	$('.popover').remove();
+	$('a[data-toggle=\'imagebm\'],a[data-toggle=\'name\'],a[data-toggle=\'top\'],a[data-toggle=\'sta\'],a[data-toggle=\'noindex\']').popover('destroy');
+	e.preventDefault();
+
+	$.ajax({
+		url: 'index.php?route=catalog/category/bmchangedata&user_token=' + getURLVar('user_token') + '&mid=' + mid + '&type=' + type + '&text=' + top +'&store=""&lang=""',
+		dataType: 'json',
+		success: function(json) {
+			if (json['error']) {
+				sta.popover({
+					html: true,
+					placement: 'left',
+					trigger: 'manual',
+					animation: false,
+					content: function() {
+					return '<div class="row errima alert alert-danger">' + json['error']['warning'] + '</div>';
+					}
+				});
+				sta.popover('show');
+			}
+
+			if (json['success']) {
+				if (type == 'top') {
+					if (text.val()<1) {
+					span.removeClass('btn-default').addClass('btn-info');
+					span.html('{{ text_yes }}');
+					text.val('1');
+					} else {
+					span.removeClass('btn-info').addClass('btn-default');
+					span.html('{{ text_no }}');
+					text.val('0');
+					}
+				} else {
+					if (text.val()<1) {
+					span.removeClass('btn-warning').addClass('btn-success');
+					span.html('{{ text_enabled }}');
+					text.val('1');
+					} else {
+					span.removeClass('btn-success').addClass('btn-warning');
+					span.html('{{ text_disabled }}');
+					text.val('0');
+					}
+				}
+			}
+
+		},
+		error: function(xhr, ajaxOptions, thrownError) {
+			alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+		}
+	});
+});
+$('.date').datetimepicker({
+	pickTime: false
+});
+//--></script></div>
+{{ footer }}

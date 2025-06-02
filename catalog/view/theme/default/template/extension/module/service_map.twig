@@ -1,0 +1,224 @@
+<div class="" data-module="{{ module_id }}">
+	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAJExPrffdwKpXDIiFI01qty-tvxEZMaVA&libraries=places&callback=initializemap_canvas1555053649997&language={{ lang }}" async defer></script>
+
+  {# <script type="text/javascript" src="//maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAJExPrffdwKpXDIiFI01qty-tvxEZMaVA"></script> #}
+  <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
+  <script type="text/javascript">
+    var map;
+    var markers_array = [];
+    var infowindows_array = [];
+    function initializemap_canvas1555053649997() {
+      var latlng = new google.maps.LatLng(49.0139, 31.2858);
+      var settings = {
+        zoom: 6,
+        center: latlng,
+        panControl: true,
+        panControlOptions: {position: google.maps.ControlPosition.BOTTOM_CENTER},
+        streetViewControl: true,
+        zoomControl: true,
+        zoomControlOptions: {style: google.maps.ZoomControlStyle.DEFAULT, position: google.maps.ControlPosition.TOP_LEFT},
+        mapTypeControl: true,
+        mapTypeControlOptions: {style: google.maps.MapTypeControlStyle.DEFAULT, position: google.maps.ControlPosition.BOTTOM_CENTER},
+        navigationControl: true,
+        navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL},
+        scaleControl: false,
+        scaleControlOptions: {position: google.maps.ControlPosition.BOTTOM_CENTER},
+        mapTypeId: google.maps.MapTypeId.ROADMAP      
+			};
+      map = new google.maps.Map(document.getElementById("map_canvas1555053649997"), settings);
+
+			{% set k = 0 %}
+			{% for location_city in locations %}
+				{% for location in location_city %}
+					var companyImage{{ k }} = new google.maps.MarkerImage('image/data/web-machine/PIN.png',
+            new google.maps.Size(50, 66),
+            new google.maps.Point(0,0),
+            new google.maps.Point(25,66)
+          );
+					var companyPos{{ k }} = new google.maps.LatLng({{ location.geocode }});
+					var companyMarker{{ k }} = new google.maps.Marker({
+            position: companyPos{{ k }},
+            map: map,
+            icon: companyImage{{ k }},
+            title:"{{ location.name }}",
+            zIndex: 121
+          });
+					markers_array.push(companyMarker{{ k }});
+					{% set location_telephone = location['telephone']|split(',') %}
+					{% set location_phone = [] %}
+					{% for key, telephone in location_telephone %} 
+					{% set location_telephone = location_telephone|merge({key : '<p class="phone-map">' ~ telephone ~ '</p>'}) %}
+					{% set location_phone = location_phone|merge(['<p class="phone-map">' ~ telephone ~ '</p>']) %}
+					{% endfor %}
+
+          var contentString{{ k }} = '<div id="window_info"><p class="city-map">{{ location['name'] }}</p><p class="address-map">{{ location['address'] }}</p>{{ location_phone|join }}<p class="info-time">{{ location['open'] }}</p><div class="info-loc"><div class="in store-location__links-box store-location__links-box--last"><a class="store-location__link store-location__link--last" href="https://maps.google.com?saddr=Current+Location&daddr={{ location['geocode'] }}" target="_blank"><span class="fa tag-store icon-pin fa-location-arrow"></span><span>Направления</span></a></div></div></div>';
+          var infowindow{{ k }} = new google.maps.InfoWindow({
+            content: contentString{{ k }},  minWidth: 270, maxWidth: 310, maxHeight: 274
+          });
+					infowindows_array.push(infowindow{{ k }});
+          google.maps.event.addListener(companyMarker{{ k }}, 'click', function() {
+            infowindow{{ k }}.open(map,companyMarker{{ k }});
+            map.setZoom(8);
+          });
+          {% set k = k + 1 %}
+				{% endfor %}
+			{% endfor %}
+      var styles = [
+        { url: 'image/data/web-machine/m1.png', height: 30, width: 30 }
+      ];
+
+      var markerCluster = new MarkerClusterer(map, markers_array, {imagePath: 'image/data/web-machine/m', styles: styles});
+    }
+
+    window.addEventListener('load', initializemap_canvas1555053649997);
+
+    $(document).on('click', '.store-item', function () {
+      var markerId = $(this).data('store-index');
+      var scroll_top = $("#d_contact_maps_map_canvas1555053649997").offset().top - 50;
+      var selectedMarker = markers_array[markerId];
+      var infowindow = infowindows_array[markerId];
+      map.panTo(selectedMarker.getPosition());
+      var listLoc = 'left';
+      setTimeout(function () {
+        $('html, body').animate({ scrollTop: scroll_top}, 10);
+          selectedMarker.setAnimation(google.maps.Animation.BOUNCE);
+          google.maps.event.trigger(selectedMarker, 'click');
+          //selectedMarker.setAnimation(null);
+          selectedMarker.setAnimation(null);
+          //map.createInfowindow(selectedMarker, listLoc, infowindow, storeStart, page);
+      }, 700);
+    });
+
+    {% set k = 0 %}
+		var markerNodes = [];
+    {% for location_city in locations %} 
+      {% for location in location_city %} 
+        {% set location_geocode = location['geocode']|split(',') %} 
+        var oneMarker = { lat: {{ location_geocode[0] }}, lng: {{ location_geocode[1] }} };
+				
+        {# {% set markerNodes = oneMarker|join  %}  #}
+				{# {% set markerNodes = markerNodes|merge([oneMarker]) %} #}
+				markerNodes[{{k}}] = oneMarker;
+
+        {% set k = k + 1 %} 
+      {% endfor %} 
+    {% endfor %}
+
+    Number.prototype.toRad = function () { return this * Math.PI / 180; }
+
+    function checkInRadius(center_lat, center_lng, lat, lng, radius) {
+      var distance = (3959 * Math.acos(Math.cos((center_lat).toRad()) * Math.cos((lat).toRad()) * Math.cos((lng).toRad() - (center_lng).toRad()) + Math.sin( (center_lat).toRad() ) * Math.sin( ( lat ).toRad())));
+
+      if (distance < radius) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    function searchLocations(address) {
+      var geocoder = new google.maps.Geocoder();
+      geocoder.geocode({address: address}, function(results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+          searchLocationsNear(results[0].geometry.location);
+        } else {
+          alert(address + ' not found');
+        }
+      });
+    }
+
+    function searchLocationsNear(center) {
+      var radius = 50;
+      var bounds = new google.maps.LatLngBounds();
+      $('.store-location').fadeOut('fast');
+      for (var i = 0; i < markerNodes.length; i++) {
+        if (checkInRadius(center.lat(), center.lng(), markerNodes[i].lat, markerNodes[i].lng, radius)) {
+          $('.store-location[data-marker="' + i + '"]').fadeIn('fast');
+          var latlng = new google.maps.LatLng(
+              parseFloat(markerNodes[i].lat),
+              parseFloat(markerNodes[i].lng)
+          );
+          bounds.extend(latlng);
+      }
+      }
+      map.fitBounds(bounds);
+    }
+
+    function searchAllLocations() {
+      $('#google-maps-searcher').val('');
+      $('.store-location').fadeIn('fast');
+      var bounds = new google.maps.LatLngBounds();
+      for (var i = 0; i < markerNodes.length; i++) {
+        var latlng = new google.maps.LatLng(
+            parseFloat(markerNodes[i].lat),
+            parseFloat(markerNodes[i].lng)
+        );
+        bounds.extend(latlng);
+      }
+      map.fitBounds(bounds);
+    }
+  </script>
+  <div class="service-map">
+		<div class="row">
+			<div class="hidden-xs hidden-sm col-md-2 col-lg-4">
+				<div class="search-block text-center">
+					<input type="text" id="google-maps-searcher" name="google_maps_searcher" value="" class="form-control" placeholder="{{ text_search_map }}"/>
+				</div>
+				<ul class="list-unstyled service-sity" style="height: 500px; overflow-y: auto;">
+					{% set k = 0 %} 
+					{% for location_city_name,location_city in locations %} 
+						{% for location in location_city %} 
+							{% set location_geocode = location['geocode']|split(',') %} 
+              {% set phone = location['telephone']|split(',') %} 
+								<li class="store-location service-sity-item store-item" data-store-index="{{ k }}" data-marker="{{ k }}">
+									<p class="service-sity__name">{{ location_city_name }}</p>
+									<p class="service-sity__address">{{ location.address }}</p>
+                  <p class="service-sity__address"><span class="binct-phone-number-2">{{ phone[0] }}</span></p>
+								</li>
+							{% set k = k + 1 %} 
+						{% endfor %}
+					{% endfor %}
+				</ul>
+			</div>
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-8">
+				<p class="service-map__title">{{ text_title_map }}</p>
+				<div class="service-map__body">
+					<div id="d_contact_maps_map_canvas1555053649997" class="d-contact-maps" style="margin-top: 0px;width: 100%;">
+						<div id="map_canvas1555053649997" class="map" style="width: 100%; height: 500px"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+  </div>
+
+  <script type="text/javascript">
+    $(document).ready(function() {
+      setTimeout(function() {
+        var bounds = map.getBounds();
+        var southWest = bounds.getSouthWest();
+        var northEast = bounds.getNorthEast();
+
+        var defaultBounds = new google.maps.LatLngBounds(
+          new google.maps.LatLng(southWest.lat(), southWest.lng()),
+          new google.maps.LatLng(northEast.lat(), northEast.lng())
+        );
+        
+
+        var input = document.getElementById('google-maps-searcher');
+        var options = {
+          bounds: defaultBounds,
+          strictBounds: true,
+          types: ['establishment']
+        };
+
+        autocomplete = new google.maps.places.Autocomplete(input, options);
+
+        google.maps.event.addListener(autocomplete, 'place_changed', function() {
+          searchLocations($('#google-maps-searcher').val());
+          return false;
+        });
+      }, 2000);
+    });
+    
+  </script>
+</div>

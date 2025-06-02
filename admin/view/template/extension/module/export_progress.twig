@@ -1,0 +1,12 @@
+<div class="progress" style="margin-top: 15px;">
+    <div
+            id="export-progress"
+            class="progress-bar"
+            role="progressbar"
+            aria-valuenow="{{ value_now|default(0) }}"
+            aria-valuemin="0"
+            aria-valuemax="{{ value_max|default(0) }}"
+            style="width: {{ value_percent|default(0) }}%;">
+        <span class="sr-only">{{ value_percent|default(0) }}% Complete</span>
+    </div>
+</div>

@@ -1,0 +1,71 @@
+<style>
+.odcatwall {
+    background: #fff;
+    overflow: auto;
+    display: block;
+    padding: 10px;
+    text-align: center;
+	font-size:1.4em;
+	border:1px solid #ddd;
+	margin-bottom:20px;
+}
+.odcatwallhref {
+	padding-top:10px;
+}
+.category_wall .slick-list {
+	margin: -40px 0;
+	padding: 40px 0;
+}
+</style>
+<section class="section section-category_wall">
+	<p class="h2">Каталог</p>
+	<div class="category_wall">
+		{% for category in categories %}
+		<div class="category_wall__item category_wall__item--{{ category.category_id }}">
+			<a class="category_wall__link" href="{{ category.href }}">
+				<div class="category_wall__img">
+					<svg class="svg-icon">
+						<use xlink:href="/image/sprite-category.svg#{{ category.category_id }}"></use>
+					</svg>
+				</div>
+				<p class="category_wall__name">{{ category.name }}</p>
+			</a>
+		</div>
+		{% endfor %}
+	</div>
+</section>
+
+<script>
+	jQuery(document).ready(function($){
+		$('.category_wall').slick({
+			slidesToShow: 6,
+			infinite: false,
+			prevArrow: '<a href="#" class="category_wall__btn category_wall__btn--prev slick-prev"><i class="fa fa-angle-left"></i></a>',
+			nextArrow: '<a href="#" class="category_wall__btn category_wall__btn--next slick-next"><i class="fa fa-angle-right"></i></a>',
+			responsive: [
+    	{
+				breakpoint: 1199,
+				settings: {
+					slidesToShow: 5,
+					infinite: false,
+				}
+			},
+			{
+				breakpoint: 991,
+				settings: {
+					slidesToShow: 4,
+					infinite: false,
+				}
+			},
+			{
+				breakpoint: 767,
+				settings: {
+					slidesToShow: 1,
+					variableWidth: true,
+					infinite: false,
+				}
+			}
+		]
+		})
+	});
+</script>

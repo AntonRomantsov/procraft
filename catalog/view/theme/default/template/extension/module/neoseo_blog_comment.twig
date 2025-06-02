@@ -1,0 +1,17 @@
+<div class="catalogSidebarBlock">
+    <a class="sidebarBlockTitle slideupBtn"><i class="icon-big-megaphone"></i><span>{{ heading_title }}</span></a>
+    <div class="sidebarBlockContent slideupCont">
+        <ul class="sidebarNewsList">
+            {% for comment in comments %}
+                <li><a href="{{ comment['href'] }}" class="item">
+                        <div class="item-pic"><img alt="" src="{{ comment['thumb'] }}"></div>
+                        <div class="item-desc">
+                            <div class="item-date">{{ comment['date_modified'] }}</div>
+                            <div class="item-text">{{ comment['description'] }}</div>
+                        </div>
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>

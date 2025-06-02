@@ -1,0 +1,302 @@
+<div id="tab-googlelogin_{{ store.store_id }}">
+        <table class="table">
+            <input type="hidden" name="googlelogin[module_id]" value="{{ (module_id is defined) ? module_id : '' }}" />
+            <tr>
+                <td class="col-xs-3">
+                    <h5><strong>Module name</strong></h5>
+                    <span class="help">{{ (module_id is not defined) ? '<i class="fa fa-info-circle"></i>&nbsp;Write a name in this field, If you want to create a new module' : '' }}</span>
+                </td>
+                <td class="col-xs-9">
+                  <div class="col-xs-4">
+                        <input type="text" name="googlelogin[name]" value="{{ ((googlelogin.name is not empty) ) ? googlelogin.name  : ''  }}" placeholder="Module name" id="input-name" class="form-control" />
+                        {% if (error_name) %}
+                        <div class="text-danger">{{ error_name }}</div>
+                        {% endif %}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-xs-3">
+                    <h5><strong>Selector</strong></h5>
+                    <span class="help"><i class="fa fa-info-circle"></i>&nbsp;Choose selector where you want to load the GoogleLogin button (Optional)</span>
+                </td>
+                <td class="col-xs-9">
+                  <div class="col-xs-4">
+                        <input type="checkbox" name="googlelogin[position_use_selector]" id="buttonPosCheckbox" {{ (googlelogin.position_use_selector is defined) ? 'checked="checked"'  : '' }}  data-textinput="#cssSelectorBox"/>
+                        <label for="buttonPosCheckbox">{{ text_load_in_selector }}</label><input type="text" class="form-control" id="cssSelectorBox" name="googlelogin[position_selector]" value="{{ (googlelogin.position_selector is not empty) ? googlelogin.position_selector : '#content .login-content, #checkout .checkout-content' }}"/>
+                  </div>
+                </td>
+            </tr> 
+            <tr>
+                <td class="col-xs-3">
+                    <h5><strong>{{ entry_status }}</strong></h5>
+                    <span class="help"><i class="fa fa-info-circle"></i>&nbsp;Enable or disable this module</span>
+                </td>
+                <td class="col-xs-9">
+                  <div class="col-xs-4">
+                        <select name="googlelogin[status]" id="input-status" class="form-control">
+                          {% if (googlelogin.status is defined and googlelogin.status is not empty) %}
+                          <option value="1" selected="selected">{{ text_enabled }}</option>
+                          <option value="0">{{ text_disabled }}</option>
+                          {% else %}
+                          <option value="1">{{ text_enabled }}</option>
+                          <option value="0" selected="selected">{{ text_disabled }}</option>
+                          {% endif %}
+                        </select>
+                  </div>
+                </td>
+            </tr> 
+          <tr class="hideableRow">
+                <td class="col-xs-3">
+                  <h5><span class="required">*</span> <strong>{{ entry_redirect }}</strong></h5>
+                    <span class="help"><i class="fa fa-info-circle"></i>&nbsp;Make sure to set this as the Redirect URI in your Google API Project's Access Settings. If the redirect URI does not work, try switching the protocol between <strong>http://</strong> and <strong>https://</strong></span>
+        </td>
+                <td class="col-xs-9">
+                  <div class="col-xs-4">
+                      <strong>{{ entry_callback }}</strong>
+                        <br/><br/><i>The Redirect URI may vary depends on the store you are using. Example: http://yourdomainname.com/index.php?route=extension/account/googlelogin</i>
+                  </div>
+                </td>
+          </tr>
+          <tr class="hideableRow">
+                <td class="col-xs-3">
+                  <h5><strong><span class="required">*</span> {{ entry_api }}</strong></h5>
+                </td>
+                <td class="col-xs-9">
+                    <div class="col-xs-4">
+                    <input type="text" class="form-control" name="googlelogin[APIKey]" value="{{ ((googlelogin.APIKey is not empty) ) ? googlelogin.APIKey  : ''  }}" />
+                    </div>
+                </td>
+          </tr>
+          <tr class="hideableRow">
+                <td class="col-xs-3">
+                  <h5><strong><span class="required">*</span> {{ entry_secret }}</strong></h5>
+                </td>
+                <td class="col-xs-9">
+                    <div class="col-xs-4">
+                   <input type="text" class="form-control" name="googlelogin[APISecret]" value="{{ ((googlelogin.APISecret is not empty) ) ? googlelogin.APISecret  : ''  }}" />
+                    </div>
+                </td>
+          </tr>
+          <tr class="hideableRow">
+                <td class="col-xs-3"><h5><strong>{{ entry_preview }}</strong></h5></td>
+                <td class="col-xs-9">
+                    <div class="col-xs-4">
+                      <div class="buttonPreview">
+                        <div id="googleButtonWrapper">
+                            <div class="googleButton">
+                                <div class="box box-gglconnect">
+                                  <div class="box-heading">{{ (googlelogin['WrapperTitle_' ~ firstLanguageCode] is defined) ? googlelogin['WrapperTitle_'~firstLanguageCode]  : 'Login with Google'  }}</div>
+                                  <div class="box-content">
+                                    <a href="javascript:void(0)" class="{{ (googlelogin.ButtonDesign is not empty ) ? googlelogin.ButtonDesign  : 'gglStandardBtn' }}"><span></span><div class="gglTitle" style="display:inline;">{{ (googlelogin['ButtonName_' ~ firstLanguageCode] is not empty) ? googlelogin['ButtonName_' ~ firstLanguageCode]  : '' }}</div></a>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+                </td>
+          </tr>
+          <tr class="hideableRow">
+                <td class="col-xs-3"><h5><strong><span class="required">*</span> {{ entry_design }}</strong></h5></td>
+                <td class="col-xs-9">
+                    <div class="col-xs-4">
+                        <select name="googlelogin[ButtonDesign]" class="GoogleBtnDesign form-control">
+                            <option value="gglStandardBtn" {{ ((googlelogin.ButtonDesign is not empty and googlelogin.ButtonDesign == 'gglStandardBtn') ) ? 'selected="selected"'  : ''  }}>Standard UI</option>      
+                            <option value="gglBlueStyleBtn" {{ ((googlelogin.ButtonDesign is not empty and googlelogin.ButtonDesign == 'gglBlueStyleBtn') ) ? 'selected="selected"'  : ''  }}>Blue Style UI</option>        
+                            <option value="gglMetroStyleBtn" {{ ((googlelogin.ButtonDesign is not empty and googlelogin.ButtonDesign == 'gglMetroStyleBtn') ) ? 'selected="selected"'  : ''  }}>Metro UI</option>        
+                            <option value="gglRoundedBtn" {{ ((googlelogin.ButtonDesign is not empty and googlelogin.ButtonDesign == 'gglRoundedBtn') ) ? 'selected="selected"'  : ''  }}>Rounded UI</option>
+                            <option value="gglBootstrapBtn" {{ ((googlelogin.ButtonDesign is not empty and googlelogin.ButtonDesign == 'gglBootstrapBtn') ) ? 'selected="selected"'  : ''  }}>Bootstrap UI</option>      
+                            <option value="" {{ ((googlelogin.ButtonDesign is empty or googlelogin.ButtonDesign == '') ) ? 'selected="selected"'  : ''  }}>{{ entry_no_design }}</option>        
+                        </select>
+                    </div>
+                </td>
+          </tr>
+          <tr class="hideableRow">
+                <td class="col-xs-3"><h5><strong><span class="required">*</span> {{ entry_wrap_into_widget }}</strong></h5></td>
+                <td class="col-xs-9">
+                    <div class="col-xs-4">
+                        <select name="googlelogin[WrapIntoWidget]" class="GoogleWrapIntoWidget form-control">
+                            <option value="No" {{ ((googlelogin.WrapIntoWidget is not empty and googlelogin.WrapIntoWidget == 'No') ) ? 'selected="selected"'  : ''  }}>{{ entry_no }}</option>   
+                            <option value="Yes" {{ ((googlelogin.WrapIntoWidget is not empty and googlelogin.WrapIntoWidget == 'Yes') ) ? 'selected="selected"'  : ''  }}>{{ entry_yes }}</option>        
+                        </select>
+                    </div>
+                </td>
+          </tr>
+           <tr class="hideableRow gglWrapperTitle" {{ (googlelogin.WrapIntoWidget is not empty and googlelogin.WrapIntoWidget == 'Yes') ? '' : 'style="display:none"' }}>
+                <td class="col-xs-3"><h5><strong><span class="required">*</span> {{ entry_wrapper_title }}</strong></h5></td>
+                <td class="col-xs-9">
+                    <div class="col-xs-4">
+                        <div class="input-group">
+                            {% for lang in languages %}
+                                <span class="input-group-addon"><img src="{{ lang.flag_url }}" title="{{ lang.name }}" /></span> 
+                                <input type="text" class="form-control" name="googlelogin[WrapperTitle_{{ lang.code }}]" value="{{ (googlelogin['WrapperTitle_' ~ lang.code] is not empty) ? googlelogin['WrapperTitle_' ~ lang.code]  : 'Login'  }}" /><br />
+                            {% endfor %}
+                        </div>
+                    </div>
+                </td>
+          </tr>
+          <tr class="hideableRow">
+                <td class="col-xs-3"><h5><strong><span class="required">*</span> {{ entry_button_name }}</strong></h5></td>
+                <td class="buttonNameTextboxes col-xs-9">
+                    <div class="col-xs-4">
+                        <div class="input-group">
+                            {% for lang in languages %}
+                                <span class="input-group-addon"><img src="{{ lang.flag_url }}" title="{{ lang.name }}" /></span> 
+                                <input type="text" class="form-control" name="googlelogin[ButtonName_{{ lang.code }}]" value="{{ (googlelogin['ButtonName_' ~ lang.code] is not empty) ? googlelogin['ButtonName_' ~ lang.code]  : 'Login with Google'  }}" /><br />
+                            {% endfor %}
+                        </div>
+                    </div>
+                </td>
+          </tr>
+          <tr class="hideableRow">
+                <td class="col-xs-3">
+                  <h5><strong><span class="required">*</span> {{ entry_use_oc_settings }}</strong></h5>
+                    <span class="help"><i class="fa fa-info-circle"></i>&nbsp;Check this box if you wish to use your OpenCart's settings. If you wish to assign your new Google users to a new customer group, uncheck this box.</span>
+                </td>
+                <td class="extraFields col-xs-9">
+                  <div class="col-xs-4">
+                      <input type="checkbox" value="true" class="googleloginUseDefaultCustomerGroups form-control" name="googlelogin[UseDefaultCustomerGroups]"{{ (googlelogin.UseDefaultCustomerGroups is empty ) ? ''  : 'checked="checked"' }} />
+                  </div>
+               </td>
+          </tr>
+          <tr class="hideableRow googleloginCustomerGroupTR">
+                <td class="col-xs-3">
+                  <h5><strong><span class="required">*</span> {{ entry_assign_to_cg }}</strong></h5>
+                    <span class="help"><i class="fa fa-info-circle"></i>&nbsp;The customer group that is applied when the customer logs in for the first time. }}</span>
+                </td>
+                <td class="col-xs-9">
+                  <div class="col-xs-4">
+            {% if (customer_groups is not empty) %}
+                        <select name ="googlelogin[CustomerGroup]" class="googleloginCustomerGroup form-control">
+                            {% for cg in customer_groups %}
+                            <option value="{{ cg.customer_group_id }}"{{ (googlelogin.CustomerGroup is not empty and cg.customer_group_id == googlelogin.CustomerGroup ) ? ' selected="selected"'  : '' }}>{{ cg.name }}</option>
+                            {% endfor %}
+                        </select>
+                        {% endif %}
+                    </div>
+                </td>
+          </tr>
+          <tr class="hideableRow">
+                <td class="col-xs-3">
+          <h5><strong>{{ entry_new_user_details }}</strong></h5>
+                    <span class="help"><i class="fa fa-info-circle"></i>&nbsp;Select the fields that you want your new users to fill in when they first login with Google.</span>
+                </td>
+                <td class="extraFields col-xs-9">
+                  <div class="col-xs-4">
+            {% for detail in more_user_details %}
+                        <div>
+                            <input type="checkbox" id="googlelogin{{ store.store_id }}_{{ detail.name }}" class="googlelogin{{ detail.name }}" name="googlelogin[{{ detail.name }}]"{{ (googlelogin[detail.name] is empty) ? (detail.default_checked ? 'checked="checked"' : '') : 'checked="checked"' }}/><label for="googlelogin{{ store.store_id }}_{{ detail.name }}" style="margin-left:10px;">{{ detail.text }}</label>
+                        </div>
+                        {% endfor %}
+                     </div>
+                </td>
+          </tr>
+          <tr class="hideableRow">
+                <td class="col-xs-3"><h5><strong>{{ entry_custom_css }}</strong></h5></td>
+                <td class="col-xs-9">
+                    <div class="col-xs-4">
+                        <textarea class="form-control" name="googlelogin[CustomCSS]" style="height:70px;">{{ (googlelogin.CustomCSS is not empty) ? googlelogin.CustomCSS : '.googleButton { margin: 0 0 20px 0; }' }}</textarea>
+                    </div>
+                </td>
+          </tr>
+        </table>
+        <script type="text/javascript">
+        var inputEvents = function() {
+            // Preview Logic
+        
+            $('#tab-googlelogin_{{ store.store_id }} .GoogleBtnDesign').change(function() {
+                $('#tab-googlelogin_{{ store.store_id }} .buttonPreview .box-content > a').removeClass().addClass($(this).val());
+            }).trigger('change');
+            
+            $('#tab-googlelogin_{{ store.store_id }} .wrapperTitleTextbox').keyup(function() {
+                $('#tab-googlelogin_{{ store.store_id }} .buttonPreview .box-heading').html($(this).val());
+            }).focus(function() {
+                $(this).trigger('keyup'); 
+            });
+            
+            $('#tab-googlelogin_{{ store.store_id }} .GoogleWrapIntoWidget').change(function() {
+                if ($(this).val() == 'Yes') {
+                    $('#tab-googlelogin_{{ store.store_id }} .buttonPreview').removeClass('noBoxWrapper');
+                } else {
+                    $('#tab-googlelogin_{{ store.store_id }} .buttonPreview').removeClass('noBoxWrapper').addClass('noBoxWrapper');
+                }
+            }).trigger('change');
+            
+            $('#tab-googlelogin_{{ store.store_id }} .buttonNameTextboxes input').keyup(function() {
+                $('#tab-googlelogin_{{ store.store_id }} .buttonPreview div.gglTitle').html($(this).val());
+            }).focus(function() {
+                $(this).trigger('keyup'); 
+            });
+            
+            // END Preview Logic
+            
+            $('#tab-googlelogin_{{ store.store_id }} .GoogleWrapIntoWidget').change(function() {
+                if ($(this).val() == 'Yes') {
+                    $('#tab-googlelogin_{{ store.store_id }} .gglWrapperTitle').show(300);
+                } else {
+                    $('#tab-googlelogin_{{ store.store_id }} .gglWrapperTitle').hide(300);
+                }
+            }).trigger('change');
+            
+            $('#tab-googlelogin_{{ store.store_id }} .googleloginUseDefaultCustomerGroups').change(function() {
+                if($(this).is(':checked')) $('#tab-googlelogin_{{ store.store_id }} .googleloginCustomerGroupTR').hide(300);
+                else $('#tab-googlelogin_{{ store.store_id }} .googleloginCustomerGroupTR').show(300);
+            }).trigger('change');
+            
+            $('#tab-googlelogin_{{ store.store_id }} select[name="googlelogin[Enabled]"]').change(function() {
+                if ($(this).val() == 'Yes') {
+                    $('#tab-googlelogin_{{ store.store_id }} .hideableRow').show(300);
+                    $('#tab-googlelogin_{{ store.store_id }} .GoogleWrapIntoWidget').trigger('change');
+                    $('#tab-googlelogin_{{ store.store_id }} .googleloginUseDefaultCustomerGroups').trigger('change');
+                } else {
+                    $('#tab-googlelogin_{{ store.store_id }} .hideableRow').hide(300);
+                }
+            }).trigger('change');
+            
+            {% if (has_customer_group) %}
+            $('#tab-googlelogin_{{ store.store_id }} .googleloginCustomerGroup').on('change', function() {
+                
+                var customer_group = [];
+                
+                {% for customer_group in customer_groups %}
+                customer_group[{{ customer_group.customer_group_id }}] = [];
+                {% endfor %}
+                
+                if (customer_group[$(this).val()]) {
+                    if (customer_group[$(this).val()].company_id_display == '1') {
+                        $('#tab-googlelogin_{{ store.store_id }} .googleloginExtraCompanyId').prop('checked', true);
+                    } else {
+                        $('#tab-googlelogin_{{ store.store_id }} .googleloginExtraCompanyId').prop('checked', false);
+                    }
+                    
+                    if (customer_group[$(this).val()].tax_id_display == '1') {
+                        $('#tab-googlelogin_{{ store.store_id }} .googleloginExtraTaxId').prop('checked', true);
+                    } else {
+                        $('#tab-googlelogin_{{ store.store_id }} .googleloginExtraTaxId').prop('checked', false);
+                    } 
+                }
+            });
+            {% endif %}
+        }
+
+          if($('select[name="googlelogin[status]"]').val() == '1') {
+            $('.hideableRow').show(200);
+            inputEvents();
+          }
+          else {
+            $('.hideableRow').hide(200);
+          }
+
+          $('select[name="googlelogin[status]"]').on('change', function() {
+            if($(this).val() == '1') {
+             $('.hideableRow').show(200);
+             inputEvents();
+            }
+            else {
+              $('.hideableRow').hide(200);
+            }
+          });
+        </script>
+    </div>
+

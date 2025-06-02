@@ -1,0 +1,40 @@
+{% if (title) %}
+    <h3>{{ title }}</h3>
+{% endif %}
+<div class="">
+    <div id="blog-search" class="input-group">
+        <input type="text" name="blog_search" value="{{ blog_search }}" placeholder="{{ text_keyword }}" class="form-control">
+        <span class="input-group-btn">
+            <button type="button" id="button-search" class="btn btn-default"><i class="fa fa-search"></i></button>
+        </span>
+    </div>
+    <br/>
+</div>
+
+<script type="text/javascript">
+	$('input[name=\'blog_search\']').keydown(function (e) {
+		if (e.keyCode == 13) {
+			$('#button-search').trigger('click');
+		}
+	});
+
+	$('#button-search').bind('click', function () {
+		var language = "";
+		if (window.current_language) {
+			language = window.current_language;
+		}
+
+		url = language + 'index.php?route=blog/neoseo_blog_search';
+		{% if (root_category_id) %}
+		url += '&blog_category_id={{ root_category_id }}';
+		{% endif %}
+
+		var blog_search = $('input[name=\'blog_search\']').val();
+
+		if (blog_search) {
+			url += '&blog_search=' + encodeURIComponent(blog_search);
+			location = url;
+		}
+
+	});
+</script>

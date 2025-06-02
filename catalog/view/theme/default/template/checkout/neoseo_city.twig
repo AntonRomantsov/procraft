@@ -1,0 +1,207 @@
+<!-- country selection - begin -->
+{% if neoseo_checkout_shipping_country_select %}
+
+    <div class="row country field form-group required">
+    <div class="row country field form-group required shipping_hider" style="{% if hide_city_block is defined and hide_city_block %} display:none; {% endif %}">
+        <div class="col-sm-4">
+            <label for="city" class="control-label">{{ text_country }}</label>
+        </div>
+        <div class="col-sm-8">
+            <select name="country_id" id="country_id">
+                {% for country in countries %}
+                    <option value="{{ country['country_id'] }}"
+                        {% if country_id == country['country_id'] %}
+                            selected="selected"
+                        {% endif %} >{{ country['name'] }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    <script type="text/javascript"><!--
+        $('#country_id').on('change', function () {
+            $.ajax({
+                url: 'index.php?route=checkout/neoseo_checkout/country&country_id=' + this.value,
+                dataType: 'json',
+                beforeSend: function () {
+                    $('#country_id').after(' <i class="fa fa-circle-o-notch fa-spin"></i>');
+                },
+                complete: function () {
+                    $('.fa-spin').remove();
+                },
+                success: function (json) {
+
+                    html = '<option value="">{{ text_select }}</option>';
+
+                    if (json['zone'] && json['zone'] != '') {
+                        for (i = 0; i < json['zone'].length; i++) {
+                            html += '<option value="' + json['zone'][i]['zone_id'] + '"';
+
+                            if (json['zone'][i]['zone_id'] == '{{ zone_id }}') {
+                                html += ' selected="selected"';
+                            }
+
+                            html += '>' + json['zone'][i]['name'] + '</option>';
+                        }
+                    } else {
+                        html += '<option value="0" selected="selected">{{ text_none }}</option>';
+                    }
+
+                    $('#zone_id').html(html);
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+                }
+            });
+        });
+
+        $('#country_id').trigger('change');
+        //--></script>
+{% else %}
+
+    <input type="hidden" id="country_id" name="country_id" value="{{ country_id }}"/>
+
+{% endif %}
+
+<!-- country selection - end -->
+
+<!-- zone selection - begin -->
+
+{% if neoseo_checkout_shipping_city_select == "default" %}
+
+    <div class="row zone field form-group required shipping_hider" style="{% if (hide_city_block is defined and hide_city_block) %} display:none; {% endif %}">
+        <div class="col-sm-4">
+            <label for="zone_id" class="control-label">{{ text_region }}</label>
+        </div>
+        <div class="col-sm-8">
+            <select name="zone_id" id="zone_id" class="form-control">
+                {% for zone in zones %}
+                    <option value="{{ zone['zone_id'] }}"
+                        {% if zone_id == zone['zone_id'] %}
+                            selected="selected"
+                        {% endif %} >{{ zone['name'] }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+{% else %}
+
+    <input type="hidden" id="zone_id" name="zone_id" value="{{ zone_id }}"/>
+
+{% endif %}
+
+<!-- zone selection - end -->
+
+<!-- city selection - begin -->
+{% if neoseo_checkout_shipping_city_select == "default" %}
+    <div class="row address field form-group required shipping_hider" style="{% if (hide_city_block is defined and hide_city_block) %} display:none; {% endif %}">
+        <div class="col-sm-4">
+            <label for="city" class="control-label">{{ text_city }}</label>
+        </div>
+        <div class="col-sm-8">
+            <input type="text" id="city" value="{{ city }}" name="city" class="form-control"/>
+        </div>
+    </div>
+
+    <script>
+        var language = "";
+        if (window.current_language) {
+            language = window.current_language;
+        }
+        $('#city').autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: language + "/index.php?route=checkout/neoseo_checkout/autocomplete_city",
+                    dataType: "json",
+                    data: {
+                        country_id: $('#country_id').val(),
+                        zone_id: $('#zone_id option:selected').val(),
+                        name: request,
+                    },
+                    success: function (json) {
+                        response($.map(json, function (item) {
+                            return {
+                                label: item['value'],
+                                value: item['value'],
+                                country_id: item['country_id'],
+                                zone_id: item['zone_id'],
+                                city: item['city'],
+                            }
+                        }));
+                    }
+                });
+            },
+            minLength: 2,
+            select: function (item) {
+                if (item) {
+                    $("#city").val(item.city);
+                    changeCity(item.city, item.zone_id, item.country_id, function () {
+                        reloadCheckout();
+                    });
+                }
+            },
+        });
+    </script>
+
+{% elseif neoseo_checkout_shipping_city_select == "cities" %}
+
+
+    <input type="hidden" id="city" value="{{ city }}" name="city" class="large-field"/>
+
+    <div class="address field shipping_hider" style="{% if (hide_city_block is defined and hide_city_block) %} display:none; {% endif %}">
+        <div class="row field form-group required">
+            <div class="col-sm-4">
+                <label for="cityselect" class="control-label">{{ text_city }}</label>
+            </div>
+            <div class="col-sm-8">
+                <input type="text" id="cityselect" value="{{ city }}" class="form-control"/>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        jQuery.fn.extend({
+            propAttr: $.fn.prop || $.fn.attr
+        });
+        $('#cityselect').autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/index.php?route=checkout/neoseo_checkout/autocomplete",
+                    dataType: "json",
+                    data: {term: request, language_id: {{ language_id }} },
+                    success: function (json) {
+                        response($.map(json, function (item) {
+                            return {
+                                label: item['value'],
+                                value: item['value'],
+                                country_id: item['country_id'],
+                                zone_id: item['zone_id'],
+                                city: item['city']
+                            }
+                        }));
+                    }
+                });
+            },
+            minLength: 2,
+            select: function (item) {
+                if (item) {
+                    $("#zone_id").val(item.zone_id);
+                    $("#country_id").val(item.country_id);
+                    $("#city").val(item.city);
+                    $("#cityselect").val(item.city);
+                    changeCity(item.city, item.zone_id, item.country_id, null, function () {
+                        reloadCheckout();
+                    });
+                }
+            },
+        });
+    </script>
+
+{% else %}
+
+    <input type="hidden" id="city" name="city" value="{{ city }}"/>
+
+{% endif %}

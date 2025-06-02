@@ -1,0 +1,100 @@
+<!-- START FacebookLogin -->
+<style type="text/css">
+    {{ data['FacebookLogin']['CustomCSS'] }}
+</style>
+
+<div class="box" id="facebookLoginBox"></div>
+<script type="text/html" class="facebookLoginHTML">
+    {% if data['FacebookLogin']['WrapIntoWidget'] == 'Yes' %}
+        <div class="box box-fblogin list-group">
+          <a href="javascript:void(0)" class="box-heading list-group-item active">{{ data['FacebookLogin']['WrapperTitle'] }}</a>
+          <div class="box-content list-group-item">
+            <div class="facebookButton"><a href="javascript:void(0)" onclick="initiateFBLogin();" class="facebookLoginAnchor {% if data['FacebookLogin']['ButtonDesign'] %}{{ data['FacebookLogin']['ButtonDesign'] }}{% else %}{{'fbkNoDesign'}}{% endif %}"><span></span>{{ data['FacebookLogin']['ButtonLabel'] }}</a></div>
+          </div>
+        </div>
+    {% else %}
+        <div class="facebookButton"><a href="javascript:void(0)" onclick="initiateFBLogin();" class="facebookLoginAnchor {{ data['FacebookLogin']['ButtonDesign'] }}"><span></span>{{ data['FacebookLogin']['ButtonLabel'] }}</a></div>
+    {% endif %}
+</script>
+
+<script language="javascript" type="text/javascript"> 
+    {% if data['FacebookLogin']['position_use_selector'] %}
+    var posSelector = '{{ data['FacebookLogin']['position_selector'] }} ';
+    var positionFBButton = function() {
+        {% if data['FacebookLogin']['WrapIntoWidget'] == 'Yes' %}
+            var sourceSelector = '.facebookLoginHTML:first';
+        {% else %}
+            var sourceSelector = '.facebookLoginHTML:first .box-content';
+        {% endif %}
+        
+        if (posSelector) {
+            $(posSelector).prepend($('.facebookLoginHTML:first').html());   
+        } else {
+            $('#content').prepend($('.facebookLoginHTML:first').html());    
+        }   
+    }
+    
+    $(document).ready(function() {
+        if ($(posSelector).find('.facebookLoginAnchor').length == 0) {
+            positionFBButton();
+        }
+    });
+    $(document).ajaxComplete(function() {
+        var tries = 0;
+        var tryAppendButton = setInterval(function() {
+            tries++;
+            if ($(posSelector).find('.facebookLoginAnchor').length == 0) {
+                positionFBButton();
+            }
+            if (tries > 20 || $(posSelector).find('.facebookLoginAnchor').length > 0) {
+                clearInterval(tryAppendButton); 
+            }
+        },300);
+    });
+    {% else %}
+    $('#facebookLoginBox').after($('.facebookLoginHTML:first').html());
+    {% endif %}
+    $('#facebookLoginBox').remove();
+</script>
+
+<script>  
+    function checkLoginState() {
+        FB.getLoginStatus(function(response) {
+          statusChangeCallback(response);
+        });
+    }
+
+    function checkFacebookLogin() {
+        FB.getLoginStatus(function(response) {
+          if (response.status === 'connected') {
+            window.location.replace('{{ redirect_url }}');
+          }
+         });
+    }
+
+    function initiateFBLogin() {
+      FB.init({
+        appId      : '{{ data['FacebookLogin']['APIKey'] }}',
+        cookie     : true,  // enable cookies to allow the server to access 
+        // the session
+        xfbml      : true,  // parse social plugins on this page
+        version    : 'v2.10'
+      });
+
+      FB.login(function(response) {
+        if(response != undefined) {
+          checkFacebookLogin();
+        }
+      }, {scope: '{{ scope }}'});
+    }
+
+  // Load the SDK asynchronously
+  (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));  
+</script>
+<!-- END FacebookLogin -->

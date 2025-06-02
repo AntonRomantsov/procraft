@@ -1,0 +1,36 @@
+{% if (heading_title_raw is not empty) %}
+    <img width="36" height="36" style="float:left" src="view/image/neoseo.png" alt=""/>
+    <h1>{{ heading_title_raw ~ " " ~ text_module_version }}</h1>
+{% endif %}
+<div class="wrapps asb-wrap" style="border:none">
+    {% for article in articles %}
+        <div class="row actik" style="margin-bottom: 15px">
+
+            <a href="{{ article['href'] }}">
+                <img src="{{ article['thumb'] }}" alt="{{ article['name'] }}" title="{{ article['name'] }}" class=""/>
+
+                {{ article['name'] }}</a>
+                {% if (blog_meta['date'] is not empty) %}
+                <div class="entry-date published">
+                    <i class="fa fa-calendar"></i>
+                    {{ article['date_modified'] }}
+                </div>
+            {% endif %}
+            {% if (blog_meta['author'] is not empty) %}
+                <div class="entry-author">
+                    <i class="fa fa-user"></i>
+                    <a href="{{ article['author']['href'] }}"{{ article['author']['name'] }}</a>
+                </div>
+            {% endif %}
+            {% if (blog_meta['comments'] is not empty and article['total_comments']) %}
+                <div class="entry-comments-link">
+                    <i class="fa fa-comment-o"></i>
+                    <a href="{{ article['href'] }}#comments"{{ article['total_comments'] }}</a>
+                </div>
+            {% endif %}
+
+        </div>
+
+
+    {% endfor %}
+</div>

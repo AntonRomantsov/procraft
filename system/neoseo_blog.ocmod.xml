@@ -1,0 +1,318 @@
+<modification>
+	<name>NeoSeo Blog</name>
+	<version>29</version>
+	<code>neoseo-blog</code>
+	<author>NeoSeo</author>
+	<link>https://neoseo.com.ua/</link>
+
+	<file path="admin/controller/common/column_left.php">
+		<operation>
+			<search><![CDATA[$marketplace = array();]]></search>
+			<add position="before" offset="1"><![CDATA[
+			/* NeoSeo Blog - begin */
+			$this->load->language('blog/neoseo_blog_link');
+
+			$blog = array();
+			if ($this->user->hasPermission('access', 'blog/neoseo_blog_category')) {
+				$blog[] = array(
+					'name'	   =>  $this->language->get('text_blog_category'),
+					'href'     => $this->url->link('blog/neoseo_blog_category', 'user_token=' . $this->session->data['user_token'], true),
+					'children' => array()
+				);
+			}
+
+			if ($this->user->hasPermission('access', 'blog/neoseo_blog_author')) {
+				$blog[] = array(
+					'name'	   =>  $this->language->get('text_blog_author'),
+					'href'     => $this->url->link('blog/neoseo_blog_author', 'user_token=' . $this->session->data['user_token'], true),
+					'children' => array()
+			);
+			}
+
+			if ($this->user->hasPermission('access', 'blog/neoseo_blog_article')) {
+				$blog[] = array(
+					'name'	   =>  $this->language->get('text_blog_article'),
+					'href'     => $this->url->link('blog/neoseo_blog_article', 'user_token=' . $this->session->data['user_token'], true),
+					'children' => array()
+				);
+			}
+
+			if ($this->user->hasPermission('access', 'blog/neoseo_blog_comment')) {
+				$blog[] = array(
+					'name'	   =>  $this->language->get('text_blog_comment'),
+					'href'     => $this->url->link('blog/neoseo_blog_comment', 'user_token=' . $this->session->data['user_token'], true),
+					'children' => array()
+				);
+			}
+
+			if ($this->user->hasPermission('access', 'blog/neoseo_blog_report')) {
+				$blog[] = array(
+					'name'	   =>  $this->language->get('text_blog_report'),
+					'href'     => $this->url->link('blog/neoseo_blog_report', 'user_token=' . $this->session->data['user_token'], true),
+					'children' => array()
+				);
+			}
+
+			if ($blog && $this->config->get('neoseo_blog_status')) {
+				$data['menus'][] = array(
+					'id'       => 'menu-blog',
+					'icon'	   => 'fa-book',
+					'name'	   => $this->language->get('text_blogs'),
+					'href'     => '',
+					'children' => $blog
+				);
+			}
+			/* NeoSeo Blog - end */
+			]]></add>
+		</operation>
+	</file>
+
+	<file path="catalog/controller/startup/seo_pro.php">
+	<operation>
+		<search><![CDATA[
+			if (isset($this->request->get['product_id'])) {
+			]]></search>
+		<add position="before"><![CDATA[
+			/* NeoSeo Blog - begin */
+			if (isset($this->request->get['article_id'])) {
+				$this->request->get['route'] = 'blog/neoseo_blog_article';
+			} elseif (isset($this->request->get['blog_category_id'])) {
+				$this->request->get['route'] = 'blog/neoseo_blog_category';
+			} else if (isset($this->request->get['author_id'])) {
+				$this->request->get['route'] = 'blog/neoseo_blog_author';
+			} else
+			/* NeoSeo Blog - end */
+			]]></add>
+	</operation>
+	<operation>
+		<search><![CDATA[switch ($route) {]]></search>
+			<add position="after"><![CDATA[
+			/* NeoSeo Blog - begin */
+			case 'blog/neoseo_blog_article':
+				if (isset($data['article_id'])) {
+					if ($this->config->get('config_seo_url_include_path')) {
+						$this->load->model('blog/neoseo_blog_article');
+						$article_category = $this->model_blog_neoseo_blog_article->getMainCategory($data['article_id']);
+						if ($article_category) {
+							$data = array_merge(array('blog_category_id' => $article_category['category_id']), $data);
+						}
+					}
+				}
+				break;
+			case 'blog/neoseo_blog_category':
+				if (isset($data['blog_category_id'])) {
+						$this->load->model('blog/neoseo_blog_category');
+						$blog_parent_categories = $this->model_blog_neoseo_blog_category->getParentIds($data['blog_category_id']);
+						if ($blog_parent_categories) {
+							$data['blog_categories'] = $blog_parent_categories;
+							$data['blog_categories'][] = $data['blog_category_id'];
+							unset($data['blog_category_id']);
+						}
+				}
+				break;
+			/* NeoSeo Blog - end */
+			]]></add>
+		</operation>
+		<operation>
+			<search><![CDATA[
+			switch($key)
+			]]></search>
+			<add position="after"><![CDATA[
+					/* NeoSeo Blog - begin */
+					case 'article_id':
+					case 'author_id':
+						$queries[] = $key . '=' . $value;
+					case 'blog_category_id':
+						if ($route == 'blog/neoseo_blog_category' ) {
+							$queries[] = $key . '=' . $value;
+						}
+						unset($data[$key]);
+						$postfix = 1;
+						break;
+					case 'blog_categories':
+						foreach ($value as $category_id) {
+							$queries[] = 'blog_category_id=' . $category_id;
+						}
+						unset($data[$key]);
+						break;
+					/* NeoSeo Blog - end */
+			]]></add>
+		</operation>
+	</file>
+
+	<file path="catalog/controller/startup/seo_url.php">
+		<operation>
+			<search><![CDATA[if ($url[0] == 'product_id']]></search>
+			<add position="before"><![CDATA[/* NeoSeo Blog - begin */
+					if ($url[0] == 'article_id') {
+						$this->request->get['article_id'] = $url[1];
+					}
+					if ($url[0] == 'author_id') {
+						$this->request->get['author_id'] = $url[1];
+					}
+					if ($url[0] == 'blog_category_id') {
+						$this->request->get['blog_category_id'] = $url[1];
+					}
+					/* NeoSeo Blog - end */]]></add>
+		</operation>
+		<operation>
+			<search><![CDATA[$url[0] != 'product_id']]></search>
+			<add position="replace"><![CDATA[$url[0] != 'product_id' && $url[0] != 'article_id' && $url[0] != 'author_id' && $url[0] != 'blog_category_id']]></add>
+		</operation>
+		<operation>
+			<search><![CDATA[if (isset($this->request->get['product_id'])) {]]></search>
+			<add position="before"><![CDATA[
+				/* NeoSeo Blog - begin */
+				if (isset($this->request->get['article_id'])) {
+					$this->request->get['route'] = 'blog/neoseo_blog_article';
+				} elseif (isset($this->request->get['blog_category_id'])) {
+					$this->request->get['route'] = 'blog/neoseo_blog_category';
+				} elseif (isset($this->request->get['author_id'])) {
+					$this->request->get['route'] = 'blog/neoseo_blog_author';
+				}else
+				/* NeoSeo Blog - end */]]></add>
+		</operation>
+	</file>
+
+	<file path="admin/controller/catalog/category.php">
+		<operation>
+			<search><![CDATA[$this->language->get('text_edit');]]></search>
+			<add position="after"><![CDATA[
+		/* NeoSeo Blog - begin */
+		$this->language->load('catalog/neoseo_blog_article');
+		$data['entry_category_to_blog_article'] = $this->language->get('entry_category_to_blog_article');
+		$data['text_article'] = $this->language->get('text_article');
+		/* NeoSeo Blog - end */
+		]]></add>
+		</operation>
+		<operation>
+			<search><![CDATA[$this->model_catalog_category->editCategory(]]></search>
+			<add position="before"><![CDATA[
+			/* NeoSeo Blog - begin */
+			$this->load->model('blog/neoseo_blog_article');
+			$articles_to_blog = isset($this->request->post['articles_to_blog']) ? $this->request->post['articles_to_blog'] : array();
+			$this->model_blog_neoseo_blog_article->updateCategoryToBlogArticle($articles_to_blog,$this->request->get['category_id']);
+			/* NeoSeo Blog - end */
+		]]></add>
+		</operation>
+		<operation>
+			<search><![CDATA[$this->model_catalog_category->addCategory(]]></search>
+			<add position="after"><![CDATA[
+			/* NeoSeo Blog - begin */
+			$this->load->model('blog/neoseo_blog_article');
+			$articles_to_blog = isset($this->request->post['articles_to_blog']) ? $this->request->post['articles_to_blog'] : array();
+			$this->model_blog_neoseo_blog_article->updateCategoryToBlogArticle($articles_to_blog);
+			/* NeoSeo Blog - end */
+		]]></add>
+		</operation>
+		<operation>
+			<search><![CDATA[$this->load->model('setting/store')]]></search>
+			<add position="before"><![CDATA[		/* NeoSeo Blog - begin */
+		$this->load->model('blog/neoseo_blog_article');
+
+		if (isset($this->request->post['articles_to_blog'])) {
+			$articles = $this->request->post['articles_to_blog'];
+		} elseif (isset($this->request->get['category_id'])) {
+			$articles = $this->model_blog_neoseo_blog_article->getCategoryToBlogArticle($this->request->get['category_id']);
+		} else {
+			$articles = array();
+		}
+
+		$data['category_to_blog_article'] = array();
+
+		foreach ($articles as $article_id) {
+			$article_info = $this->model_blog_neoseo_blog_article->getArticle($article_id);
+
+			if ($article_info) {
+				$data['category_to_blog_article'][] = array(
+					'article_id' => $article_info['article_id'],
+					'name'      => $article_info['name']
+				);
+			}
+		}
+		/* NeoSeo Blog - end */]]></add>
+		</operation>
+		<operation>
+			<search><![CDATA[$this->model_catalog_category->deleteCategory(]]></search>
+			<add position="after"><![CDATA[				/* NeoSeo Blog - begin */
+				$this->load->model('blog/neoseo_blog_article');
+				$this->model_blog_neoseo_blog_article->deleteCategoryToBlogArticle($category_id);
+				/* NeoSeo Blog - end */]]></add>
+		</operation>
+	</file>
+
+	<file path="admin/view/template/catalog/category_form.twig">
+		<operation>
+			<search><![CDATA[<span data-toggle="tooltip" title="{{ help_top }}">{{ entry_top }}</span></label>]]></search>
+			<add position="before"><![CDATA[                <!-- NeoSeo Blog - begin -->
+                <label class="col-sm-2 control-label" for="input-category-to-blog-article">{{ entry_category_to_blog_article }}</label>
+                <div class="col-sm-10">
+                  <input type="text" name="blog_article" value="" placeholder="{{ text_article }}" id="input-category-to-blog-article" class="form-control" />
+                  <div id="category-to-blog-article" class="well well-sm" style="height: 150px; overflow: auto;">
+                      {% for article in category_to_blog_article %}
+                        <div id="category-to-blog-article{{ article['article_id'] }}"><i class="fa fa-minus-circle"></i> {{ article['name'] }}
+                          <input type="hidden" name="articles_to_blog[]" value="{{ article['article_id'] }}" />
+                        </div>
+                      {% endfor %}
+                  </div>
+                </div>
+              </div>
+              <!-- NeoSeo Blog - end -->
+              <div class="form-group">]]></add>
+		</operation>
+		<operation>
+			<search><![CDATA[{{ footer }}]]></search>
+			<add position="before"><![CDATA[<!-- NeoSeo Blog - begin -->
+<script type="text/javascript"><!--
+$('input[name=\'blog_article\']').autocomplete({
+	'source': function (request, response) {
+		$.ajax({
+			url: 'index.php?route=blog/neoseo_blog_article/autocomplete&user_token={{ user_token }}&article_name=' +  encodeURIComponent(request),
+			dataType: 'json',
+			success: function (json) {
+				response($.map(json, function (item) {
+					return {
+						label: item['name'],
+						value: item['article_id']
+					}
+				}));
+			}
+		});
+	},
+	'select': function (item) {
+		$('input[name=\'blog_article\']').val('');
+
+		$('#category-to-blog-article' + item['value']).remove();
+
+		$('#category-to-blog-article').append('<div id="category-to-blog-article' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="articles_to_blog[]" value="' + item['value'] + '" /></div>');
+	}
+});
+
+$('#category-to-blog-article').delegate('.fa-minus-circle', 'click', function () {
+	$(this).parent().remove();
+});
+//--></script>
+<!-- NeoSeo Blog - end -->]]></add>
+		</operation>
+	</file>
+
+	<file path="catalog/controller/common/{column_left.php,column_right.php,content_bottom.php,content_top.php}">
+		<operation>
+			<search><![CDATA[$layout_id = 0;]]></search>
+			<add position="after"><![CDATA[		/* NeoSeo Blog - begin */
+		if ($route == 'blog/neoseo_blog_category' && isset($this->request->get['blog_category_id'])) {
+			$this->load->model('blog/neoseo_blog_category');
+
+			$layout_id = $this->model_blog_neoseo_blog_category->getCategoryLayoutId($this->request->get['blog_category_id']);
+		}
+
+		if ($route == 'blog/neoseo_blog_article' && isset($this->request->get['article_id'])) {
+			$this->load->model('blog/neoseo_blog_article');
+
+			$layout_id = $this->model_blog_neoseo_blog_article->getArticleLayoutId($this->request->get['article_id']);
+		}
+		/* NeoSeo Blog - end */]]></add>
+		</operation>
+	</file>
+
+</modification>
