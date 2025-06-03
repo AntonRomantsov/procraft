@@ -257,7 +257,7 @@ class ModelCatalogProduct extends Model
 		}
 
 		if($data['filter_garanty']){
-			$sql .= " AND g.period >= 12 AND p3c.main_category = 1";
+			$sql .= " AND g.period >= 12 AND p2c.main_category = 1";
 		}
 
 		if (!empty($data['filter_name']) || !empty($data['filter_tag'])) {
@@ -850,7 +850,7 @@ class ModelCatalogProduct extends Model
 		}
 
 		if($data['filter_garanty']){
-			$sql .= " AND g.period >= 12AND p3c.main_category = 1";
+			$sql .= " AND g.period >= 12AND p2c.main_category = 1";
 		} 
 
 		if (!empty($data['filter_name']) || !empty($data['filter_tag'])) {

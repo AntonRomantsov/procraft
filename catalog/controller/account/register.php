@@ -28,7 +28,7 @@ class ControllerAccountRegister extends Controller {
 
 			unset($this->session->data['guest']);
 
-			$this->response->redirect($this->url->link('account/success'));
+			$this->response->redirect($this->url->link('account/edit', '', true));
 		}
 
 		$data['breadcrumbs'] = array();
