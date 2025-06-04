@@ -16,7 +16,7 @@ function cpInit() {
       if (json['cart_products']) {
         $.each(json['cart_products'], function(i, value) {
           $('[onclick="call_cp(\'' + value + '\',\'' + 'add' + '\');"]')
-          .html('<i class="fa fa-shopping-cart"></i> <span class="hidden-xs hidden-sm hidden-md">' + json['text_in_cart'] + '</span>')
+          .html('<i class="fa fa-shopping-cart" style="color: #ed6e00;"></i> ')
           .attr('onclick', 'call_cp(\'' + value + '\',\'' + 'load' + '\');');
           $('[onclick="call_cp(\'' + value + '\',\'' + 'add_option' + '\');"]')
           .html(json['text_in_cart'])
@@ -26,7 +26,7 @@ function cpInit() {
       if (json['cart_products_vs_options']) {
         $.each(json['cart_products_vs_options'], function(i, value) {
           $('[onclick="call_cp(\'' + value + '\',\'' + 'add' + '\');"]')
-          .html('<i class="fa fa-shopping-cart"></i> <span class="hidden-xs hidden-sm hidden-md">' + json['text_in_cart'] + '</span>');
+          .html('<i class="fa fa-shopping-cart" style="color: #ed6e00;"></i> ');
           $('[onclick="call_cp(\'' + value + '\',\'' + 'add_option' + '\');"]')
           .html(json['text_in_cart_vs_options']);
         });

@@ -1002,7 +1002,7 @@
 .main-menu__button-close {
   position: absolute;
   top: 11px;
-  right: -50px;
+  right: 50px;
 
   display: flex;
   align-items: center;

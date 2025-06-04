@@ -71,6 +71,27 @@ const heroSwiperThree = new Swiper(".main__swiper-3", {
   },
 });
 
+const heroSwiperFive = new Swiper(".main__swiper-5", {
+  slidesPerView: 1,
+  spaceBetween: 0,
+  loop: true,
+  navigation: {
+    nextEl: ".main__swiper-button-next-5",
+    prevEl: ".main__swiper-button-prev-5",
+  },
+  breakpoints: {
+    384: {
+      slidesPerView: 2,
+    },
+    992: {
+      slidesPerView: 3,
+    },
+    1200: {
+      slidesPerView: 4,
+    },
+  },
+});
+
 const heroSwiperVidoe = new Swiper(".main__swiper-video", {
   slidesPerView: 1.3,
   spaceBetween: 25,

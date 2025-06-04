@@ -1,4 +1,4 @@
-2025-06-03 22:38:32 - 
+2025-06-04 20:51:43 - 
 ERROR: FILE NOT FOUND!
 FILE: /home/stromo/procraft.ua/dev/catalog/controller/extension/module/template_switcher.php
 MOD: Укркредит
@@ -148,6 +148,16 @@ MOD: WebP Image Converter
 
 ERROR: FILE NOT FOUND!
 FILE: /home/stromo/procraft.ua/dev/catalog/view/theme/*/template/common/header.twig
+MOD: XD Stickers for Opencart | ocStore 3.x
+
+ERROR: CODE NOT FOUND!
+FILE: catalog/view/theme/default/template/product/news.twig
+CODE: <a href="{{ product.href }}"><img src="{{ product.thumb }}" alt="{{ product.name }}" title="{{ product.name }}" class="img-responsive" />
+MOD: XD Stickers for Opencart | ocStore 3.x
+
+ERROR: CODE NOT FOUND!
+FILE: catalog/view/theme/default/template/product/bestseller.twig
+CODE: <a href="{{ product.href }}"><img src="{{ product.thumb }}" alt="{{ product.name }}" title="{{ product.name }}" class="img-responsive" />
 MOD: XD Stickers for Opencart | ocStore 3.x
 
 ERROR: FILE NOT FOUND!

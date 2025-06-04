@@ -3710,7 +3710,7 @@
   .main-menu__row {
 	display: flex;
 	align-items: center;
-	justify-content: space-between;
+	/* justify-content: space-between; */
   
 	margin-bottom: 20px;
   }
@@ -3738,7 +3738,7 @@
   .main-menu__row-languages {
 	display: flex;
 	align-items: center;
-  
+    margin-left: 10px;
 	border: 1px solid #e5e5e5;
 	border-radius: 4px;
   
@@ -3848,7 +3848,7 @@
   .main-menu__button-close {
 	position: absolute;
 	top: 11px;
-	right: -50px;
+	right: 50px;
   
 	display: flex;
 	align-items: center;

@@ -123,6 +123,122 @@ class ControllerProductNews extends Controller {
 				$rating = false;
 			}
 
+			// XD Stickers start
+			$this->load->model('setting/setting');
+			$xdstickers = $this->config->get('xdstickers');
+			$current_language_id = $this->config->get('config_language_id');
+			$product_xdstickers = array();
+			$product_xdstickers_custom = array();
+			$data['xdstickers_position'] = ($xdstickers['position'] == '0') ? ' position_upleft' : ' position_upright';
+			$data['xdstickers_status'] = $this->config->get('module_xdstickers_status');
+			if ($data['xdstickers_status']) {
+				if ($xdstickers['sale']['status'] == '1' && $special) {
+					if ($xdstickers['sale']['discount_status'] == '1') {
+						$sale_value = ceil(((float)$result['price'] - (float)$result['special']) / ((float)$result['price'] * 0.01));
+						$sale_text = $xdstickers['sale']['text'][$current_language_id] . ' -' . strval($sale_value) . '%';
+					} else {
+						$sale_text = $xdstickers['sale']['text'][$current_language_id];
+					}
+					$product_xdstickers[] = array(
+						'id'            => 'xdsticker_sale',
+						'text'          => $sale_text
+					);
+				}
+				if ($xdstickers['bestseller']['status'] == '1') {
+					$bestsellers = $this->model_catalog_product->getBestSellerProducts((int)$xdstickers['bestseller']['property']);
+					foreach ($bestsellers as $bestseller) {
+						if ($bestseller['product_id'] == $result['product_id']) {
+							$product_xdstickers[] = array(
+								'id'            => 'xdsticker_bestseller',
+								'text'          => $xdstickers['bestseller']['text'][$current_language_id]
+							);
+						}
+					}
+				}
+				if ($xdstickers['novelty']['status'] == '1') {
+					if ((strtotime($result['date_added']) + intval($xdstickers['novelty']['property']) * 24 * 3600) > time()) {
+						$product_xdstickers[] = array(
+							'id'            => 'xdsticker_novelty',
+							'text'          => $xdstickers['novelty']['text'][$current_language_id]
+						);
+					}
+				}
+				if ($xdstickers['last']['status'] == '1') {
+					if ($result['quantity'] <= intval($xdstickers['last']['property']) && $result['quantity'] > 0) {
+						$product_xdstickers[] = array(
+							'id'            => 'xdsticker_last',
+							'text'          => $xdstickers['last']['text'][$current_language_id]
+						);
+					}
+				}
+				if ($xdstickers['freeshipping']['status'] == '1') {
+					if ((float)$result['special'] >= intval($xdstickers['freeshipping']['property'])) {
+						$product_xdstickers[] = array(
+							'id'            => 'xdsticker_freeshipping',
+							'text'          => $xdstickers['freeshipping']['text'][$current_language_id]
+						);
+					} else if ((float)$result['price'] >= intval($xdstickers['freeshipping']['property'])) {
+						$product_xdstickers[] = array(
+							'id'            => 'xdsticker_freeshipping',
+							'text'          => $xdstickers['freeshipping']['text'][$current_language_id]
+						);
+					}
+				}
+
+				// STOCK stickers
+				if (isset($xdstickers['stock']) && !empty($xdstickers['stock'])) {
+					foreach ($xdstickers['stock'] as $key => $value) {
+						if (isset($value['status']) && $value['status'] == '1' && $key == $result['stock_status_id'] && $result['quantity'] <= 0) {
+							$product_xdstickers[] = array(
+								'id'            => 'xdsticker_stock_' . $key,
+								'text'          => $result['stock_status']
+							);
+						}
+					}
+				}
+
+				// CUSTOM stickers
+				$this->load->model('extension/module/xdstickers');
+				$custom_xdstickers_id = $this->model_extension_module_xdstickers->getCustomXDStickersProduct($result['product_id']);
+				if (!empty($custom_xdstickers_id)) {
+					foreach ($custom_xdstickers_id as $custom_xdsticker_id) {
+						$custom_xdsticker = $this->model_extension_module_xdstickers->getCustomXDSticker($custom_xdsticker_id['xdsticker_id']);
+						$custom_xdsticker_text = json_decode($custom_xdsticker['text'], true);
+						// var_dump($custom_xdsticker);
+						if ($custom_xdsticker['status'] == '1') {
+							$custom_sticker_class = 'xdsticker_' . $custom_xdsticker_id['xdsticker_id'];
+							$product_xdstickers_custom[] = array(
+								'id'            => $custom_sticker_class,
+								'text'          => $custom_xdsticker_text[$current_language_id]
+							);
+						}
+					}
+				}
+			}
+			// XD Stickers end
+
+			$attributes = $this->model_catalog_product->getProductAttributes($result['product_id']);
+
+			$w_list = array_column($this->customer->getWishlist(), 'product_id');
+
+			if (in_array($result['product_id'], $w_list)) {
+				$wl_class = 'wl-add';
+			} else {
+				$wl_class = '';
+			}
+
+			if ((strtotime($result['date_added']) + intval($xdstickers['novelty']['property']) * 24 * 3600) > time()) {
+				$is_new = true;
+			} else {
+				$is_new = false;
+			}
+
+			$is_rotate = $this->model_catalog_product->has360($result['product_id']);
+
+			$this->load->model('extension/module/giftor');
+
+			$gifts = $this->model_extension_module_giftor->getGiftsByProduct($result['product_id']);
+
 			$percent = ($result['price'] - $result['special']) / $result['price'] * 100;
 
 
@@ -228,20 +344,24 @@ class ControllerProductNews extends Controller {
 				'product_id'  => $result['product_id'],
 				'thumb'       => $image,
 				'name'        => $result['name'],
-				'description' => utf8_substr(trim(strip_tags(html_entity_decode($result['description'], ENT_QUOTES, 'UTF-8'))), 0, $this->config->get('theme_' . $this->config->get('config_theme') . '_product_description_length')) . '..',
-				'attributes'  => $attribute_groups,
+				// apsite
+				'attributes'  => $attributes ? array_slice($attributes[0]['attribute'], 0, 4) : array(),
 				'reviews'     => sprintf($this->language->get('text_reviews'), $result['reviews']),
+				'wl_class'    => $wl_class,
+				'quantity'    => $result['quantity'],
+				// apsite
+				'description' => utf8_substr(trim(strip_tags(html_entity_decode($result['description'], ENT_QUOTES, 'UTF-8'))), 0, $this->config->get('theme_' . $this->config->get('config_theme') . '_product_description_length')) . '..',
 				'price'       => $price,
 				'special'     => $special,
-				//'news'     => $news,
-				'quantity'    => $result['quantity'],
-				'stock_id'    => $result['stock_status_id'],
-			    //'is_rotate'   => $is_rotate,
-			    'percent'     => (int)$percent,
+				'percent'     => (int)$percent,
 				'tax'         => $tax,
+				'stock_id'    => $result['stock_status_id'],
 				'minimum'     => $result['minimum'] > 0 ? $result['minimum'] : 1,
-				'rating'      => $result['rating'],
-				'href'        => $this->url->link('product/product', 'product_id=' . $result['product_id'] . $url)
+				'rating'      => $rating,
+				'is_rotate'   => $is_rotate,
+				'is_new'      => $is_new,
+				'gifts'       => $gifts ? true : false,
+				'href'        => $this->url->link('product/product', 'path=' . $this->request->get['path'] . '&product_id=' . $result['product_id'] . $url)
 			);
 		}
 
