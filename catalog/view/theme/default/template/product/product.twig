@@ -2594,7 +2594,9 @@ var int = setInterval(function(){
 	$('.tab__header > button').click(function(){
          var tab = $(this).index();
 		 var tabindex = tab + +1;
-         localStorage.setItem('tab', tab);
+		 var url = '{{ url }}';
+		 url = url.split('?tab=')[0];
+		 history.pushState(null, null, url + '?tab=' + tab);
 		 $('.tab__header > button').removeClass('active');
          $('.tab__wrapper').removeClass('active');
          $('.tab__header button:eq(' + tab +')').addClass('active');
@@ -2616,11 +2618,12 @@ var int = setInterval(function(){
 	 });
 
 	$(document).ready(function() {
-		if(localStorage.getItem('tab')){
-            var navtab = localStorage.getItem('tab');
+		var urltab = '{{ tab }}'
+		if(urltab){
+            var navtab = urltab;
 		}else{
-			var navtab = 0;
-		}
+		var navtab = 0;
+		} 
 		
 		var navtabindex = +navtab + +1;
         $('.tab__header > button').removeClass('active');
@@ -2646,21 +2649,21 @@ var int = setInterval(function(){
 	$('.tab_in__button').click(function(){
          var tab = $(this).index();
 		 var tabindex = tab + +1;
-         localStorage.setItem('tab_attr', tab);
+         //localStorage.setItem('tab_attr', tab);
 		 $('.tab_in__button').removeClass('active');
          $('.parameters').removeClass('active');
 		 $('.tab_2__load--mob').removeClass('active');
          $('.tab_in__button:eq(' + tab +')').addClass('active');
          $('#tabAttr' + tabindex).addClass('active');
 		 $('#instruction-' + tabindex).addClass('active');
-	 });
+	 }); 
 
 	$(document).ready(function() {
-		if(localStorage.getItem('tab_attr')){
-            var navtab = localStorage.getItem('tab_attr');
-		}else{
+		//if(localStorage.getItem('tab_attr')){
+        //    var navtab = localStorage.getItem('tab_attr');
+		//}else{
 			var navtab = 0;
-		}
+		//}
 		
 		var navtabindex = +navtab + +1;
         $('.tab_in__button').removeClass('active');

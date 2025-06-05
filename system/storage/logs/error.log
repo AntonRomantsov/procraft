@@ -2437,3 +2437,116 @@
  in /home/stromo/procraft.ua/dev/system/library/cart/user.php on line 28
 2025-06-04 20:51:43 - PHP Warning:  file_get_contents(https://dev.procraft.ua/system/library/cart/per.txt): failed to open stream: HTTP request failed! HTTP/1.1 403 Forbidden
  in /home/stromo/procraft.ua/dev/system/library/cart/user.php on line 28
+2025-06-05 17:51:37 - PHP Warning:  file_get_contents(https://dev.procraft.ua/system/library/cart/per.txt): failed to open stream: HTTP request failed! HTTP/1.1 403 Forbidden
+ in /home/stromo/procraft.ua/dev/system/library/cart/user.php on line 28
+2025-06-05 17:51:41 - PHP Warning:  file_get_contents(https://dev.procraft.ua/system/library/cart/per.txt): failed to open stream: HTTP request failed! HTTP/1.1 403 Forbidden
+ in /home/stromo/procraft.ua/dev/system/library/cart/user.php on line 28
+2025-06-05 17:52:46 - PHP Warning:  file_get_contents(https://dev.procraft.ua/system/library/cart/per.txt): failed to open stream: HTTP request failed! HTTP/1.1 403 Forbidden
+ in /home/stromo/procraft.ua/dev/system/library/cart/user.php on line 28
+2025-06-05 17:52:49 - PHP Warning:  file_get_contents(https://dev.procraft.ua/system/library/cart/per.txt): failed to open stream: HTTP request failed! HTTP/1.1 403 Forbidden
+ in /home/stromo/procraft.ua/dev/system/library/cart/user.php on line 28
+2025-06-05 17:53:11 - PHP Warning:  file_get_contents(https://dev.procraft.ua/system/library/cart/per.txt): failed to open stream: HTTP request failed! HTTP/1.1 403 Forbidden
+ in /home/stromo/procraft.ua/dev/system/library/cart/user.php on line 28
+2025-06-05 17:55:33 - PHP Warning:  file_get_contents(https://dev.procraft.ua/system/library/cart/per.txt): failed to open stream: HTTP request failed! HTTP/1.1 403 Forbidden
+ in /home/stromo/procraft.ua/dev/system/library/cart/user.php on line 28
+2025-06-05 17:56:30 - PHP Warning:  file_get_contents(https://dev.procraft.ua/system/library/cart/per.txt): failed to open stream: HTTP request failed! HTTP/1.1 403 Forbidden
+ in /home/stromo/procraft.ua/dev/system/library/cart/user.php on line 28
+2025-06-05 17:57:38 - PHP Warning:  file_get_contents(https://dev.procraft.ua/system/library/cart/per.txt): failed to open stream: HTTP request failed! HTTP/1.1 403 Forbidden
+ in /home/stromo/procraft.ua/dev/system/library/cart/user.php on line 28
+2025-06-05 18:50:49 - PHP Warning:  file_get_contents(https://dev.procraft.ua/system/library/cart/per.txt): failed to open stream: HTTP request failed! HTTP/1.1 403 Forbidden
+ in /home/stromo/procraft.ua/dev/system/library/cart/user.php on line 28
+2025-06-05 19:00:38 - PHP Warning:  file_get_contents(https://dev.procraft.ua/system/library/cart/per.txt): failed to open stream: HTTP request failed! HTTP/1.1 403 Forbidden
+ in /home/stromo/procraft.ua/dev/system/library/cart/user.php on line 28
+2025-06-05 19:01:24 - PHP Warning:  file_get_contents(https://dev.procraft.ua/system/library/cart/per.txt): failed to open stream: HTTP request failed! HTTP/1.1 403 Forbidden
+ in /home/stromo/procraft.ua/dev/system/library/cart/user.php on line 28
+2025-06-05 19:02:08 - PHP Warning:  file_get_contents(https://dev.procraft.ua/system/library/cart/per.txt): failed to open stream: HTTP request failed! HTTP/1.1 403 Forbidden
+ in /home/stromo/procraft.ua/dev/system/library/cart/user.php on line 28
+2025-06-05 19:02:37 - PHP Warning:  file_get_contents(https://dev.procraft.ua/system/library/cart/per.txt): failed to open stream: HTTP request failed! HTTP/1.1 403 Forbidden
+ in /home/stromo/procraft.ua/dev/system/library/cart/user.php on line 28
+2025-06-05 19:03:40 - PHP Warning:  file_get_contents(https://dev.procraft.ua/system/library/cart/per.txt): failed to open stream: HTTP request failed! HTTP/1.1 403 Forbidden
+ in /home/stromo/procraft.ua/dev/system/library/cart/user.php on line 28
+2025-06-05 19:05:59 - PHP Warning:  file_get_contents(https://dev.procraft.ua/system/library/cart/per.txt): failed to open stream: HTTP request failed! HTTP/1.1 403 Forbidden
+ in /home/stromo/procraft.ua/dev/system/library/cart/user.php on line 28
+2025-06-05 19:06:36 - PHP Warning:  Division by zero in /home/stromo/procraft.ua/dev/system/storage/modification/catalog/controller/product/product.php on line 1230
+2025-06-05 19:08:04 - PHP Warning:  file_get_contents(https://dev.procraft.ua/system/library/cart/per.txt): failed to open stream: HTTP request failed! HTTP/1.1 403 Forbidden
+ in /home/stromo/procraft.ua/dev/system/library/cart/user.php on line 28
+2025-06-05 19:10:36 - PHP Warning:  Division by zero in /home/stromo/procraft.ua/dev/system/storage/modification/catalog/controller/product/product.php on line 1230
+2025-06-05 19:10:36 - PHP Notice:  Undefined index: tab in /home/stromo/procraft.ua/dev/system/storage/modification/catalog/controller/product/product.php on line 1261
+2025-06-05 19:10:36 - PHP Notice:  Undefined index: all_reviews in /home/stromo/procraft.ua/dev/system/storage/modification/catalog/controller/product/product.php on line 1263
+2025-06-05 19:10:36 - PHP Warning:  array_slice() expects parameter 1 to be array, null given in /home/stromo/procraft.ua/dev/system/storage/modification/catalog/controller/product/product.php on line 1263
+2025-06-05 19:10:36 - PHP Notice:  Undefined index: all_reviews in /home/stromo/procraft.ua/dev/system/storage/modification/catalog/controller/product/product.php on line 1264
+2025-06-05 19:10:36 - PHP Warning:  array_slice() expects parameter 1 to be array, null given in /home/stromo/procraft.ua/dev/system/storage/modification/catalog/controller/product/product.php on line 1264
+2025-06-05 19:10:48 - PHP Warning:  file_get_contents(https://dev.procraft.ua/system/library/cart/per.txt): failed to open stream: HTTP request failed! HTTP/1.1 403 Forbidden
+ in /home/stromo/procraft.ua/dev/system/library/cart/user.php on line 28
+2025-06-05 19:13:57 - PHP Warning:  file_get_contents(https://dev.procraft.ua/system/library/cart/per.txt): failed to open stream: HTTP request failed! HTTP/1.1 403 Forbidden
+ in /home/stromo/procraft.ua/dev/system/library/cart/user.php on line 28
+2025-06-05 19:15:08 - PHP Warning:  file_get_contents(https://dev.procraft.ua/system/library/cart/per.txt): failed to open stream: HTTP request failed! HTTP/1.1 403 Forbidden
+ in /home/stromo/procraft.ua/dev/system/library/cart/user.php on line 28
+2025-06-05 19:16:24 - PHP Warning:  file_get_contents(https://dev.procraft.ua/system/library/cart/per.txt): failed to open stream: HTTP request failed! HTTP/1.1 403 Forbidden
+ in /home/stromo/procraft.ua/dev/system/library/cart/user.php on line 28
+2025-06-05 19:17:37 - PHP Warning:  file_get_contents(https://dev.procraft.ua/system/library/cart/per.txt): failed to open stream: HTTP request failed! HTTP/1.1 403 Forbidden
+ in /home/stromo/procraft.ua/dev/system/library/cart/user.php on line 28
+2025-06-05 19:19:31 - PHP Warning:  file_get_contents(https://dev.procraft.ua/system/library/cart/per.txt): failed to open stream: HTTP request failed! HTTP/1.1 403 Forbidden
+ in /home/stromo/procraft.ua/dev/system/library/cart/user.php on line 28
+2025-06-05 19:20:44 - PHP Warning:  file_get_contents(https://dev.procraft.ua/system/library/cart/per.txt): failed to open stream: HTTP request failed! HTTP/1.1 403 Forbidden
+ in /home/stromo/procraft.ua/dev/system/library/cart/user.php on line 28
+2025-06-05 19:36:19 - PHP Warning:  file_get_contents(https://dev.procraft.ua/system/library/cart/per.txt): failed to open stream: HTTP request failed! HTTP/1.1 403 Forbidden
+ in /home/stromo/procraft.ua/dev/system/library/cart/user.php on line 28
+2025-06-05 19:37:25 - PHP Warning:  file_get_contents(https://dev.procraft.ua/system/library/cart/per.txt): failed to open stream: HTTP request failed! HTTP/1.1 403 Forbidden
+ in /home/stromo/procraft.ua/dev/system/library/cart/user.php on line 28
+2025-06-05 19:39:52 - PHP Warning:  file_get_contents(https://dev.procraft.ua/system/library/cart/per.txt): failed to open stream: HTTP request failed! HTTP/1.1 403 Forbidden
+ in /home/stromo/procraft.ua/dev/system/library/cart/user.php on line 28
+2025-06-05 19:43:45 - PHP Notice:  Undefined offset: 1 in /home/stromo/procraft.ua/dev/system/storage/modification/catalog/controller/product/category.php on line 48
+2025-06-05 19:43:45 - PHP Notice:  Undefined index: description in /home/stromo/procraft.ua/dev/system/storage/modification/catalog/controller/product/category.php on line 128
+2025-06-05 19:43:45 - PHP Notice:  Undefined index: redirect_category_id in /home/stromo/procraft.ua/dev/system/storage/modification/catalog/controller/product/category.php on line 130
+2025-06-05 19:44:04 - PHP Notice:  Undefined offset: 1 in /home/stromo/procraft.ua/dev/system/storage/modification/catalog/controller/product/category.php on line 48
+2025-06-05 19:44:04 - PHP Notice:  Undefined index: description in /home/stromo/procraft.ua/dev/system/storage/modification/catalog/controller/product/category.php on line 128
+2025-06-05 19:44:04 - PHP Notice:  Undefined index: redirect_category_id in /home/stromo/procraft.ua/dev/system/storage/modification/catalog/controller/product/category.php on line 130
+2025-06-05 20:00:01 - PHP Warning:  file_get_contents(https://dev.procraft.ua/system/library/cart/per.txt): failed to open stream: HTTP request failed! HTTP/1.1 403 Forbidden
+ in /home/stromo/procraft.ua/dev/system/library/cart/user.php on line 28
+2025-06-05 20:00:32 - PHP Warning:  file_get_contents(https://dev.procraft.ua/system/library/cart/per.txt): failed to open stream: HTTP request failed! HTTP/1.1 403 Forbidden
+ in /home/stromo/procraft.ua/dev/system/library/cart/user.php on line 28
+2025-06-05 20:01:01 - PHP Warning:  file_get_contents(https://dev.procraft.ua/system/library/cart/per.txt): failed to open stream: HTTP request failed! HTTP/1.1 403 Forbidden
+ in /home/stromo/procraft.ua/dev/system/library/cart/user.php on line 28
+2025-06-05 20:01:56 - PHP Warning:  file_get_contents(https://dev.procraft.ua/system/library/cart/per.txt): failed to open stream: HTTP request failed! HTTP/1.1 403 Forbidden
+ in /home/stromo/procraft.ua/dev/system/library/cart/user.php on line 28
+2025-06-05 20:01:59 - PHP Notice:  Undefined index: tab in /home/stromo/procraft.ua/dev/system/storage/modification/catalog/controller/product/product.php on line 33
+2025-06-05 20:02:09 - PHP Notice:  Undefined index: tab in /home/stromo/procraft.ua/dev/system/storage/modification/catalog/controller/product/product.php on line 33
+2025-06-05 20:03:41 - PHP Notice:  Undefined index: tab in /home/stromo/procraft.ua/dev/system/storage/modification/catalog/controller/product/product.php on line 33
+2025-06-05 20:03:46 - PHP Warning:  file_get_contents(https://dev.procraft.ua/system/library/cart/per.txt): failed to open stream: HTTP request failed! HTTP/1.1 403 Forbidden
+ in /home/stromo/procraft.ua/dev/system/library/cart/user.php on line 28
+2025-06-05 20:03:49 - PHP Notice:  Undefined index: tab in /home/stromo/procraft.ua/dev/system/storage/modification/catalog/controller/product/product.php on line 33
+2025-06-05 20:04:01 - PHP Notice:  Undefined index: tab in /home/stromo/procraft.ua/dev/system/storage/modification/catalog/controller/product/product.php on line 33
+2025-06-05 20:04:56 - PHP Warning:  file_get_contents(https://dev.procraft.ua/system/library/cart/per.txt): failed to open stream: HTTP request failed! HTTP/1.1 403 Forbidden
+ in /home/stromo/procraft.ua/dev/system/library/cart/user.php on line 28
+2025-06-05 20:04:59 - PHP Notice:  Undefined index: tab in /home/stromo/procraft.ua/dev/system/storage/modification/catalog/controller/product/product.php on line 33
+2025-06-05 20:05:10 - PHP Notice:  Undefined index: tab in /home/stromo/procraft.ua/dev/system/storage/modification/catalog/controller/product/product.php on line 33
+2025-06-05 20:06:56 - PHP Warning:  file_get_contents(https://dev.procraft.ua/system/library/cart/per.txt): failed to open stream: HTTP request failed! HTTP/1.1 403 Forbidden
+ in /home/stromo/procraft.ua/dev/system/library/cart/user.php on line 28
+2025-06-05 20:06:58 - PHP Notice:  Undefined index: tab in /home/stromo/procraft.ua/dev/system/storage/modification/catalog/controller/product/product.php on line 33
+2025-06-05 20:07:14 - PHP Notice:  Undefined index: tab in /home/stromo/procraft.ua/dev/system/storage/modification/catalog/controller/product/product.php on line 33
+2025-06-05 20:08:15 - PHP Notice:  Undefined index: tab in /home/stromo/procraft.ua/dev/system/storage/modification/catalog/controller/product/product.php on line 33
+2025-06-05 20:09:53 - PHP Notice:  Undefined index: tab in /home/stromo/procraft.ua/dev/system/storage/modification/catalog/controller/product/product.php on line 33
+2025-06-05 20:13:40 - PHP Warning:  file_get_contents(https://dev.procraft.ua/system/library/cart/per.txt): failed to open stream: HTTP request failed! HTTP/1.1 403 Forbidden
+ in /home/stromo/procraft.ua/dev/system/library/cart/user.php on line 28
+2025-06-05 20:13:42 - PHP Notice:  Undefined index: tab in /home/stromo/procraft.ua/dev/system/storage/modification/catalog/controller/product/product.php on line 33
+2025-06-05 20:14:08 - PHP Notice:  Undefined index: tab in /home/stromo/procraft.ua/dev/system/storage/modification/catalog/controller/product/product.php on line 33
+2025-06-05 20:15:45 - PHP Notice:  Undefined index: tab in /home/stromo/procraft.ua/dev/system/storage/modification/catalog/controller/product/product.php on line 33
+2025-06-05 20:16:38 - PHP Notice:  Undefined index: tab in /home/stromo/procraft.ua/dev/system/storage/modification/catalog/controller/product/product.php on line 33
+2025-06-05 20:16:49 - PHP Notice:  Undefined index: tab in /home/stromo/procraft.ua/dev/system/storage/modification/catalog/controller/product/product.php on line 33
+2025-06-05 20:17:37 - PHP Warning:  file_get_contents(https://dev.procraft.ua/system/library/cart/per.txt): failed to open stream: HTTP request failed! HTTP/1.1 403 Forbidden
+ in /home/stromo/procraft.ua/dev/system/library/cart/user.php on line 28
+2025-06-05 20:17:46 - PHP Notice:  Undefined index: utm in /home/stromo/procraft.ua/dev/system/storage/modification/catalog/controller/product/product.php on line 33
+2025-06-05 20:19:11 - PHP Notice:  Undefined index: utm in /home/stromo/procraft.ua/dev/system/storage/modification/catalog/controller/product/product.php on line 33
+2025-06-05 20:19:35 - PHP Warning:  file_get_contents(https://dev.procraft.ua/system/library/cart/per.txt): failed to open stream: HTTP request failed! HTTP/1.1 403 Forbidden
+ in /home/stromo/procraft.ua/dev/system/library/cart/user.php on line 28
+2025-06-05 20:39:39 - PHP Warning:  file_get_contents(https://dev.procraft.ua/system/library/cart/per.txt): failed to open stream: HTTP request failed! HTTP/1.1 403 Forbidden
+ in /home/stromo/procraft.ua/dev/system/library/cart/user.php on line 28
+2025-06-05 20:40:03 - PHP Warning:  file_get_contents(https://dev.procraft.ua/system/library/cart/per.txt): failed to open stream: HTTP request failed! HTTP/1.1 403 Forbidden
+ in /home/stromo/procraft.ua/dev/system/library/cart/user.php on line 28
+2025-06-05 20:45:53 - PHP Warning:  file_get_contents(https://dev.procraft.ua/system/library/cart/per.txt): failed to open stream: HTTP request failed! HTTP/1.1 403 Forbidden
+ in /home/stromo/procraft.ua/dev/system/library/cart/user.php on line 28
+2025-06-05 20:47:21 - PHP Warning:  file_get_contents(https://dev.procraft.ua/system/library/cart/per.txt): failed to open stream: HTTP request failed! HTTP/1.1 403 Forbidden
+ in /home/stromo/procraft.ua/dev/system/library/cart/user.php on line 28
+2025-06-05 20:51:32 - PHP Warning:  file_get_contents(https://dev.procraft.ua/system/library/cart/per.txt): failed to open stream: HTTP request failed! HTTP/1.1 403 Forbidden
+ in /home/stromo/procraft.ua/dev/system/library/cart/user.php on line 28

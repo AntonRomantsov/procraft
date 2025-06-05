@@ -1,7 +1,7 @@
 <?php
 class ControllerProductProduct extends Controller
 {
-    const QUESTION_FORM_ID = 4;
+	const QUESTION_FORM_ID = 4;
 
 	private $error = array();
 
@@ -17,6 +17,16 @@ class ControllerProductProduct extends Controller
 			'text' => $this->language->get('text_home'),
 			'href' => $this->url->link('common/home')
 		);
+
+		if (isset($this->request->get['tab'])) {
+			$tab = (int)$this->request->get['tab'];
+		} else {
+			$tab = 0;
+		}
+
+		$data['url'] = str_replace(['?tab=' . $tab, '&tab=' . $tab], '', $_SERVER['REQUEST_URI']);
+
+		$data['tab'] = $tab;
 
 		$this->load->model('catalog/category');
 
@@ -269,6 +279,12 @@ class ControllerProductProduct extends Controller
 			if (isset($this->request->get['limit'])) {
 				$url .= '&limit=' . $this->request->get['limit'];
 			}
+
+			if (isset($this->request->get['tab'])) {
+				$url .= '&tab=' . $this->request->get['tab'];
+			}
+
+			$data['url'] = $_SERVER['REQUEST_URI'];
 
 			$data['breadcrumbs'][] = array(
 				'text' => $product_info['name'],
@@ -555,35 +571,34 @@ class ControllerProductProduct extends Controller
 					'video_img' => isset($video_arr['video_url']) && $video_arr['video_url'] ? preg_replace('/\s*[a-zA-Z\/\/:\.]*youtube.com\/watch\?v=([a-zA-Z0-9\-_]+)([a-zA-Z0-9\/\*\-\_\?\&\;\%\=\.]*)/i', '//img.youtube.com/vi/$1/mqdefault.jpg', $video_arr['video_url']) : ''
 				);
 
-				if(isset($video)){
+				if (isset($video)) {
 					continue;
 				}
 
-                if($data['video_item'][$key]['video_link']){
+				if ($data['video_item'][$key]['video_link']) {
 					$video_arr = explode('/', $data['video_item'][$key]['video_link']);
 					$video = $video_arr[count($video_arr) - 1];
 				}
 			}
 
-			if(isset($video)){
+			if (isset($video)) {
 
 				$data['video'] = [];
 
-			    require 'system/library/ytchannel/autoload.php'; 
-			    $youtube = new Madcoda\Youtube\Youtube(['key' => $this->config->get('module_ytchannel_apikey'), 'referer' => HTTPS_SERVER]);
+				require 'system/library/ytchannel/autoload.php';
+				$youtube = new Madcoda\Youtube\Youtube(['key' => $this->config->get('module_ytchannel_apikey'), 'referer' => HTTPS_SERVER]);
 
 				$video = $youtube->getVideoInfo($video);
 
-			    if (!empty($video->id)) {
-                    $data['video'] = [
-					    'id' => $video->id,
-					    'thumb' => isset($video->snippet->thumbnails->standard->url) ? $video->snippet->thumbnails->standard->url : '',
-					    'title' => $video->snippet->title,
-					    'views' => $video->statistics->viewCount,
-					    'date'  => date($this->language->get('date_format_short'), strtotime($video->snippet->publishedAt))
-				    ];
-			    }
-
+				if (!empty($video->id)) {
+					$data['video'] = [
+						'id' => $video->id,
+						'thumb' => isset($video->snippet->thumbnails->standard->url) ? $video->snippet->thumbnails->standard->url : '',
+						'title' => $video->snippet->title,
+						'views' => $video->statistics->viewCount,
+						'date'  => date($this->language->get('date_format_short'), strtotime($video->snippet->publishedAt))
+					];
+				}
 			}
 
 			if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {
@@ -956,8 +971,8 @@ class ControllerProductProduct extends Controller
 
 			$data['feedbacks'] = array();
 
-			foreach($feedbacks_info as $key => $feedback){
-                $data['feedbacks'][$key] = array(
+			foreach ($feedbacks_info as $key => $feedback) {
+				$data['feedbacks'][$key] = array(
 					'id'         => $feedback['review_id'],
 					'author'     => $feedback['author'],
 					'text'       => nl2br($feedback['text']),
@@ -967,20 +982,20 @@ class ControllerProductProduct extends Controller
 					'answers_count'    => $this->model_catalog_review->getCountAnswers($feedback['review_id']),
 					'date_added' => date($this->language->get('date_format_short'), strtotime($feedback['date_added']))
 				);
-                
+
 				$answers = $this->model_catalog_review->getAnswers($feedback['review_id'], 'start');
 
 				$data['feedbacks'][$key]['answers'] = array();
 
-				foreach($answers as $answer){
+				foreach ($answers as $answer) {
 					$data['feedbacks'][$key]['answers'][] = array(
 						'id'         => $answer['review_id'],
-					    'author'     => $answer['author'],
-					    'text'       => nl2br($answer['text']),
-					    'rating'     => (int)$answer['rating'],
-					    'likes'      => $answer['likes'],
-					    'dislikes'   => $answer['dislikes'],
-					    'date_added' => date($this->language->get('date_format_short'), strtotime($answer['date_added']))
+						'author'     => $answer['author'],
+						'text'       => nl2br($answer['text']),
+						'rating'     => (int)$answer['rating'],
+						'likes'      => $answer['likes'],
+						'dislikes'   => $answer['dislikes'],
+						'date_added' => date($this->language->get('date_format_short'), strtotime($answer['date_added']))
 					);
 				}
 			}
@@ -1299,7 +1314,8 @@ class ControllerProductProduct extends Controller
 		return $path[$category_id];
 	}
 
-	public function more_reviews(){
+	public function more_reviews()
+	{
 		$offset = $this->request->get['count'];
 
 		$this->load->model('catalog/review');
@@ -1308,7 +1324,7 @@ class ControllerProductProduct extends Controller
 
 		$data = array();
 
-		foreach($feedbacks as $key => $feedback){
+		foreach ($feedbacks as $key => $feedback) {
 			$data['feedbacks'][$key] = array(
 				'id'         => $feedback['review_id'],
 				'author'     => $feedback['author'],
@@ -1319,12 +1335,12 @@ class ControllerProductProduct extends Controller
 				'answers_count'    => $this->model_catalog_review->getCountAnswers($feedback['review_id']),
 				'date_added' => date($this->language->get('date_format_short'), strtotime($feedback['date_added']))
 			);
-			
+
 			$answers = $this->model_catalog_review->getAnswers($feedback['review_id'], 'start');
 
 			$data['feedbacks'][$key]['answers'] = array();
 
-			foreach($answers as $answer){
+			foreach ($answers as $answer) {
 				$data['feedbacks'][$key]['answers'][] = array(
 					'id'         => $answer['review_id'],
 					'author'     => $answer['author'],
@@ -1343,7 +1359,8 @@ class ControllerProductProduct extends Controller
 		$this->response->setOutput(json_encode($data));
 	}
 
-	public function more_answers(){
+	public function more_answers()
+	{
 
 		$this->load->model('catalog/review');
 
@@ -1351,7 +1368,7 @@ class ControllerProductProduct extends Controller
 
 		$data = array();
 
-		foreach($answers as $answer){
+		foreach ($answers as $answer) {
 			$data['answers'][] = array(
 				'id'         => $answer['review_id'],
 				'author'     => $answer['author'],
@@ -1361,7 +1378,6 @@ class ControllerProductProduct extends Controller
 				'dislikes'   => $answer['dislikes'],
 				'date_added' => date($this->language->get('date_format_short'), strtotime($answer['date_added']))
 			);
-			
 		}
 
 		$this->response->addHeader('Content-Type: application/json');

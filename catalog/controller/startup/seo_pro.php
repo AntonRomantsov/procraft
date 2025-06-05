@@ -122,6 +122,8 @@ class ControllerStartupSeoPro extends Controller {
 					$path = $this->getPathByProduct($this->request->get['product_id']);
 					if ($path) $this->request->get['path'] = $path;
 				}
+			} elseif (isset($this->request->get['tab'])) {
+				$this->request->get['route'] = 'product/product';	
 			} elseif (isset($this->request->get['ocf'])) {
 				$this->request->get['route'] = 'product/category';	
 			} elseif (isset($this->request->get['path'])) {
@@ -185,7 +187,7 @@ class ControllerStartupSeoPro extends Controller {
 						'gclid', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content',
 						'type', 'source', 'block', 'position', 'keyword',
 						'yclid', 'ymclid', 'openstat', 'frommarket',
-						'openstat_service', 'openstat_campaign', 'openstat_ad', 'openstat_source'
+						'openstat_service', 'openstat_campaign', 'openstat_ad', 'openstat_source', 'tab'
 						);
 					foreach($allowed_parameters as $ap) {
 						if (isset($tmp[$ap])) {
