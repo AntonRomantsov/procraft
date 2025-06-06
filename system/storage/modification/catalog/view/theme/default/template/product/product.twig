@@ -2706,7 +2706,6 @@ var int = setInterval(function(){
 		 var url = '{{ url }}';
 		 url = url.split('?tab=')[0];
 		 history.pushState(null, null, url + '?tab=' + tab);
-         //localStorage.setItem('tab', tab);
 		 $('.tab__header > button').removeClass('active');
          $('.tab__wrapper').removeClass('active');
          $('.tab__header button:eq(' + tab +')').addClass('active');

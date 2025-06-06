@@ -24,4 +24,5 @@ $_['text_model_desc']   = 'Модель (Я - А)';
 $_['text_limit']        = 'Показать:';
 $_['text_reviews']        = '%s отзывов';
 $_['text_form_stock']   = 'Сообщить о наличии';
+$_['text_gifts']        = 'Подарки';
 
