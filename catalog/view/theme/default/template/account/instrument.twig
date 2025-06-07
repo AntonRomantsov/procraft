@@ -311,6 +311,7 @@
 	if($(this).hasClass('profile__create_custom_select--active')){
       $(this).removeClass('profile__create_custom_select--active');
 	}else{
+	  $('.profile__create_custom_select').removeClass('profile__create_custom_select--active');
 	  $(this).addClass('profile__create_custom_select--active');	
 	}
   });
@@ -318,7 +319,12 @@
   $('.selected-category').click(function(){
 	$('#selected-category-name').removeClass('profile__create_select_current--placeholder');
 	$('#selected-category-name').html($(this).text());
+	$('#selected-subcategory-name').addClass('profile__create_select_current--placeholder');
+	$('#selected-subcategory-name').html('{{ text_subcategory_placeholder }}');
+	$('#selected-product-name').addClass('profile__create_select_current--placeholder');
+	$('#selected-product-name').html('{{ text_placeholder_name }}');
 	var category_id = $(this).attr('data-value');
+	$('input[name=\'product_id\']').val('');
 
 	$.ajax({
 		url: 'index.php?route=account/instrument/get_subcategory&parent_id=' + category_id + '&lang={{ lang }}',
@@ -339,6 +345,9 @@
   function selectSubcategory(subcategory_id, name){
 	$('#selected-subcategory-name').removeClass('profile__create_select_current--placeholder');
 	$('#selected-subcategory-name').html(name);
+	$('#selected-product-name').addClass('profile__create_select_current--placeholder');
+	$('#selected-product-name').html('{{ text_placeholder_name }}');
+	$('input[name=\'product_id\']').val('');
 
 	$.ajax({
 		url: 'index.php?route=account/instrument/get_product&category_id=' + subcategory_id,
