@@ -159,7 +159,7 @@
 					{{ text_pay_part }}
 				  </button>
 
-				  <a class="button button_gray product_secondary__button_gray" {% if not wl_class %}onclick="wishlist.add({{ product_id }}, '', '{{ to_wishlist }}', '{{ from_wishlist }}')"{% else %}onclick="wishlist.remove({{ product_id }}, '', '{{ from_wishlist }}', '{{ to_wishlist }}')"{% endif %}>
+				  <a class="button button_gray  product_secondary__button_gray{% if wl_class %} activated{% endif %}" {% if not wl_class %}onclick="wishlist.add({{ product_id }}, '', '{{ to_wishlist }}', '{{ from_wishlist }}')"{% else %}onclick="wishlist.remove({{ product_id }}, '', '{{ from_wishlist }}', '{{ to_wishlist }}')"{% endif %}>
 					<svg class="product_secondary__button_gray_icon product-like-{{ product_id }} {% if wl_class %}product__like-active{% endif %}" viewBox="0 0 24 21" fill="none" xmlns="http://www.w3.org/2000/svg">
 					  <path
 						d="M11.9626 19.5381L2.10281 9.80024C1.07574 8.78576 0.5 7.41137 0.5 5.97966C0.5 4.548 1.07574 3.17365 2.10281 2.15928C3.13034 1.1449 4.52508 0.573975 5.98067 0.573975C7.43626 0.573975 8.83108 1.1449 9.85873 2.15928L11.9626 4.23506L14.0665 2.15928C15.094 1.1449 16.4888 0.573975 17.9444 0.573975C19.4 0.573975 20.7948 1.1449 21.8224 2.15928C22.8499 3.17365 23.4287 4.548 23.4287 5.97966C23.4287 7.41137 22.8499 8.78576 21.8224 9.80024L11.9626 19.5381Z"
@@ -385,7 +385,7 @@
                             <span class="button_icon__icon product_secondary__button_big_icon"></span>
                             {{ text_pay_part }}
                           </button>
-						  <a class="button button_gray product_secondary__button_gray" {% if not wl_class %}onclick="wishlist.add({{ product_id }}, '', '{{ to_wishlist }}', '{{ from_wishlist }}')"{% else %}onclick="wishlist.remove({{ product_id }}, '', '{{ from_wishlist }}', '{{ to_wishlist }}')"{% endif %}>
+						  <a class="button button_gray product_secondary__button_gray{% if wl_class %} activated{% endif %}" {% if not wl_class %}onclick="wishlist.add({{ product_id }}, '', '{{ to_wishlist }}', '{{ from_wishlist }}')"{% else %}onclick="wishlist.remove({{ product_id }}, '', '{{ from_wishlist }}', '{{ to_wishlist }}')"{% endif %}>
 					      <svg class="product_secondary__button_gray_icon product-like-{{ product_id }} {% if wl_class %}product__like-active{% endif %}" viewBox="0 0 24 21" fill="none" xmlns="http://www.w3.org/2000/svg">
 					      <path
 						    d="M11.9626 19.5381L2.10281 9.80024C1.07574 8.78576 0.5 7.41137 0.5 5.97966C0.5 4.548 1.07574 3.17365 2.10281 2.15928C3.13034 1.1449 4.52508 0.573975 5.98067 0.573975C7.43626 0.573975 8.83108 1.1449 9.85873 2.15928L11.9626 4.23506L14.0665 2.15928C15.094 1.1449 16.4888 0.573975 17.9444 0.573975C19.4 0.573975 20.7948 1.1449 21.8224 2.15928C22.8499 3.17365 23.4287 4.548 23.4287 5.97966C23.4287 7.41137 22.8499 8.78576 21.8224 9.80024L11.9626 19.5381Z"
@@ -456,7 +456,7 @@
                         {{ text_pay_part }}
                       </button>
 
-					<a class="button button_gray product_secondary__button_gray" {% if not wl_class %}onclick="wishlist.add({{ product_id }}, '', '{{ to_wishlist }}', '{{ from_wishlist }}')"{% else %}onclick="wishlist.remove({{ product_id }}, '', '{{ from_wishlist }}', '{{ to_wishlist }}')"{% endif %}>
+					<a class="button button_gray product_secondary__button_gray{% if wl_class %} activated{% endif %}" {% if not wl_class %}onclick="wishlist.add({{ product_id }}, '', '{{ to_wishlist }}', '{{ from_wishlist }}')"{% else %}onclick="wishlist.remove({{ product_id }}, '', '{{ from_wishlist }}', '{{ to_wishlist }}')"{% endif %}>
 				        <svg class="product_secondary__button_gray_icon product-like-{{ product_id }} {% if wl_class %}product__like-active{% endif %}" viewBox="0 0 24 21" fill="none" xmlns="http://www.w3.org/2000/svg">
 				        <path
 				             d="M11.9626 19.5381L2.10281 9.80024C1.07574 8.78576 0.5 7.41137 0.5 5.97966C0.5 4.548 1.07574 3.17365 2.10281 2.15928C3.13034 1.1449 4.52508 0.573975 5.98067 0.573975C7.43626 0.573975 8.83108 1.1449 9.85873 2.15928L11.9626 4.23506L14.0665 2.15928C15.094 1.1449 16.4888 0.573975 17.9444 0.573975C19.4 0.573975 20.7948 1.1449 21.8224 2.15928C22.8499 3.17365 23.4287 4.548 23.4287 5.97966C23.4287 7.41137 22.8499 8.78576 21.8224 9.80024L11.9626 19.5381Z"
@@ -610,7 +610,7 @@
                             <span class="button_icon__icon product_secondary__button_big_icon"></span>
                             {{ text_pay_part }}
                           </button>
-						  <a class="button button_gray product_secondary__button_gray" {% if not wl_class %}onclick="wishlist.add({{ product_id }}, '', '{{ to_wishlist }}', '{{ from_wishlist }}')"{% else %}onclick="wishlist.remove({{ product_id }}, '', '{{ from_wishlist }}', '{{ to_wishlist }}')"{% endif %}>
+						  <a class="button button_gray product_secondary__button_gray{% if wl_class %} activated{% endif %}" {% if not wl_class %}onclick="wishlist.add({{ product_id }}, '', '{{ to_wishlist }}', '{{ from_wishlist }}')"{% else %}onclick="wishlist.remove({{ product_id }}, '', '{{ from_wishlist }}', '{{ to_wishlist }}')"{% endif %}>
 					      <svg class="product_secondary__button_gray_icon product-like-{{ product_id }} {% if wl_class %}product__like-active{% endif %}" viewBox="0 0 24 21" fill="none" xmlns="http://www.w3.org/2000/svg">
 					      <path
 						    d="M11.9626 19.5381L2.10281 9.80024C1.07574 8.78576 0.5 7.41137 0.5 5.97966C0.5 4.548 1.07574 3.17365 2.10281 2.15928C3.13034 1.1449 4.52508 0.573975 5.98067 0.573975C7.43626 0.573975 8.83108 1.1449 9.85873 2.15928L11.9626 4.23506L14.0665 2.15928C15.094 1.1449 16.4888 0.573975 17.9444 0.573975C19.4 0.573975 20.7948 1.1449 21.8224 2.15928C22.8499 3.17365 23.4287 4.548 23.4287 5.97966C23.4287 7.41137 22.8499 8.78576 21.8224 9.80024L11.9626 19.5381Z"
@@ -679,7 +679,7 @@
                         {{ text_pay_part }}
                       </button>
 
-					<a class="button button_gray product_secondary__button_gray" {% if not wl_class %}onclick="wishlist.add({{ product_id }}, '', '{{ to_wishlist }}', '{{ from_wishlist }}')"{% else %}onclick="wishlist.remove({{ product_id }}, '', '{{ from_wishlist }}', '{{ to_wishlist }}')"{% endif %}>
+					<a class="button button_gray product_secondary__button_gray{% if wl_class %} activated{% endif %}" {% if not wl_class %}onclick="wishlist.add({{ product_id }}, '', '{{ to_wishlist }}', '{{ from_wishlist }}')"{% else %}onclick="wishlist.remove({{ product_id }}, '', '{{ from_wishlist }}', '{{ to_wishlist }}')"{% endif %}>
 				        <svg class="product_secondary__button_gray_icon product-like-{{ product_id }} {% if wl_class %}product__like-active{% endif %}" viewBox="0 0 24 21" fill="none" xmlns="http://www.w3.org/2000/svg">
 				        <path
 				             d="M11.9626 19.5381L2.10281 9.80024C1.07574 8.78576 0.5 7.41137 0.5 5.97966C0.5 4.548 1.07574 3.17365 2.10281 2.15928C3.13034 1.1449 4.52508 0.573975 5.98067 0.573975C7.43626 0.573975 8.83108 1.1449 9.85873 2.15928L11.9626 4.23506L14.0665 2.15928C15.094 1.1449 16.4888 0.573975 17.9444 0.573975C19.4 0.573975 20.7948 1.1449 21.8224 2.15928C22.8499 3.17365 23.4287 4.548 23.4287 5.97966C23.4287 7.41137 22.8499 8.78576 21.8224 9.80024L11.9626 19.5381Z"
@@ -761,7 +761,7 @@
                             <span class="button_icon__icon product_secondary__button_big_icon"></span>
                             {{ text_pay_part }}
                           </button>
-						  <a class="button button_gray product_secondary__button_gray" {% if not wl_class %}onclick="wishlist.add({{ product_id }}, '', '{{ to_wishlist }}', '{{ from_wishlist }}')"{% else %}onclick="wishlist.remove({{ product_id }}, '', '{{ from_wishlist }}', '{{ to_wishlist }}')"{% endif %}>
+						  <a class="button button_gray product_secondary__button_gray{% if wl_class %} activated{% endif %}" {% if not wl_class %}onclick="wishlist.add({{ product_id }}, '', '{{ to_wishlist }}', '{{ from_wishlist }}')"{% else %}onclick="wishlist.remove({{ product_id }}, '', '{{ from_wishlist }}', '{{ to_wishlist }}')"{% endif %}>
 					      <svg class="product_secondary__button_gray_icon product-like-{{ product_id }} {% if wl_class %}product__like-active{% endif %}" viewBox="0 0 24 21" fill="none" xmlns="http://www.w3.org/2000/svg">
 					      <path
 						    d="M11.9626 19.5381L2.10281 9.80024C1.07574 8.78576 0.5 7.41137 0.5 5.97966C0.5 4.548 1.07574 3.17365 2.10281 2.15928C3.13034 1.1449 4.52508 0.573975 5.98067 0.573975C7.43626 0.573975 8.83108 1.1449 9.85873 2.15928L11.9626 4.23506L14.0665 2.15928C15.094 1.1449 16.4888 0.573975 17.9444 0.573975C19.4 0.573975 20.7948 1.1449 21.8224 2.15928C22.8499 3.17365 23.4287 4.548 23.4287 5.97966C23.4287 7.41137 22.8499 8.78576 21.8224 9.80024L11.9626 19.5381Z"
@@ -830,7 +830,7 @@
                         {{ text_pay_part }}
                       </button>
 
-					<a class="button button_gray product_secondary__button_gray" {% if not wl_class %}onclick="wishlist.add({{ product_id }}, '', '{{ to_wishlist }}', '{{ from_wishlist }}')"{% else %}onclick="wishlist.remove({{ product_id }}, '', '{{ from_wishlist }}', '{{ to_wishlist }}')"{% endif %}>
+					<a class="button button_gray product_secondary__button_gray{% if wl_class %} activated{% endif %}" {% if not wl_class %}onclick="wishlist.add({{ product_id }}, '', '{{ to_wishlist }}', '{{ from_wishlist }}')"{% else %}onclick="wishlist.remove({{ product_id }}, '', '{{ from_wishlist }}', '{{ to_wishlist }}')"{% endif %}>
 				        <svg class="product_secondary__button_gray_icon product-like-{{ product_id }} {% if wl_class %}product__like-active{% endif %}" viewBox="0 0 24 21" fill="none" xmlns="http://www.w3.org/2000/svg">
 				        <path
 				             d="M11.9626 19.5381L2.10281 9.80024C1.07574 8.78576 0.5 7.41137 0.5 5.97966C0.5 4.548 1.07574 3.17365 2.10281 2.15928C3.13034 1.1449 4.52508 0.573975 5.98067 0.573975C7.43626 0.573975 8.83108 1.1449 9.85873 2.15928L11.9626 4.23506L14.0665 2.15928C15.094 1.1449 16.4888 0.573975 17.9444 0.573975C19.4 0.573975 20.7948 1.1449 21.8224 2.15928C22.8499 3.17365 23.4287 4.548 23.4287 5.97966C23.4287 7.41137 22.8499 8.78576 21.8224 9.80024L11.9626 19.5381Z"
@@ -1183,7 +1183,7 @@
 					{{ text_pay_part }}
 				  </button>
 
-				  <a class="button button_gray product_secondary__button_gray" {% if not wl_class %}onclick="wishlist.add({{ product_id }}, '', '{{ to_wishlist }}', '{{ from_wishlist }}')"{% else %}onclick="wishlist.remove({{ product_id }}, '', '{{ from_wishlist }}', '{{ to_wishlist }}')"{% endif %}>
+				  <a class="button button_gray product_secondary__button_gray{% if wl_class %} activated{% endif %}" {% if not wl_class %}onclick="wishlist.add({{ product_id }}, '', '{{ to_wishlist }}', '{{ from_wishlist }}')"{% else %}onclick="wishlist.remove({{ product_id }}, '', '{{ from_wishlist }}', '{{ to_wishlist }}')"{% endif %}>
 					<svg class="product_secondary__button_gray_icon product-like-{{ product_id }} {% if wl_class %}product__like-active{% endif %}" viewBox="0 0 24 21" fill="none" xmlns="http://www.w3.org/2000/svg">
 					  <path
 						d="M11.9626 19.5381L2.10281 9.80024C1.07574 8.78576 0.5 7.41137 0.5 5.97966C0.5 4.548 1.07574 3.17365 2.10281 2.15928C3.13034 1.1449 4.52508 0.573975 5.98067 0.573975C7.43626 0.573975 8.83108 1.1449 9.85873 2.15928L11.9626 4.23506L14.0665 2.15928C15.094 1.1449 16.4888 0.573975 17.9444 0.573975C19.4 0.573975 20.7948 1.1449 21.8224 2.15928C22.8499 3.17365 23.4287 4.548 23.4287 5.97966C23.4287 7.41137 22.8499 8.78576 21.8224 9.80024L11.9626 19.5381Z"

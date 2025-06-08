@@ -298,6 +298,7 @@ var wishlist = {
 				el.attr('class', 'product_secondary__button_gray_icon product__like-item product-like-' + product_id + ' product__like-active');
 				el.attr('onclick', 'wishlist.remove(' + product_id + ', \'\', \'' + reverse + '\', \'' + url + '\')');
 				el2.attr('onclick', 'wishlist.remove(' + product_id + ', \'\', \'' + reverse + '\', \'' + url + '\')');
+				el2.addClass('activated');
 
 				$('.in_wishlist').text(json['in_wishlist']);
 
@@ -339,6 +340,7 @@ var wishlist = {
 				el.attr('class', 'product_secondary__button_gray_icon product__like-item product-like-' + product_id);
 				el.attr('onclick', 'wishlist.add(' + product_id + ', \'\', \'' + reverse + '\', \'' + url + '\')');
 				el2.attr('onclick', 'wishlist.add(' + product_id + ', \'\', \'' + reverse + '\', \'' + url + '\')');
+				el2.removeClass('activated');
 
 				$('.in_wishlist').text(json['in_wishlist']);
 
