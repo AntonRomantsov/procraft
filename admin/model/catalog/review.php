@@ -1,7 +1,10 @@
 <?php
 class ModelCatalogReview extends Model {
+	const ADMIN_ID = 9957;
 	public function addReview($data) {
-		$this->db->query("INSERT INTO " . DB_PREFIX . "review SET author = '" . $this->db->escape($data['author']) . "', product_id = '" . (int)$data['product_id'] . "', text = '" . $this->db->escape(strip_tags($data['text'])) . "', rating = '" . (int)$data['rating'] . "', status = '" . (int)$data['status'] . "', date_added = '" . $this->db->escape($data['date_added']) . "'");
+		$parent_id = isset($data['parent_id']) ? (int)$data['parent_id'] : 0;
+		$customer_id = isset($data['customer_id']) ? (int)$data['customer_id'] : 0;
+		$this->db->query("INSERT INTO " . DB_PREFIX . "review SET author = '" . $this->db->escape($data['author']) . "', product_id = '" . (int)$data['product_id'] . "', text = '" . $this->db->escape(strip_tags($data['text'])) . "', rating = '" . (int)$data['rating'] . "', status = '" . (int)$data['status'] . "', date_added = '" . $this->db->escape($data['date_added']) . "'" . ", customer_id = " . $customer_id . ", parent_id = '" . $parent_id . "'");
 
 		$review_id = $this->db->getLastId();
 
@@ -11,7 +14,30 @@ class ModelCatalogReview extends Model {
 	}
 
 	public function editReview($review_id, $data) {
-		$this->db->query("UPDATE " . DB_PREFIX . "review SET author = '" . $this->db->escape($data['author']) . "', product_id = '" . (int)$data['product_id'] . "', text = '" . $this->db->escape(strip_tags($data['text'])) . "', rating = '" . (int)$data['rating'] . "', status = '" . (int)$data['status'] . "', date_added = '" . $this->db->escape($data['date_added']) . "', date_modified = NOW() WHERE review_id = '" . (int)$review_id . "'");
+		$parent_id = isset($data['parent_id']) ? (int)$data['parent_id'] : 0;
+		$customer_id = isset($data['customer_id']) ? (int)$data['customer_id'] : 0;
+		$this->db->query("UPDATE " . DB_PREFIX . "review SET author = '" . $this->db->escape($data['author']) . "', product_id = '" . (int)$data['product_id'] . "', text = '" . $this->db->escape(strip_tags($data['text'])) . "', rating = '" . (int)$data['rating'] . "', status = '" . (int)$data['status'] . "', date_added = '" . $this->db->escape($data['date_added']) . "', date_modified = NOW(), customer_id = " . $customer_id . ", parent_id = " . $parent_id . " WHERE review_id = '" . (int)$review_id . "'");
+
+		if($data['answer']){
+			$answer['author'] = 'Admin';
+			$answer['customer_id'] = self::ADMIN_ID;
+			$answer['product_id'] = (int)$data['product_id'];
+			$answer['text'] = $data['answer'];
+			$answer['rating'] = 5;
+			$answer['status'] = 1;
+			$answer['parent_id'] = $review_id;
+			$answer['date_added'] = date('Y-m-d H:i:s');
+
+			
+
+			$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "review WHERE parent_id = " . (int)$review_id . " AND customer_id = " . self::ADMIN_ID . "");
+
+			if($query->num_rows == 1){
+				$this->editReview($query->row['review_id'], $answer);
+			}else{
+				$this->addReview($answer);
+			}
+		}
 
 		$this->cache->delete('product');
 	}
@@ -112,5 +138,10 @@ class ModelCatalogReview extends Model {
 		$query = $this->db->query("SELECT COUNT(*) AS total FROM " . DB_PREFIX . "review WHERE status = '0'");
 
 		return $query->row['total'];
+	}
+
+	public function getAnswer($review_id){
+		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "review WHERE parent_id = " . (int)$review_id . " AND customer_id = " . self::ADMIN_ID . "");
+		return $query->row;
 	}
 }

@@ -529,6 +529,24 @@ class ControllerCatalogReview extends Controller {
 			$data['status'] = '';
 		}
 
+		$answer = $this->model_catalog_review->getAnswer($this->request->get['review_id']);
+
+		if (isset($this->request->post['answer'])) {
+			$data['answer'] = $this->request->post['answer'];
+		} elseif (!empty($answer['text'])) {
+			$data['answer'] = $answer['text'];
+		} else {
+			$data['answer'] = '';
+		}
+
+		if (isset($this->request->post['parent_id'])) {
+			$data['parent_id'] = $this->request->post['parent_id'];
+		} elseif (!empty($review_info)) {
+			$data['parent_id'] = $review_info['parent_id'];
+		} else {
+			$data['parent_id'] = 0;
+		}
+
 		$data['header'] = $this->load->controller('common/header');
 		$data['column_left'] = $this->load->controller('common/column_left');
 		$data['footer'] = $this->load->controller('common/footer');
