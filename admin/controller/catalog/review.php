@@ -1,5 +1,6 @@
 <?php
 class ControllerCatalogReview extends Controller {
+	const ADMIN_ID = 9957;
 	private $error = array();
 
 	public function index() {
@@ -545,6 +546,12 @@ class ControllerCatalogReview extends Controller {
 			$data['parent_id'] = $review_info['parent_id'];
 		} else {
 			$data['parent_id'] = 0;
+		}
+
+        if($review_info['customer_id'] == self::ADMIN_ID){
+			$data['admin_answer'] = true;
+		}else{
+			$data['admin_answer'] = false;
 		}
 
 		$data['header'] = $this->load->controller('common/header');

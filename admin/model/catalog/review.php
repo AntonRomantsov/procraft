@@ -19,16 +19,14 @@ class ModelCatalogReview extends Model {
 		$this->db->query("UPDATE " . DB_PREFIX . "review SET author = '" . $this->db->escape($data['author']) . "', product_id = '" . (int)$data['product_id'] . "', text = '" . $this->db->escape(strip_tags($data['text'])) . "', rating = '" . (int)$data['rating'] . "', status = '" . (int)$data['status'] . "', date_added = '" . $this->db->escape($data['date_added']) . "', date_modified = NOW(), customer_id = " . $customer_id . ", parent_id = " . $parent_id . " WHERE review_id = '" . (int)$review_id . "'");
 
 		if($data['answer']){
-			$answer['author'] = 'Admin';
+			$answer['author'] = 'Експерт Procraft';
 			$answer['customer_id'] = self::ADMIN_ID;
 			$answer['product_id'] = (int)$data['product_id'];
 			$answer['text'] = $data['answer'];
 			$answer['rating'] = 5;
 			$answer['status'] = 1;
-			$answer['parent_id'] = $review_id;
+			$answer['parent_id'] = $data['parent_id'] ? $data['parent_id'] : $review_id;
 			$answer['date_added'] = date('Y-m-d H:i:s');
-
-			
 
 			$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "review WHERE parent_id = " . (int)$review_id . " AND customer_id = " . self::ADMIN_ID . "");
 
