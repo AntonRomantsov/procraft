@@ -548,7 +548,7 @@ class ControllerCatalogReview extends Controller {
 			$data['parent_id'] = 0;
 		}
 
-        if($review_info['customer_id'] == self::ADMIN_ID){
+        if($review_info ['customer_id'] == self::ADMIN_ID){
 			$data['admin_answer'] = true;
 		}else{
 			$data['admin_answer'] = false;

@@ -1019,11 +1019,11 @@
   cursor: pointer;
 }
 
-@media (max-width: 384px) {
+/* @media (max-width: 384px) {
   .main-menu__button-close {
     right: -41px;
   }
-}
+} */
 
 @media (min-width: 1025px) {
   .main-menu__button-close {
